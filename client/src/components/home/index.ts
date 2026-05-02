@@ -1,0 +1,9 @@
+export { HeroSection } from './hero-section';
+export { TrustBar } from './trust-bar';
+export { FeaturedCategories } from './featured-categories';
+export { FeaturedProducts } from './featured-products';
+export { StoreProfileSection } from './store-profile-section';
+export { HowItWorks } from './how-it-works';
+export { Testimonials } from './testimonials';
+export { PremiumBanner } from './premium-banner';
+export { CTASection } from './cta-section';
