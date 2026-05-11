@@ -1,118 +1,269 @@
 'use client';
 
-import { Banknote, Smartphone, Building2, Check, Wallet } from 'lucide-react';
+import { useState } from 'react';
 import { cn } from '@/lib/utils';
 
-const PAYMENT_METHODS = [
-  {
-    id: 'cod' as const,
-    label: 'Cash on Delivery',
-    description: 'Pay when you receive your order',
-    icon: Banknote,
-    available: true,
-    badge: null,
-  },
-  {
-    id: 'esewa' as const,
-    label: 'eSewa',
-    description: 'Pay securely with eSewa digital wallet',
-    icon: Wallet,
-    available: true,
-    badge: 'Popular',
-  },
-  {
-    id: 'khalti' as const,
-    label: 'Khalti',
-    description: 'Pay with Khalti wallet',
-    icon: Smartphone,
-    available: true,
-    badge: null,
-  },
-  {
-    id: 'bank_transfer' as const,
-    label: 'Bank Transfer',
-    description: 'Direct bank transfer (manual verification)',
-    icon: Building2,
-    available: false,
-    badge: 'Coming soon',
-  },
-];
+export type PaymentMethodId = 'stripe' | 'esewa' | 'khalti' | 'cod' | 'bank_transfer';
 
 interface PaymentMethodProps {
   selected: string;
-  onChange: (method: 'cod' | 'esewa' | 'khalti' | 'bank_transfer') => void;
+  onChange: (method: PaymentMethodId) => void;
 }
+
+const METHODS: { id: PaymentMethodId; icon: string; label: string; available: boolean }[] = [
+  { id: 'esewa', icon: '🟢', label: 'eSewa', available: true },
+  { id: 'khalti', icon: '🟣', label: 'Khalti', available: true },
+  { id: 'cod', icon: '💵', label: 'Cash on Delivery', available: true },
+];
 
 export function PaymentMethod({ selected, onChange }: PaymentMethodProps) {
   return (
     <div className="space-y-6">
-      <div className="mb-2 flex items-center gap-2">
-        <div className="flex h-9 w-9 items-center justify-center rounded-full border border-black/8 bg-slate-900 text-sm font-semibold text-white">
-          2
-        </div>
-        <h2 className="text-2xl font-semibold tracking-[-0.03em] text-slate-900">Payment method</h2>
+      <div>
+        <p className="font-mono text-xs uppercase tracking-widest text-[#6C63FF] mb-2">
+          Step 2
+        </p>
+        <h2 className="font-heading text-3xl font-black text-white">Payment Method</h2>
       </div>
 
+      {/* Pill selector */}
+      <div className="flex flex-wrap gap-2">
+        {METHODS.map((m) => (
+          <button
+            key={m.id}
+            type="button"
+            onClick={() => onChange(m.id)}
+            disabled={!m.available}
+            className={cn(
+              'px-5 py-3 rounded-full text-sm font-semibold transition-all backdrop-blur-xl inline-flex items-center gap-2',
+              selected === m.id
+                ? 'bg-gradient-to-r from-[#6C63FF] to-[#8B7FFF] text-white shadow-[0_4px_20px_rgba(108,99,255,0.4)] border border-[#6C63FF]'
+                : 'bg-white/[0.04] text-white/70 border border-white/10 hover:border-[#6C63FF]/40 hover:text-white',
+              !m.available && 'opacity-40 cursor-not-allowed'
+            )}
+          >
+            <span className="text-base">{m.icon}</span>
+            {m.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Method-specific UI */}
+      {selected === 'esewa' && <EsewaBlock />}
+      {selected === 'khalti' && <KhaltiBlock />}
+      {selected === 'cod' && <CashOnDeliveryBlock />}
+    </div>
+  );
+}
+
+function KhaltiBlock() {
+  return (
+    <div className="rounded-2xl border border-[#EDE7DA]/10 bg-[#EDE7DA]/[0.03] p-6">
+      <div className="flex items-center gap-3 mb-3">
+        <div className="size-10 rounded-xl bg-[#5C2D91] text-white flex items-center justify-center text-lg">🟣</div>
+        <div>
+          <p className="font-heading text-base font-bold text-[#EDE7DA]">Pay with Khalti</p>
+          <p className="text-xs text-[#EDE7DA]/55">Redirects to Khalti for secure payment.</p>
+        </div>
+      </div>
+      <p className="text-[11px] font-mono uppercase tracking-widest text-[#EDE7DA]/40">
+        ◆ Continue to Khalti after placing order
+      </p>
+    </div>
+  );
+}
+
+function StripeCardPreview() {
+  const [cardNumber, setCardNumber] = useState('');
+  const [expiry, setExpiry] = useState('');
+  const [cvc, setCvc] = useState('');
+  const [name, setName] = useState('');
+  const [flipped, setFlipped] = useState(false);
+
+  const formattedNumber = cardNumber
+    .replace(/\s/g, '')
+    .replace(/(\d{4})/g, '$1 ')
+    .trim()
+    .slice(0, 19);
+
+  const formatExpiry = (v: string) => {
+    const digits = v.replace(/\D/g, '').slice(0, 4);
+    if (digits.length <= 2) return digits;
+    return `${digits.slice(0, 2)}/${digits.slice(2)}`;
+  };
+
+  return (
+    <div className="space-y-6">
+      {/* 3D animated card preview */}
+      <div className="perspective-1000" style={{ perspective: '1000px' }}>
+        <div
+          className="relative w-full max-w-sm mx-auto h-56 transition-transform duration-700"
+          style={{
+            transformStyle: 'preserve-3d',
+            transform: flipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
+          }}
+        >
+          {/* Front */}
+          <div
+            className="absolute inset-0 rounded-2xl p-6 flex flex-col justify-between"
+            style={{
+              background:
+                'linear-gradient(135deg, #6C63FF 0%, #8B7FFF 50%, #00F5FF 100%)',
+              backgroundSize: '200% 200%',
+              animation: 'gradient-shift 6s ease infinite',
+              backfaceVisibility: 'hidden',
+              boxShadow: '0 20px 60px rgba(108, 99, 255, 0.4)',
+            }}
+          >
+            <div className="flex justify-between items-start">
+              <span className="font-mono text-xs uppercase tracking-widest text-white/80">
+                Kinmel
+              </span>
+              <span className="text-white text-xl font-bold italic">VISA</span>
+            </div>
+            <div>
+              <p className="font-mono text-xs uppercase tracking-widest text-white/70 mb-1">
+                Card Number
+              </p>
+              <p className="font-mono text-lg text-white tracking-wider">
+                {formattedNumber || '•••• •••• •••• ••••'}
+              </p>
+            </div>
+            <div className="flex justify-between">
+              <div>
+                <p className="font-mono text-[10px] uppercase tracking-widest text-white/70">
+                  Cardholder
+                </p>
+                <p className="text-sm text-white font-semibold mt-1">
+                  {name || 'YOUR NAME'}
+                </p>
+              </div>
+              <div>
+                <p className="font-mono text-[10px] uppercase tracking-widest text-white/70">
+                  Expires
+                </p>
+                <p className="text-sm text-white font-semibold mt-1">
+                  {expiry || 'MM/YY'}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Back */}
+          <div
+            className="absolute inset-0 rounded-2xl flex flex-col justify-center"
+            style={{
+              background:
+                'linear-gradient(135deg, #1a1a2e 0%, #6C63FF 100%)',
+              backfaceVisibility: 'hidden',
+              transform: 'rotateY(180deg)',
+              boxShadow: '0 20px 60px rgba(108, 99, 255, 0.4)',
+            }}
+          >
+            <div className="h-12 bg-black/70 mt-6" />
+            <div className="px-6 mt-6">
+              <div className="bg-white/90 h-10 rounded flex items-center justify-end pr-3">
+                <span className="font-mono text-sm text-black">{cvc || 'CVC'}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Inputs */}
       <div className="space-y-3">
-        {PAYMENT_METHODS.map((method) => {
-          const Icon = method.icon;
-          const isSelected = selected === method.id;
+        <div>
+          <label className="font-mono text-xs uppercase tracking-widest text-white/60 mb-2 block">
+            Card Number
+          </label>
+          <input
+            value={formattedNumber}
+            onChange={(e) => setCardNumber(e.target.value.replace(/\D/g, ''))}
+            placeholder="1234 5678 9012 3456"
+            className="glass-input w-full font-mono tracking-wider"
+            inputMode="numeric"
+          />
+        </div>
+        <div>
+          <label className="font-mono text-xs uppercase tracking-widest text-white/60 mb-2 block">
+            Cardholder Name
+          </label>
+          <input
+            value={name}
+            onChange={(e) => setName(e.target.value.toUpperCase())}
+            placeholder="JOHN DOE"
+            className="glass-input w-full"
+          />
+        </div>
+        <div className="grid grid-cols-2 gap-3">
+          <div>
+            <label className="font-mono text-xs uppercase tracking-widest text-white/60 mb-2 block">
+              Expiry
+            </label>
+            <input
+              value={expiry}
+              onChange={(e) => setExpiry(formatExpiry(e.target.value))}
+              placeholder="MM/YY"
+              className="glass-input w-full font-mono"
+              maxLength={5}
+            />
+          </div>
+          <div>
+            <label className="font-mono text-xs uppercase tracking-widest text-white/60 mb-2 block">
+              CVC
+            </label>
+            <input
+              value={cvc}
+              onChange={(e) => setCvc(e.target.value.replace(/\D/g, '').slice(0, 4))}
+              onFocus={() => setFlipped(true)}
+              onBlur={() => setFlipped(false)}
+              placeholder="123"
+              className="glass-input w-full font-mono"
+              inputMode="numeric"
+            />
+          </div>
+        </div>
+      </div>
+      <p className="text-xs text-white/40">
+        Test mode: this preview is for display only. Real cards processed by Stripe on submit.
+      </p>
+    </div>
+  );
+}
 
-          return (
-            <button
-              key={method.id}
-              type="button"
-              onClick={() => method.available && onChange(method.id)}
-              disabled={!method.available}
-              className={cn(
-                'relative flex w-full items-center gap-4 rounded-[1.5rem] border p-4 text-left transition-all',
-                isSelected
-                  ? 'border-slate-900 bg-white ring-1 ring-slate-900/10'
-                  : method.available
-                    ? 'border-black/8 bg-white/84 hover:bg-white'
-                    : 'border-black/8 bg-white/50 opacity-60 cursor-not-allowed'
-              )}
-            >
-              <div
-                className={cn(
-                  'flex h-10 w-10 items-center justify-center rounded-full',
-                  isSelected ? 'bg-slate-900 text-white' : 'bg-slate-100 text-slate-500'
-                )}
-              >
-                <Icon className="size-5" />
-              </div>
+function EsewaBlock() {
+  return (
+    <div
+      className="glass-card p-6 border-[#60BB46]/30"
+      style={{
+        background: 'linear-gradient(135deg, rgba(96,187,70,0.1), rgba(96,187,70,0.05))',
+      }}
+    >
+      <div className="flex items-start gap-4">
+        <div className="text-4xl">🟢</div>
+        <div>
+          <h3 className="font-heading text-xl font-black text-white">eSewa Wallet</h3>
+          <p className="mt-2 text-sm text-white/70">
+            You will be redirected to eSewa to complete your payment securely. After
+            successful payment, you&apos;ll come back here.
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
 
-              <div className="min-w-0 flex-1">
-                <div className="flex items-center gap-2">
-                  <p className="text-sm font-semibold text-slate-900">{method.label}</p>
-                  {method.badge && (
-                    <span className={cn(
-                      'rounded-full px-2 py-0.5 text-[10px] font-medium',
-                      method.available
-                        ? 'bg-[#e4ebf8] text-[#546989]'
-                        : 'bg-slate-100 text-slate-500'
-                    )}>
-                      {method.badge}
-                    </span>
-                  )}
-                </div>
-                <p className="text-xs text-slate-500">{method.description}</p>
-              </div>
-
-              {/* Selection indicator */}
-              <div
-                className={cn(
-                  'flex h-5 w-5 items-center justify-center rounded-full border-2 transition-colors',
-                  isSelected
-                    ? 'border-slate-900 bg-slate-900'
-                    : 'border-slate-300'
-                )}
-              >
-                {isSelected && <Check className="size-3 text-white" />}
-              </div>
-            </button>
-          );
-        })}
+function CashOnDeliveryBlock() {
+  return (
+    <div className="glass-card p-6">
+      <div className="flex items-start gap-4">
+        <div className="text-4xl">💵</div>
+        <div>
+          <h3 className="font-heading text-xl font-black text-white">Cash on Delivery</h3>
+          <p className="mt-2 text-sm text-white/70">
+            Pay in cash when your order arrives. Available for in-country deliveries only.
+          </p>
+        </div>
       </div>
     </div>
   );

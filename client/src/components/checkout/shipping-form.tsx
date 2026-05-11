@@ -2,14 +2,12 @@
 
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { MapPin } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { FormField } from '@/components/shared/form-field';
+import { MapPin, ArrowRight } from 'lucide-react';
 import {
   shippingSchema,
   type ShippingFormData,
 } from '@/lib/validations/checkout';
+import { cn } from '@/lib/utils';
 
 interface ShippingFormProps {
   defaultValues?: Partial<ShippingFormData>;
@@ -25,6 +23,8 @@ const NEPAL_PROVINCES = [
   'Karnali',
   'Sudurpashchim',
 ];
+
+const labelCls = 'font-mono text-xs uppercase tracking-widest text-white/60 mb-2 block';
 
 export function ShippingForm({ defaultValues, onSubmit }: ShippingFormProps) {
   const {
@@ -47,108 +47,138 @@ export function ShippingForm({ defaultValues, onSubmit }: ShippingFormProps) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-      <div className="mb-2 flex items-center gap-2">
-        <div className="flex h-9 w-9 items-center justify-center rounded-full border border-black/8 bg-slate-900 text-sm font-semibold text-white">
-          1
-        </div>
-        <h2 className="text-2xl font-semibold tracking-[-0.03em] text-slate-900">Shipping address</h2>
+      <div>
+        <p className="font-mono text-xs uppercase tracking-widest text-[#6C63FF] mb-2">
+          Step 1
+        </p>
+        <h2 className="font-heading text-3xl font-black text-white">Shipping Address</h2>
       </div>
 
-      <div className="storefront-card space-y-4">
-        {/* Name + Phone */}
+      <div className="glass-card p-6 space-y-5">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <FormField label="Full Name" htmlFor="fullName" error={errors.fullName?.message} required>
-            <Input
-              id="fullName"
-              placeholder="Samir Dangol"
-              {...register('fullName')}
-              className={errors.fullName ? 'storefront-input border-destructive' : 'storefront-input'}
-            />
-          </FormField>
-
-          <FormField label="Phone Number" htmlFor="phone" error={errors.phone?.message} required>
-            <Input
-              id="phone"
-              placeholder="+977 98XXXXXXXX"
-              {...register('phone')}
-              className={errors.phone ? 'storefront-input border-destructive' : 'storefront-input'}
-            />
-          </FormField>
+          <Field
+            label="Full Name"
+            error={errors.fullName?.message}
+            id="fullName"
+            placeholder="Samir Dangol"
+            register={register('fullName')}
+          />
+          <Field
+            label="Phone Number"
+            error={errors.phone?.message}
+            id="phone"
+            placeholder="+977 98XXXXXXXX"
+            register={register('phone')}
+          />
         </div>
 
-        {/* Street */}
-        <FormField label="Street Address" htmlFor="street" error={errors.street?.message} required>
-          <Input
-            id="street"
-            placeholder="123 Durbar Marg"
-            {...register('street')}
-            className={errors.street ? 'storefront-input border-destructive' : 'storefront-input'}
-          />
-        </FormField>
+        <Field
+          label="Street Address"
+          error={errors.street?.message}
+          id="street"
+          placeholder="123 Durbar Marg"
+          register={register('street')}
+        />
 
-        {/* City + State + Postal */}
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-          <FormField label="City" htmlFor="city" error={errors.city?.message} required>
-            <Input
-              id="city"
-              placeholder="Kathmandu"
-              {...register('city')}
-              className={errors.city ? 'storefront-input border-destructive' : 'storefront-input'}
-            />
-          </FormField>
+          <Field
+            label="City"
+            error={errors.city?.message}
+            id="city"
+            placeholder="Kathmandu"
+            register={register('city')}
+          />
 
-          <FormField label="Province" htmlFor="state" error={errors.state?.message} required>
+          <div>
+            <label htmlFor="state" className={labelCls}>
+              Province <span className="text-[#FF6B6B]">*</span>
+            </label>
             <select
               id="state"
               {...register('state')}
-              className={`flex h-11 w-full rounded-[1.2rem] border bg-white/88 px-4 py-2 text-sm text-slate-900 shadow-[0_12px_30px_rgba(43,33,23,0.06)] transition-colors outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 ${
-                errors.state ? 'border-destructive' : 'border-black/8'
-              }`}
+              className={cn(
+                'glass-input w-full appearance-none cursor-pointer',
+                errors.state && 'border-[#FF6B6B]/60'
+              )}
             >
-              <option value="">Select province</option>
+              <option value="" className="bg-[#07070F]">
+                Select province
+              </option>
               {NEPAL_PROVINCES.map((p) => (
-                <option key={p} value={p}>
+                <option key={p} value={p} className="bg-[#07070F]">
                   {p}
                 </option>
               ))}
             </select>
-          </FormField>
+            {errors.state && (
+              <p className="mt-1 text-xs text-[#FF6B6B]">{errors.state.message}</p>
+            )}
+          </div>
 
-          <FormField label="Postal Code" htmlFor="postalCode" error={errors.postalCode?.message} required>
-            <Input
-              id="postalCode"
-              placeholder="44600"
-              {...register('postalCode')}
-              className={errors.postalCode ? 'storefront-input border-destructive' : 'storefront-input'}
-            />
-          </FormField>
+          <Field
+            label="Postal Code"
+            error={errors.postalCode?.message}
+            id="postalCode"
+            placeholder="44600"
+            register={register('postalCode')}
+          />
         </div>
 
-        {/* Country (disabled) */}
-        <FormField label="Country" htmlFor="country">
-          <Input
+        <div>
+          <label htmlFor="country" className={labelCls}>
+            Country
+          </label>
+          <input
             id="country"
             value="Nepal"
             disabled
-            className="storefront-input bg-slate-100 text-slate-500"
+            className="glass-input w-full opacity-50 cursor-not-allowed"
           />
-        </FormField>
+        </div>
 
-        <div className="flex items-center gap-2 rounded-[1.2rem] border border-black/8 bg-white/76 px-4 py-3 text-xs text-slate-600">
-          <MapPin className="size-4 shrink-0 text-[#7c8fb5]" />
+        <div className="flex items-center gap-2 px-4 py-3 rounded-xl border border-white/10 bg-white/[0.02] text-xs text-white/60">
+          <MapPin className="size-4 shrink-0 text-[#00F5FF]" />
           <span>We currently deliver within Nepal only.</span>
         </div>
       </div>
 
       <div className="flex justify-end">
-        <Button
-          type="submit"
-          size="lg"
-          className="storefront-button-primary min-w-[200px] border-transparent text-white"
-        >
+        <button type="submit" className="btn-primary group">
           Continue to Payment
-        </Button>
+          <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
+        </button>
       </div>
     </form>
+  );
+}
+
+function Field({
+  label,
+  error,
+  id,
+  placeholder,
+  register,
+  required = true,
+}: {
+  label: string;
+  error?: string;
+  id: string;
+  placeholder: string;
+  register: ReturnType<ReturnType<typeof useForm<ShippingFormData>>['register']>;
+  required?: boolean;
+}) {
+  return (
+    <div>
+      <label htmlFor={id} className={labelCls}>
+        {label} {required && <span className="text-[#FF6B6B]">*</span>}
+      </label>
+      <input
+        id={id}
+        placeholder={placeholder}
+        className={cn('glass-input w-full', error && 'border-[#FF6B6B]/60')}
+        {...register}
+      />
+      {error && <p className="mt-1 text-xs text-[#FF6B6B]">{error}</p>}
+    </div>
   );
 }

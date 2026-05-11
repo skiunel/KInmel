@@ -60,4 +60,50 @@ export const adminService = {
   async deleteReview(id: string) {
     await api.delete(`/reviews/admin/${id}`);
   },
+
+  // ─── Blockchain Monitor ───
+
+  async getBlockchainStatus(): Promise<BlockchainStatus> {
+    const { data } = await api.get<ApiResponse<BlockchainStatus>>(
+      '/admin/blockchain/status'
+    );
+    return data.data!;
+  },
+
+  async getBlockchainFeed(limit = 25): Promise<OnChainEvent[]> {
+    const { data } = await api.get<ApiResponse<OnChainEvent[]>>(
+      '/admin/blockchain/feed',
+      { params: { limit } }
+    );
+    return data.data!;
+  },
 };
+
+export interface BlockchainStatus {
+  configured: boolean;
+  connected: boolean;
+  network: {
+    chainId: number;
+    name: string;
+    explorerUrl: string;
+    rpcUrl: string;
+  } | null;
+  contractAddress: string | null;
+  proofCount: number;
+  paused: boolean;
+  signerAddress: string | null;
+  signerBalance: string | null;
+}
+
+export interface OnChainEvent {
+  txHash: string;
+  blockNumber: number;
+  reviewIdHash: string;
+  productIdHash: string;
+  reviewerHash: string;
+  contentHash: string;
+  ipfsCidHash: string;
+  orderIdHash: string;
+  timestamp: number;
+  explorerUrl: string;
+}

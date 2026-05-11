@@ -37,7 +37,7 @@ export const shippingSchema = z.object({
 
 export const checkoutSchema = z.object({
   shippingAddress: shippingSchema,
-  paymentMethod: z.enum(['cod', 'esewa', 'khalti', 'bank_transfer']),
+  paymentMethod: z.enum(['cod', 'esewa', 'khalti', 'bank_transfer', 'stripe']),
   notes: z.string().max(500).optional(),
 });
 

@@ -13,10 +13,10 @@ const buttonVariants = cva(
         default:
           "button-brand text-primary-foreground hover:-translate-y-0.5 [a]:hover:text-primary-foreground",
         outline:
-          "button-soft text-foreground hover:-translate-y-0.5 hover:bg-white aria-expanded:bg-white",
+          "button-soft text-foreground hover:-translate-y-0.5 hover:bg-white/[0.08] aria-expanded:bg-white/[0.08]",
         secondary:
-          "bg-secondary text-secondary-foreground shadow-[0_12px_24px_rgba(29,58,45,0.05)] hover:-translate-y-0.5 hover:bg-accent aria-expanded:bg-accent aria-expanded:text-secondary-foreground",
-        ghost: "hover:bg-white/78 hover:text-foreground aria-expanded:bg-white/82 aria-expanded:text-foreground",
+          "bg-[#6C63FF]/15 text-[#6C63FF] border-[#6C63FF]/30 hover:-translate-y-0.5 hover:bg-[#6C63FF]/25 aria-expanded:bg-[#6C63FF]/25",
+        ghost: "hover:bg-white/[0.06] hover:text-foreground aria-expanded:bg-white/[0.08] aria-expanded:text-foreground",
         destructive:
           "bg-destructive/10 text-destructive hover:bg-destructive/20 focus-visible:border-destructive/40 focus-visible:ring-destructive/20",
         link: "text-primary underline-offset-4 hover:underline",

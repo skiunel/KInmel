@@ -180,7 +180,7 @@ export function ReviewPreview({
           <Star className="mx-auto size-10 text-muted-foreground/30" />
           <h3 className="mt-4 font-semibold text-foreground">No reviews yet</h3>
           <p className="mt-1 text-sm text-muted-foreground">
-            Be the first to leave a blockchain-verified review for this product.
+            Be the first to leave a verified review for this product.
           </p>
         </div>
       )}

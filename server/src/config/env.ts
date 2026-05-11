@@ -36,6 +36,15 @@ const envSchema = z.object({
   BLOCKCHAIN_RPC_URL: z.string().optional(),
   REVIEW_CONTRACT_ADDRESS: z.string().optional(),
   DEPLOYER_PRIVATE_KEY: z.string().optional(),
+
+  // Stripe (optional in dev)
+  STRIPE_SECRET_KEY: z.string().optional(),
+  STRIPE_WEBHOOK_SECRET: z.string().optional(),
+  STRIPE_PUBLISHABLE_KEY: z.string().optional(),
+
+  // eSewa (optional)
+  ESEWA_MERCHANT_ID: z.string().optional(),
+  ESEWA_SECRET_KEY: z.string().optional(),
 });
 
 const parsed = envSchema.safeParse(process.env);

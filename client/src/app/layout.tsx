@@ -4,7 +4,7 @@ import './globals.css';
 
 export const metadata: Metadata = {
   title: {
-    default: 'Kinmel — Blockchain-verified reviews',
+    default: 'Kinmel — Reviews you can trust',
     template: '%s | Kinmel',
   },
   description: 'A clean, motion-first e-commerce platform where every review is verified on the blockchain.',
@@ -21,8 +21,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
-      <body className="font-sans antialiased bg-[#FAFAF8] text-[#18181B]" suppressHydrationWarning>
-        <div className="dot-grid" />
+      <body className="font-sans antialiased bg-[#0B0B0D] text-[#EDE7DA]" suppressHydrationWarning>
         <div className="relative z-10">
           <Providers>{children}</Providers>
         </div>

@@ -4,7 +4,7 @@ import { beforeAll, afterAll, afterEach } from 'vitest';
 // Set test env vars before anything imports env.ts
 process.env.NODE_ENV = 'test';
 process.env.PORT = '0';
-process.env.MONGODB_URI = 'mongodb://127.0.0.1:47017/kinmel_test';
+process.env.MONGODB_URI = 'mongodb://127.0.0.1:27017/kinmel_test';
 process.env.JWT_ACCESS_SECRET = 'test-access-secret-1234567890';
 process.env.JWT_REFRESH_SECRET = 'test-refresh-secret-1234567890';
 process.env.JWT_ACCESS_EXPIRY = '15m';

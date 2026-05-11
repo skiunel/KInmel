@@ -17,8 +17,10 @@ export interface OrderQueryParams {
 interface CheckoutResponse {
   order: Order;
   payment?: {
-    paymentUrl: string;
-    payload: Record<string, string>;
+    paymentUrl?: string;
+    payload?: Record<string, string>;
+    redirectUrl?: string;
+    sessionId?: string;
   };
 }
 

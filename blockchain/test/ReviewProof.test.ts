@@ -18,7 +18,7 @@ describe("ReviewProof", function () {
   beforeEach(async function () {
     [owner, stranger] = await ethers.getSigners();
     const factory = await ethers.getContractFactory("ReviewProof");
-    contract = await factory.deploy();
+    contract = (await factory.deploy()) as unknown as ReviewProof;
   });
 
   describe("Deployment", function () {
@@ -47,8 +47,10 @@ describe("ReviewProof", function () {
         .withArgs(
           reviewIdHash,
           productIdHash,
+          reviewerHash,
           contentHash,
           ipfsCidHash,
+          orderIdHash,
           (v: bigint) => v > 0n // timestamp
         );
 
@@ -168,6 +170,153 @@ describe("ReviewProof", function () {
     it("verifyContent returns false for unknown review", async function () {
       const unknown = ethers.keccak256(ethers.toUtf8Bytes("nonexistent"));
       expect(await contract.verifyContent(unknown, contentHash)).to.be.false;
+    });
+
+    it("anchoredAt returns the proof timestamp", async function () {
+      const ts = await contract.anchoredAt(reviewIdHash);
+      expect(ts).to.be.greaterThan(0n);
+      expect(await contract.anchoredAt(ethers.ZeroHash)).to.equal(0n);
+    });
+  });
+
+  describe("Anchorer role", function () {
+    it("owner can authorize an anchorer; anchorer can write", async function () {
+      await expect(contract.setAnchorer(stranger.address, true))
+        .to.emit(contract, "AnchorerUpdated")
+        .withArgs(stranger.address, true);
+
+      await contract
+        .connect(stranger)
+        .anchorReview(reviewIdHash, contentHash, ipfsCidHash, productIdHash, orderIdHash, reviewerHash);
+
+      expect(await contract.hasProof(reviewIdHash)).to.be.true;
+    });
+
+    it("revoked anchorer cannot write", async function () {
+      await contract.setAnchorer(stranger.address, true);
+      await contract.setAnchorer(stranger.address, false);
+
+      await expect(
+        contract
+          .connect(stranger)
+          .anchorReview(reviewIdHash, contentHash, ipfsCidHash, productIdHash, orderIdHash, reviewerHash)
+      ).to.be.revertedWithCustomError(contract, "Unauthorized");
+    });
+
+    it("non-owner cannot set anchorer", async function () {
+      await expect(
+        contract.connect(stranger).setAnchorer(stranger.address, true)
+      ).to.be.revertedWithCustomError(contract, "Unauthorized");
+    });
+
+    it("setAnchorer rejects zero address", async function () {
+      await expect(
+        contract.setAnchorer(ethers.ZeroAddress, true)
+      ).to.be.revertedWithCustomError(contract, "ZeroAddress");
+    });
+  });
+
+  describe("Pausable", function () {
+    it("owner can pause and unpause", async function () {
+      await expect(contract.setPaused(true))
+        .to.emit(contract, "PausedSet")
+        .withArgs(true);
+      expect(await contract.paused()).to.be.true;
+    });
+
+    it("paused contract rejects anchorReview", async function () {
+      await contract.setPaused(true);
+      await expect(
+        contract.anchorReview(reviewIdHash, contentHash, ipfsCidHash, productIdHash, orderIdHash, reviewerHash)
+      ).to.be.revertedWithCustomError(contract, "ContractPaused");
+    });
+
+    it("reads still work when paused", async function () {
+      await contract.anchorReview(reviewIdHash, contentHash, ipfsCidHash, productIdHash, orderIdHash, reviewerHash);
+      await contract.setPaused(true);
+      expect(await contract.hasProof(reviewIdHash)).to.be.true;
+    });
+
+    it("non-owner cannot pause", async function () {
+      await expect(
+        contract.connect(stranger).setPaused(true)
+      ).to.be.revertedWithCustomError(contract, "Unauthorized");
+    });
+  });
+
+  describe("Two-step ownership transfer", function () {
+    it("transferOwnership sets pendingOwner and emits", async function () {
+      await expect(contract.transferOwnership(stranger.address))
+        .to.emit(contract, "OwnershipTransferStarted")
+        .withArgs(owner.address, stranger.address);
+
+      expect(await contract.pendingOwner()).to.equal(stranger.address);
+      expect(await contract.owner()).to.equal(owner.address);
+    });
+
+    it("pendingOwner can accept and become owner", async function () {
+      await contract.transferOwnership(stranger.address);
+      await expect(contract.connect(stranger).acceptOwnership())
+        .to.emit(contract, "OwnershipTransferred")
+        .withArgs(owner.address, stranger.address);
+      expect(await contract.owner()).to.equal(stranger.address);
+      expect(await contract.pendingOwner()).to.equal(ethers.ZeroAddress);
+    });
+
+    it("only pendingOwner can accept", async function () {
+      await contract.transferOwnership(stranger.address);
+      await expect(
+        contract.acceptOwnership()
+      ).to.be.revertedWithCustomError(contract, "Unauthorized");
+    });
+
+    it("transferOwnership rejects zero address", async function () {
+      await expect(
+        contract.transferOwnership(ethers.ZeroAddress)
+      ).to.be.revertedWithCustomError(contract, "ZeroAddress");
+    });
+  });
+
+  describe("batchAnchorReviews", function () {
+    const ids = [
+      ethers.keccak256(ethers.toUtf8Bytes("b1")),
+      ethers.keccak256(ethers.toUtf8Bytes("b2")),
+      ethers.keccak256(ethers.toUtf8Bytes("b3")),
+    ];
+
+    it("anchors multiple proofs in one call", async function () {
+      const arr = (v: string) => [v, v, v];
+      await contract.batchAnchorReviews(
+        ids,
+        arr(contentHash),
+        arr(ipfsCidHash),
+        arr(productIdHash),
+        arr(orderIdHash),
+        arr(reviewerHash)
+      );
+      expect(await contract.proofCount()).to.equal(3);
+      for (const id of ids) {
+        expect(await contract.hasProof(id)).to.be.true;
+      }
+    });
+
+    it("rejects mismatched array lengths", async function () {
+      await expect(
+        contract.batchAnchorReviews(
+          ids,
+          [contentHash, contentHash],
+          [ipfsCidHash, ipfsCidHash, ipfsCidHash],
+          [productIdHash, productIdHash, productIdHash],
+          [orderIdHash, orderIdHash, orderIdHash],
+          [reviewerHash, reviewerHash, reviewerHash]
+        )
+      ).to.be.revertedWithCustomError(contract, "LengthMismatch");
+    });
+
+    it("rejects empty batch", async function () {
+      await expect(
+        contract.batchAnchorReviews([], [], [], [], [], [])
+      ).to.be.revertedWithCustomError(contract, "EmptyBatch");
     });
   });
 });

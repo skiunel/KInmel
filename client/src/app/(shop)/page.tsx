@@ -1,18 +1,28 @@
 import type { Metadata } from 'next';
-import { EditorialHome } from '@/components/home/editorial-home';
+import {
+  FeaturedProducts,
+  HeroSection,
+  HowItWorks,
+} from '@/components/home';
 
 export const metadata: Metadata = {
-  title: 'Kinmel Atelier',
+  title: 'Kinmel — Reviews You Can Actually Trust',
   description:
-    'Midnight editorial storefront with brutalist typography, dark luxury contrast, and cinematic product storytelling.',
+    'A premium e-commerce platform where every review is signed with MetaMask and anchored on the Polygon blockchain. Verified buyers, immutable signatures, zero fake stars.',
   openGraph: {
-    title: 'Kinmel Atelier',
+    title: 'Kinmel — Reviews You Can Actually Trust',
     description:
-      'Dark editorial fashion storefront with oversized typography, restrained motion, and sharper narrative commerce.',
+      'Reviews you can trust for trusted e-commerce. Every review signed with MetaMask, anchored on Polygon Amoy.',
     type: 'website',
   },
 };
 
 export default function HomePage() {
-  return <EditorialHome />;
+  return (
+    <>
+      <HeroSection />
+      <FeaturedProducts />
+      <HowItWorks />
+    </>
+  );
 }

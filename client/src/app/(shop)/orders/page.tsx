@@ -4,7 +4,8 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Package, ShoppingBag, Loader2 } from 'lucide-react';
-import { Container, PageHeader } from '@/components/layout';
+import { PageHeader } from '@/components/layout';
+import { Container } from '@/components/layout';
 import { Pagination } from '@/components/shared/pagination';
 import { EmptyState } from '@/components/shared';
 import { OrderCard } from '@/components/orders';
@@ -37,15 +38,13 @@ export default function OrdersPage() {
   });
 
   useEffect(() => {
-    if (!authLoading && !isAuthenticated) {
-      router.push(ROUTES.login);
-    }
+    if (!authLoading && !isAuthenticated) router.push(ROUTES.login);
   }, [authLoading, isAuthenticated, router]);
 
   if (authLoading || !isAuthenticated) {
     return (
       <div className="flex items-center justify-center py-32">
-        <Loader2 className="size-8 animate-spin text-slate-500" />
+        <Loader2 className="size-8 animate-spin text-[#6C63FF]" />
       </div>
     );
   }
@@ -54,28 +53,25 @@ export default function OrdersPage() {
     <>
       <PageHeader
         title="My Orders"
-        description="Track every order, delivery stage, and payment state from one lighter dashboard."
+        description="Track every order, delivery stage, and payment status."
         breadcrumbs={[
           { label: 'Home', href: ROUTES.home },
           { label: 'My Orders' },
         ]}
       />
 
-      <section className="px-3 pb-16 pt-8 sm:px-5 sm:pb-20 sm:pt-10">
-        <Container className="max-w-[92rem] px-0">
+      <section className="px-6 md:px-12 pb-24">
+        <Container className="max-w-[1400px] px-0">
           <div className="mb-8 flex gap-2 overflow-x-auto pb-2 scrollbar-none">
             {STATUS_FILTERS.map((filter) => (
               <button
                 key={filter.value}
-                onClick={() => {
-                  setStatusFilter(filter.value);
-                  setPage(1);
-                }}
+                onClick={() => { setStatusFilter(filter.value); setPage(1); }}
                 className={cn(
-                  'whitespace-nowrap rounded-full border px-4 py-2 text-sm font-medium transition-colors',
+                  'whitespace-nowrap rounded-full border px-4 py-2 text-xs font-semibold uppercase tracking-wider transition-all backdrop-blur-xl',
                   statusFilter === filter.value
-                    ? 'border-slate-900 bg-slate-900 text-white'
-                    : 'border-black/8 bg-white/76 text-slate-600 hover:bg-white hover:text-slate-900'
+                    ? 'bg-gradient-to-r from-[#6C63FF] to-[#8B7FFF] text-white shadow-[0_4px_20px_rgba(108,99,255,0.4)] border-[#6C63FF]'
+                    : 'bg-white/[0.04] text-white/60 border-white/10 hover:border-[#6C63FF]/40 hover:text-white'
                 )}
               >
                 {filter.label}
@@ -84,16 +80,13 @@ export default function OrdersPage() {
           </div>
 
           {isLoading ? (
-            <div className="space-y-4">
+            <div className="space-y-3">
               {Array.from({ length: 3 }).map((_, i) => (
-                <div
-                  key={i}
-                  className="storefront-card h-[140px] animate-pulse"
-                />
+                <div key={i} className="glass-card h-[120px] animate-pulse" />
               ))}
             </div>
           ) : !data?.data.length ? (
-            <div className="storefront-panel">
+            <div className="glass-card p-10 text-center">
               <EmptyState
                 icon={statusFilter ? Package : ShoppingBag}
                 title={
@@ -104,7 +97,7 @@ export default function OrdersPage() {
                 description={
                   statusFilter
                     ? 'Try selecting a different status filter.'
-                    : "When you place an order, it will appear here."
+                    : 'When you place an order, it will appear here.'
                 }
                 action={
                   statusFilter
@@ -121,7 +114,7 @@ export default function OrdersPage() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -12 }}
                 transition={{ duration: 0.2 }}
-                className="space-y-4"
+                className="space-y-3"
               >
                 {data.data.map((order) => (
                   <OrderCard key={order._id} order={order} />
@@ -131,11 +124,8 @@ export default function OrdersPage() {
           )}
 
           {data?.pagination && data.pagination.pages > 1 && (
-            <div className="storefront-panel mt-10">
-              <Pagination
-                pagination={data.pagination}
-                onPageChange={setPage}
-              />
+            <div className="glass-card mt-8 p-4">
+              <Pagination pagination={data.pagination} onPageChange={setPage} />
             </div>
           )}
         </Container>

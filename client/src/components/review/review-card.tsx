@@ -22,7 +22,7 @@ const statusConfig: Record<
   VerificationStatus,
   { label: string; variant: 'chain' | 'verified' | 'muted' | 'warning' }
 > = {
-  verified: { label: 'Blockchain Verified', variant: 'chain' },
+  verified: { label: 'Signed by buyer', variant: 'chain' },
   stored: { label: 'IPFS Stored', variant: 'verified' },
   pending: { label: 'Pending Verification', variant: 'muted' },
   failed: { label: 'Verification Failed', variant: 'warning' },
@@ -57,9 +57,7 @@ export function ReviewCard({ review, className }: ReviewCardProps) {
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       className={cn(
-        'rounded-xl border bg-card p-5 transition-shadow hover:shadow-md',
-        review.verificationStatus === 'verified' && 'border-chain/20',
-        review.verificationStatus === 'stored' && 'border-verified/20',
+        'glass-card p-5 transition-all hover:border-[#FFD700]/40 hover:shadow-[0_8px_32px_rgba(255,215,0,0.15)]',
         className
       )}
     >

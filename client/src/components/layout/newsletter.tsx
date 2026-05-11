@@ -2,8 +2,6 @@
 
 import { useState } from 'react';
 import { usePathname } from 'next/navigation';
-import { ArrowRight } from 'lucide-react';
-import { Container } from './container';
 import { ROUTES } from '@/lib/constants';
 
 export function Newsletter() {
@@ -22,24 +20,36 @@ export function Newsletter() {
   };
 
   return (
-    <section className="px-6 md:px-12 py-12 border-t border-[#e4e4e7]">
-      <Container className="max-w-2xl text-center">
-        <h2 className="font-heading text-2xl font-bold tracking-tight text-[#18181B]">Stay updated</h2>
-        <p className="mt-2 text-sm text-[#71717a] mb-6">
-          Get notified about new products and verified review highlights.
-        </p>
-        <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row justify-center gap-2 max-w-md mx-auto">
+    <section className="border-t border-[#EDE7DA]/8 bg-[#0B0B0D]">
+      <div className="max-w-[1600px] mx-auto px-6 lg:px-10 py-16 grid lg:grid-cols-12 gap-8 items-end">
+        <div className="lg:col-span-7">
+          <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-[#FF3D00] mb-4">
+            ◆ Dispatch
+          </p>
+          <h2 className="font-heading text-4xl md:text-5xl font-black uppercase tracking-[-0.03em] text-[#EDE7DA] leading-none">
+            Letters,<br />
+            <span className="italic font-light">occasionally.</span>
+          </h2>
+        </div>
+        <form onSubmit={handleSubmit} className="lg:col-span-5 flex border border-[#EDE7DA]/15">
           <input
-            type="email" placeholder="Email address" value={email}
+            type="email"
+            placeholder="email@address"
+            value={email}
             onChange={(e) => setEmail(e.target.value)}
-            autoComplete="email" suppressHydrationWarning required
-            className="h-10 w-full rounded-lg border border-[#e4e4e7] bg-white px-4 text-sm outline-none placeholder:text-[#a1a1aa] focus:border-[rgba(22,163,74,0.4)] focus:shadow-[0_0_0_3px_rgba(22,163,74,0.08)] transition-all"
+            autoComplete="email"
+            suppressHydrationWarning
+            required
+            className="flex-1 h-14 px-5 bg-transparent text-sm text-[#EDE7DA] placeholder:text-[#EDE7DA]/35 outline-none"
           />
-          <button type="submit" className="btn-primary !rounded-lg !px-4 h-10 flex-shrink-0 !py-0">
-            {submitted ? 'Subscribed ✓' : 'Subscribe'}
+          <button
+            type="submit"
+            className="h-14 px-7 bg-[#FF3D00] text-[#0B0B0D] font-mono text-[11px] font-bold uppercase tracking-[0.22em] hover:bg-[#EDE7DA] transition-colors"
+          >
+            {submitted ? '✓ Subscribed' : 'Subscribe'}
           </button>
         </form>
-      </Container>
+      </div>
     </section>
   );
 }

@@ -20,6 +20,7 @@ import {
   verifyReviewOnChain,
 } from './blockchain.service';
 import { env } from '../config/env';
+import { logger } from '../utils/logger';
 import type {
   CreateReviewInput,
   ReviewQueryInput,
@@ -184,7 +185,7 @@ export const createReview = async (
     review.verificationMessage = ipfsResult.reason ?? null;
     await review.save();
   } catch (err) {
-    console.error('[IPFS] Failed to pin review:', (err as Error).message);
+    logger.error('[IPFS] Failed to pin review:', (err as Error).message);
     review.contentHash = contentHashHex ?? review.contentHash;
     review.verificationStatus = VERIFICATION_STATUSES.FAILED;
     review.verificationMessage =
@@ -211,20 +212,28 @@ export const createReview = async (
         review.verificationStatus = VERIFICATION_STATUSES.VERIFIED;
         review.verificationMessage = null;
         await review.save();
-        console.log(
+        logger.info(
           `[Blockchain] Review ${review._id} anchored — TX: ${result.txHash}`
         );
       })
       .catch(async (err) => {
         // Blockchain failure is non-fatal. Review stays as "stored" (IPFS).
-        // A recovery job can retry later.
-        console.error(
+        // The anchor-pending-reviews job retries these automatically.
+        logger.error(
           `[Blockchain] Failed to anchor review ${review._id}:`,
           (err as Error).message
         );
         review.verificationMessage =
           'Review is stored, but blockchain anchoring is still unavailable.';
         await review.save();
+      })
+      .catch((saveErr: unknown) => {
+        // Last-resort catch: if the .save() itself fails, log and swallow
+        // so the unhandled rejection doesn't crash the process.
+        logger.error(
+          `[Blockchain] Failed to persist anchor result for review ${review._id}:`,
+          (saveErr as Error).message
+        );
       });
   }
 
@@ -310,7 +319,7 @@ export const getPublicVerification = async (reviewId: string) => {
           review.isVerified = true;
           review.verificationStatus = VERIFICATION_STATUSES.VERIFIED;
         } catch (error) {
-          console.error(
+          logger.error(
             `[Blockchain] Failed to backfill review ${review._id}:`,
             (error as Error).message
           );

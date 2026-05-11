@@ -1,7 +1,0 @@
-{
-  "/(shop)/verify/page": "app/(shop)/verify/page.js",
-  "/(shop)/verify/[reviewId]/page": "app/(shop)/verify/[reviewId]/page.js",
-  "/(shop)/products/page": "app/(shop)/products/page.js",
-  "/(shop)/products/[slug]/page": "app/(shop)/products/[slug]/page.js",
-  "/(shop)/account/page": "app/(shop)/account/page.js"
-}

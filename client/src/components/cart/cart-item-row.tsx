@@ -4,7 +4,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Minus, Plus, Trash2, Loader2 } from 'lucide-react';
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
 import { getEditorialImage } from '@/lib/editorial';
 import { formatPrice } from '@/lib/utils';
 import { ROUTES, MAX_CART_ITEM_QUANTITY } from '@/lib/constants';
@@ -25,26 +24,21 @@ export function CartItemRow({ item, compact }: CartItemRowProps) {
 
   async function handleQuantity(qty: number) {
     setLoading('update');
-    try {
-      await updateItem(product._id, qty);
-    } catch { /* toast handled at store level */ }
+    try { await updateItem(product._id, qty); } catch { /* store handles toast */ }
     setLoading(null);
   }
 
   async function handleRemove() {
     setLoading('remove');
-    try {
-      await removeItem(product._id);
-    } catch { /* toast handled at store level */ }
+    try { await removeItem(product._id); } catch { /* store handles toast */ }
     setLoading(null);
   }
 
   return (
     <div className="flex gap-3">
-      {/* Image */}
       <Link
         href={ROUTES.product(product.slug)}
-        className="relative shrink-0 overflow-hidden rounded-lg bg-muted"
+        className="relative shrink-0 overflow-hidden rounded-xl bg-white/[0.04] border border-white/10"
         style={{ width: compact ? 64 : 80, height: compact ? 64 : 80 }}
       >
         <Image
@@ -57,59 +51,47 @@ export function CartItemRow({ item, compact }: CartItemRowProps) {
         />
       </Link>
 
-      {/* Details */}
       <div className="flex flex-1 flex-col justify-between min-w-0">
         <div>
           <Link
             href={ROUTES.product(product.slug)}
-            className="line-clamp-1 text-sm font-medium text-slate-900 transition-colors hover:text-slate-700"
+            className="line-clamp-1 text-sm font-medium text-white hover:text-[#6C63FF] transition-colors"
           >
             {product.name}
           </Link>
-          <p className="mt-0.5 text-sm font-semibold text-slate-900">
+          <p className="mt-0.5 text-sm font-semibold text-[#6C63FF]">
             {formatPrice(item.price)}
           </p>
         </div>
 
-        {/* Quantity + Remove */}
         <div className="flex items-center justify-between mt-1">
-          <div className="flex items-center rounded-full border border-black/8 bg-white/76">
+          <div className="flex items-center rounded-full border border-white/10 bg-white/[0.04] backdrop-blur-sm">
             <button
               onClick={() => handleQuantity(item.quantity - 1)}
               disabled={item.quantity <= 1 || loading !== null}
-              className="flex h-8 w-8 items-center justify-center text-slate-500 transition-colors hover:text-slate-900 disabled:opacity-40"
+              className="flex h-8 w-8 items-center justify-center text-white/50 hover:text-white transition-colors disabled:opacity-40"
             >
               <Minus className="size-3" />
             </button>
-            <span className="flex h-8 w-9 items-center justify-center border-x border-black/8 text-xs font-medium text-slate-900">
-              {loading === 'update' ? (
-                <Loader2 className="size-3 animate-spin" />
-              ) : (
-                item.quantity
-              )}
+            <span className="flex h-8 w-9 items-center justify-center border-x border-white/10 text-xs font-medium text-white">
+              {loading === 'update' ? <Loader2 className="size-3 animate-spin" /> : item.quantity}
             </span>
             <button
               onClick={() => handleQuantity(item.quantity + 1)}
               disabled={item.quantity >= maxQty || loading !== null}
-              className="flex h-8 w-8 items-center justify-center text-slate-500 transition-colors hover:text-slate-900 disabled:opacity-40"
+              className="flex h-8 w-8 items-center justify-center text-white/50 hover:text-white transition-colors disabled:opacity-40"
             >
               <Plus className="size-3" />
             </button>
           </div>
 
-          <Button
-            variant="ghost"
-            size="icon"
-            className="size-8 text-slate-500 hover:bg-black/[0.03] hover:text-red-500"
+          <button
             onClick={handleRemove}
             disabled={loading !== null}
+            className="flex h-8 w-8 items-center justify-center rounded-full text-white/30 hover:text-[#FF6B6B] hover:bg-[#FF6B6B]/10 transition-all disabled:opacity-40"
           >
-            {loading === 'remove' ? (
-              <Loader2 className="size-3 animate-spin" />
-            ) : (
-              <Trash2 className="size-3.5" />
-            )}
-          </Button>
+            {loading === 'remove' ? <Loader2 className="size-3 animate-spin" /> : <Trash2 className="size-3.5" />}
+          </button>
         </div>
       </div>
     </div>

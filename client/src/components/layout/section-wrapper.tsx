@@ -6,22 +6,22 @@ interface SectionWrapperProps {
   children: ReactNode;
   title?: string;
   subtitle?: string;
-  background?: 'white' | 'slate' | 'gradient';
+  background?: 'default' | 'subtle' | 'gradient';
   className?: string;
   containerSize?: 'default' | 'narrow' | 'wide';
 }
 
 const bgClasses = {
-  white: 'bg-white',
-  slate: 'bg-muted/50',
-  gradient: 'bg-gradient-to-br from-primary/5 via-background to-[oklch(0.60_0.22_295)]/5',
+  default: '',
+  subtle: 'bg-white/[0.02]',
+  gradient: 'bg-gradient-to-br from-[#6C63FF]/5 via-transparent to-[#00F5FF]/5',
 };
 
 export function SectionWrapper({
   children,
   title,
   subtitle,
-  background = 'white',
+  background = 'default',
   className,
   containerSize = 'default',
 }: SectionWrapperProps) {
@@ -31,12 +31,12 @@ export function SectionWrapper({
         {(title || subtitle) && (
           <div className="mb-12 text-center">
             {title && (
-              <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+              <h2 className="font-heading text-3xl md:text-4xl font-black tracking-tight gradient-text">
                 {title}
               </h2>
             )}
             {subtitle && (
-              <p className="mx-auto mt-3 max-w-2xl text-lg text-muted-foreground">{subtitle}</p>
+              <p className="mx-auto mt-3 max-w-2xl text-sm text-white/50">{subtitle}</p>
             )}
           </div>
         )}

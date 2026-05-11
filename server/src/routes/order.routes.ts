@@ -11,8 +11,9 @@ import {
 
 const router = Router();
 
-// ─── Payment Verification (no auth — eSewa callback) ───
+// ─── Payment Verification (no auth — gateway callbacks) ───
 router.post('/esewa/verify', orderController.verifyEsewa);
+router.post('/stripe/webhook', orderController.stripeWebhook);
 
 // All other order routes require authentication
 router.use(authenticate);

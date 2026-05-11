@@ -2,8 +2,6 @@
 
 import Image from 'next/image';
 import { MapPin, CreditCard, Pencil } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { getEditorialImage } from '@/lib/editorial';
 import { formatPrice } from '@/lib/utils';
 import type { CartItem } from '@/types';
@@ -25,74 +23,62 @@ interface OrderReviewProps {
   onEditPayment: () => void;
 }
 
-export function OrderReview({
-  items,
-  shipping,
-  paymentMethod,
-  notes,
-  onEditShipping,
-  onEditPayment,
-}: OrderReviewProps) {
+export function OrderReview({ items, shipping, paymentMethod, notes, onEditShipping, onEditPayment }: OrderReviewProps) {
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       <div className="mb-2 flex items-center gap-2">
-        <div className="flex h-9 w-9 items-center justify-center rounded-full border border-black/8 bg-slate-900 text-sm font-semibold text-white">
+        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#6C63FF] text-sm font-bold text-white">
           3
         </div>
-        <h2 className="text-2xl font-semibold tracking-[-0.03em] text-slate-900">Review your order</h2>
+        <h2 className="font-heading text-2xl font-bold text-white">Review your order</h2>
       </div>
 
-      {/* Shipping Summary */}
-      <div className="storefront-card">
+      <div className="glass-card p-5">
         <div className="mb-3 flex items-center justify-between">
-          <div className="flex items-center gap-2 text-sm font-semibold text-slate-900">
-            <MapPin className="size-4 text-[#7c8fb5]" />
+          <div className="flex items-center gap-2 text-sm font-semibold text-white">
+            <MapPin className="size-4 text-[#6C63FF]" />
             Shipping To
           </div>
-          <Button variant="ghost" size="sm" onClick={onEditShipping} className="text-xs text-slate-500 hover:bg-black/[0.03] hover:text-slate-900">
+          <button onClick={onEditShipping} className="inline-flex items-center gap-1 text-xs text-white/40 hover:text-white transition-colors">
             <Pencil className="size-3" />
             Edit
-          </Button>
+          </button>
         </div>
-        <div className="space-y-0.5 pl-6 text-sm text-slate-500">
-          <p className="font-medium text-slate-900">{shipping.fullName}</p>
+        <div className="space-y-0.5 pl-6 text-sm text-white/50">
+          <p className="font-medium text-white">{shipping.fullName}</p>
           <p>{shipping.street}</p>
-          <p>
-            {shipping.city}, {shipping.state} {shipping.postalCode}
-          </p>
+          <p>{shipping.city}, {shipping.state} {shipping.postalCode}</p>
           <p>{shipping.country}</p>
           <p className="mt-1">{shipping.phone}</p>
         </div>
       </div>
 
-      {/* Payment Summary */}
-      <div className="storefront-card">
+      <div className="glass-card p-5">
         <div className="mb-3 flex items-center justify-between">
-          <div className="flex items-center gap-2 text-sm font-semibold text-slate-900">
-            <CreditCard className="size-4 text-[#7c8fb5]" />
+          <div className="flex items-center gap-2 text-sm font-semibold text-white">
+            <CreditCard className="size-4 text-[#6C63FF]" />
             Payment Method
           </div>
-          <Button variant="ghost" size="sm" onClick={onEditPayment} className="text-xs text-slate-500 hover:bg-black/[0.03] hover:text-slate-900">
+          <button onClick={onEditPayment} className="inline-flex items-center gap-1 text-xs text-white/40 hover:text-white transition-colors">
             <Pencil className="size-3" />
             Edit
-          </Button>
+          </button>
         </div>
         <div className="pl-6">
-          <Badge variant="secondary" className="border-black/8 bg-white/82 text-slate-700">
+          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold border border-[#6C63FF]/30 bg-[#6C63FF]/10 text-[#6C63FF]">
             {PAYMENT_LABELS[paymentMethod] || paymentMethod}
-          </Badge>
+          </span>
         </div>
       </div>
 
-      {/* Items */}
-      <div className="storefront-card">
-        <h3 className="mb-4 text-sm font-semibold text-slate-900">
+      <div className="glass-card p-5">
+        <h3 className="mb-4 text-sm font-semibold text-white">
           Items ({items.reduce((sum, i) => sum + i.quantity, 0)})
         </h3>
         <div className="space-y-3">
           {items.map((item) => (
             <div key={item.product._id} className="flex items-center gap-3">
-              <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg bg-[linear-gradient(180deg,#f5f0e9_0%,#e6edf8_100%)]">
+              <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-xl bg-[#6C63FF]/10 border border-white/10">
                 <Image
                   src={item.product.images[0] || getEditorialImage(item.product, 0)}
                   alt={item.product.name}
@@ -103,14 +89,10 @@ export function OrderReview({
                 />
               </div>
               <div className="min-w-0 flex-1">
-                <p className="line-clamp-1 text-sm font-medium text-slate-900">
-                  {item.product.name}
-                </p>
-                <p className="text-xs text-slate-500">
-                  Qty: {item.quantity} × {formatPrice(item.price)}
-                </p>
+                <p className="line-clamp-1 text-sm font-medium text-white">{item.product.name}</p>
+                <p className="text-xs text-white/40">Qty: {item.quantity} × {formatPrice(item.price)}</p>
               </div>
-              <p className="whitespace-nowrap text-sm font-semibold text-slate-900">
+              <p className="whitespace-nowrap text-sm font-semibold text-[#6C63FF]">
                 {formatPrice(item.price * item.quantity)}
               </p>
             </div>
@@ -118,11 +100,10 @@ export function OrderReview({
         </div>
       </div>
 
-      {/* Notes */}
       {notes && (
-        <div className="storefront-card">
-          <h3 className="mb-2 text-sm font-semibold text-slate-900">Order Notes</h3>
-          <p className="text-sm text-slate-500">{notes}</p>
+        <div className="glass-card p-5">
+          <h3 className="mb-2 text-sm font-semibold text-white">Order Notes</h3>
+          <p className="text-sm text-white/50">{notes}</p>
         </div>
       )}
     </div>

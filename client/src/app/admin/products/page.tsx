@@ -56,85 +56,61 @@ export default function AdminProductsPage() {
   return (
     <div className="space-y-6">
       <section className="grid gap-6 xl:grid-cols-[1.02fr_0.98fr]">
-        <article className="editorial-panel-dark">
-          <p className="editorial-kicker text-white/42">Catalog manager</p>
-          <p className="editorial-script mt-5 text-4xl">Product editor</p>
-          <h2 className="mt-2 text-5xl font-black uppercase tracking-[-0.07em] text-white">
-            Add or refine
-          </h2>
-          <p className="mt-5 max-w-2xl text-sm leading-7 text-white/64">
-            Dark framing for the editor, lighter list surfaces for the data, and strong
-            typography so the admin side still feels like part of the brand world.
+        <article className="glass-card p-7">
+          <p className="font-mono text-[10px] uppercase tracking-widest text-[#6C63FF] mb-1">Catalog manager</p>
+          <h2 className="font-heading text-3xl font-black text-white">Add or refine</h2>
+          <p className="mt-3 text-sm text-white/50 leading-relaxed">
+            Create or update product listings. Changes reflect immediately on the storefront.
           </p>
 
-          <div className="mt-8 grid gap-5 md:grid-cols-2">
+          <div className="mt-6 grid gap-4 md:grid-cols-2">
             <div>
-              <label className="editorial-kicker text-white/36">Product name</label>
-              <Input
-                placeholder="Shadow Hoodie"
-                className="mt-3 rounded-[1rem] border-white/12 bg-white/[0.04] text-white shadow-none"
-              />
+              <label className="font-mono text-[10px] uppercase tracking-widest text-white/40">Product name</label>
+              <Input placeholder="Shadow Hoodie" className="mt-2 border-white/10 bg-white/[0.04] text-white" />
             </div>
             <div>
-              <label className="editorial-kicker text-white/36">Category</label>
-              <Input
-                placeholder="Outerwear"
-                className="mt-3 rounded-[1rem] border-white/12 bg-white/[0.04] text-white shadow-none"
-              />
+              <label className="font-mono text-[10px] uppercase tracking-widest text-white/40">Category</label>
+              <Input placeholder="Outerwear" className="mt-2 border-white/10 bg-white/[0.04] text-white" />
             </div>
             <div>
-              <label className="editorial-kicker text-white/36">Price</label>
-              <Input
-                placeholder="190"
-                className="mt-3 rounded-[1rem] border-white/12 bg-white/[0.04] text-white shadow-none"
-              />
+              <label className="font-mono text-[10px] uppercase tracking-widest text-white/40">Price</label>
+              <Input placeholder="190" className="mt-2 border-white/10 bg-white/[0.04] text-white" />
             </div>
             <div>
-              <label className="editorial-kicker text-white/36">Stock</label>
-              <Input
-                placeholder="48"
-                className="mt-3 rounded-[1rem] border-white/12 bg-white/[0.04] text-white shadow-none"
-              />
+              <label className="font-mono text-[10px] uppercase tracking-widest text-white/40">Stock</label>
+              <Input placeholder="48" className="mt-2 border-white/10 bg-white/[0.04] text-white" />
             </div>
             <div className="md:col-span-2">
-              <label className="editorial-kicker text-white/36">Description</label>
+              <label className="font-mono text-[10px] uppercase tracking-widest text-white/40">Description</label>
               <Textarea
-                placeholder="Minimal, oversized, and built for an editorial streetwear presentation."
-                className="mt-3 min-h-28 rounded-[1.3rem] border-white/12 bg-white/[0.04] px-4 py-4 text-white shadow-none"
+                placeholder="Minimal, oversized, built for streetwear."
+                className="mt-2 min-h-28 border-white/10 bg-white/[0.04] text-white"
               />
             </div>
           </div>
 
-          <div className="mt-8 flex flex-wrap gap-3">
-            <button
-              type="button"
-              className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-semibold uppercase tracking-[0.22em] text-black transition hover:bg-white/90"
-            >
+          <div className="mt-6 flex flex-wrap gap-3">
+            <button type="button" className="btn-primary !py-2.5 !px-5 !text-xs flex items-center gap-2">
               <PencilLine className="size-4" />
               Save draft
             </button>
-            <button
-              type="button"
-              className="inline-flex items-center gap-2 rounded-full border border-white/12 px-5 py-3 text-sm font-semibold uppercase tracking-[0.22em] text-white transition hover:bg-white/8"
-            >
+            <button type="button" className="btn-ghost !py-2.5 !px-5 !text-xs">
               Publish piece
             </button>
           </div>
         </article>
 
-        <article className="editorial-panel-light">
-          <p className="editorial-kicker text-black/42">Image upload</p>
-          <h2 className="mt-2 text-4xl font-black uppercase tracking-[-0.06em] text-black">
-            Visual direction
-          </h2>
-          <div className="mt-6 overflow-hidden rounded-[1.7rem] border border-black/10 bg-white p-4 shadow-[0_18px_48px_rgba(0,0,0,0.1)]">
-            <div className="relative aspect-[16/10] overflow-hidden rounded-[1.35rem] bg-[#f1ece4]">
+        <article className="glass-card p-7">
+          <p className="font-mono text-[10px] uppercase tracking-widest text-white/40">Image upload</p>
+          <h2 className="mt-2 font-heading text-3xl font-black text-white">Visual direction</h2>
+          <div className="mt-6 overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] p-4">
+            <div className="relative aspect-[16/10] overflow-hidden rounded-xl bg-[#6C63FF]/10">
               <Image
                 src="/editorial-model-b.svg"
                 alt="Editorial upload placeholder"
                 fill
                 unoptimized
-                className="object-cover"
+                className="object-cover opacity-60"
                 sizes="(max-width: 1024px) 100vw, 40vw"
               />
             </div>
@@ -143,23 +119,23 @@ export default function AdminProductsPage() {
           <div className="mt-5 grid gap-4 sm:grid-cols-2">
             <button
               type="button"
-              className="inline-flex items-center justify-center gap-2 rounded-[1.25rem] border border-black/10 bg-white px-4 py-4 text-sm font-semibold uppercase tracking-[0.2em] text-black shadow-[0_12px_28px_rgba(0,0,0,0.08)]"
+              className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-4 text-sm font-semibold uppercase tracking-[0.2em] text-white hover:bg-white/[0.08] hover:border-[#6C63FF]/40 transition-all"
             >
               <Upload className="size-4" />
               Upload images
             </button>
             <button
               type="button"
-              className="inline-flex items-center justify-center gap-2 rounded-[1.25rem] border border-black/10 bg-white px-4 py-4 text-sm font-semibold uppercase tracking-[0.2em] text-black shadow-[0_12px_28px_rgba(0,0,0,0.08)]"
+              className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-4 text-sm font-semibold uppercase tracking-[0.2em] text-white hover:bg-white/[0.08] hover:border-[#6C63FF]/40 transition-all"
             >
               <ImagePlus className="size-4" />
               Replace hero art
             </button>
           </div>
 
-          <div className="mt-6 rounded-[1.35rem] border border-black/10 bg-white p-4 shadow-[0_12px_28px_rgba(0,0,0,0.08)]">
-            <p className="editorial-kicker text-black/42">AI art direction</p>
-            <p className="mt-3 text-sm leading-7 text-black/68">{FASHION_IMAGE_AI_PROMPT}</p>
+          <div className="mt-6 rounded-2xl border border-white/10 bg-white/[0.04] p-4">
+            <p className="font-mono text-[10px] uppercase tracking-widest text-white/40">AI art direction</p>
+            <p className="mt-3 text-sm leading-7 text-white/60">{FASHION_IMAGE_AI_PROMPT}</p>
           </div>
         </article>
       </section>
@@ -171,43 +147,35 @@ export default function AdminProductsPage() {
         <StatCard label="Avg rating" value={averageRating} icon={Star} />
       </section>
 
-      <section className="editorial-card-light">
-        <div className="flex flex-col gap-4 border-b border-black/10 pb-5 lg:flex-row lg:items-end lg:justify-between">
+      <section className="glass-card p-6">
+        <div className="flex flex-col gap-4 border-b border-white/10 pb-5 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <p className="editorial-kicker text-black/42">Product table</p>
-            <h2 className="mt-2 text-4xl font-black uppercase tracking-[-0.06em] text-black">
-              Catalog inventory
-            </h2>
+            <p className="font-mono text-[10px] uppercase tracking-widest text-white/40">Product table</p>
+            <h2 className="mt-1 font-heading text-2xl font-black text-white">Catalog inventory</h2>
           </div>
 
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
             <div className="relative min-w-0 sm:min-w-[18rem]">
-              <Search className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-black/36" />
+              <Search className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-white/40" />
               <Input
                 placeholder="Search products"
                 value={search}
-                onChange={(event) => {
-                  setSearch(event.target.value);
-                  setPage(1);
-                }}
-                className="rounded-full border-black/10 bg-white pl-11 text-black shadow-[0_12px_28px_rgba(0,0,0,0.08)]"
+                onChange={(event) => { setSearch(event.target.value); setPage(1); }}
+                className="rounded-full border-white/10 bg-white/[0.04] pl-11 text-white"
               />
             </div>
 
-            <label className="rounded-full border border-black/10 bg-white px-4 py-2 shadow-[0_12px_28px_rgba(0,0,0,0.08)]">
+            <label className="rounded-full border border-white/10 bg-white/[0.04] px-4 py-2">
               <span className="sr-only">Sort products</span>
               <div className="flex items-center gap-2">
-                <ArrowUpDown className="size-4 text-black/42" />
+                <ArrowUpDown className="size-4 text-white/40" />
                 <select
                   value={sort}
-                  onChange={(event) => {
-                    setSort(event.target.value);
-                    setPage(1);
-                  }}
-                  className="bg-transparent text-[0.72rem] font-semibold uppercase tracking-[0.22em] text-black outline-none"
+                  onChange={(event) => { setSort(event.target.value); setPage(1); }}
+                  className="bg-transparent text-[0.72rem] font-semibold uppercase tracking-[0.22em] text-white outline-none"
                 >
                   {SORT_OPTIONS.map((option) => (
-                    <option key={option.value} value={option.value}>
+                    <option key={option.value} value={option.value} className="bg-[#07070F]">
                       {option.label}
                     </option>
                   ))}
@@ -217,8 +185,8 @@ export default function AdminProductsPage() {
           </div>
         </div>
 
-        <div className="mt-5 overflow-hidden rounded-[1.6rem] border border-black/10">
-          <div className="hidden grid-cols-[1.2fr_0.7fr_0.6fr_0.6fr_0.6fr] gap-4 bg-black px-5 py-4 text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-white/72 lg:grid">
+        <div className="mt-5 overflow-hidden rounded-2xl border border-white/10">
+          <div className="hidden grid-cols-[1.2fr_0.7fr_0.6fr_0.6fr_0.6fr] gap-4 bg-white/[0.04] px-5 py-4 text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-white/50 lg:grid">
             <span>Product</span>
             <span>Price</span>
             <span>Stock</span>
@@ -227,25 +195,25 @@ export default function AdminProductsPage() {
           </div>
 
           {isLoading ? (
-            <div className="space-y-px bg-black/8">
+            <div className="space-y-px">
               {Array.from({ length: 8 }).map((_, index) => (
-                <div key={index} className="h-24 animate-pulse bg-white" />
+                <div key={index} className="h-24 animate-pulse bg-white/[0.02]" />
               ))}
             </div>
           ) : products.length === 0 ? (
-            <div className="bg-white px-6 py-16 text-center">
-              <Package className="mx-auto size-10 text-black/24" />
-              <p className="mt-4 text-sm text-black/58">No products found.</p>
+            <div className="px-6 py-16 text-center">
+              <Package className="mx-auto size-10 text-white/20" />
+              <p className="mt-4 text-sm text-white/40">No products found.</p>
             </div>
           ) : (
-            <div className="divide-y divide-black/8 bg-white">
+            <div className="divide-y divide-white/[0.06]">
               {products.map((product, index) => (
                 <div
                   key={product._id}
-                  className="grid gap-4 px-5 py-4 lg:grid-cols-[1.2fr_0.7fr_0.6fr_0.6fr_0.6fr] lg:items-center"
+                  className="grid gap-4 px-5 py-4 lg:grid-cols-[1.2fr_0.7fr_0.6fr_0.6fr_0.6fr] lg:items-center hover:bg-white/[0.02] transition-colors"
                 >
                   <div className="flex items-center gap-4">
-                    <div className="relative h-20 w-16 overflow-hidden rounded-[1rem] bg-[#f1ece4]">
+                    <div className="relative h-16 w-14 overflow-hidden rounded-xl bg-[#6C63FF]/10 border border-white/10">
                       <Image
                         src={getEditorialImage(product, index)}
                         alt={product.name}
@@ -256,22 +224,20 @@ export default function AdminProductsPage() {
                       />
                     </div>
                     <div className="min-w-0">
-                      <p className="truncate text-lg font-black uppercase tracking-[-0.04em] text-black">
-                        {product.name}
-                      </p>
-                      <p className="mt-1 truncate text-sm text-black/54">{product.slug}</p>
+                      <p className="truncate text-sm font-bold text-white">{product.name}</p>
+                      <p className="mt-0.5 truncate text-xs text-white/40">{product.slug}</p>
                     </div>
                   </div>
 
-                  <div className="text-sm font-semibold text-black">{formatPrice(product.price)}</div>
-                  <div className="text-sm text-black/64">{product.stock}</div>
-                  <div className="text-sm text-black/64">{product.averageRating.toFixed(1)}</div>
+                  <div className="text-sm font-semibold text-[#6C63FF]">{formatPrice(product.price)}</div>
+                  <div className="text-sm text-white/60">{product.stock}</div>
+                  <div className="text-sm text-white/60">{product.averageRating.toFixed(1)}</div>
                   <div>
                     <span
                       className={
                         product.isActive
-                          ? 'rounded-full border border-black/10 px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-black/58'
-                          : 'rounded-full border border-[#c92222]/18 bg-[#c92222]/8 px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-[#c92222]'
+                          ? 'rounded-full border border-[#6C63FF]/30 bg-[#6C63FF]/10 px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-[#6C63FF]'
+                          : 'rounded-full border border-[#FF6B6B]/30 bg-[#FF6B6B]/10 px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-[#FF6B6B]'
                       }
                     >
                       {product.isActive ? 'Live' : 'Hidden'}
@@ -283,11 +249,11 @@ export default function AdminProductsPage() {
           )}
         </div>
 
-        {pagination ? (
+        {pagination && (
           <div className="mt-6">
             <Pagination pagination={pagination} onPageChange={setPage} />
           </div>
-        ) : null}
+        )}
       </section>
     </div>
   );

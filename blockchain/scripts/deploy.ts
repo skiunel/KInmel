@@ -13,7 +13,7 @@ async function main() {
   console.log(
     "\nAdd this to your server .env:\n" +
     `  REVIEW_CONTRACT_ADDRESS=${address}\n` +
-    `  BLOCKCHAIN_RPC_URL=${network.config.url ?? "http://127.0.0.1:8545"}\n` +
+    `  BLOCKCHAIN_RPC_URL=${(network.config as { url?: string }).url ?? "http://127.0.0.1:8545"}\n` +
     "  DEPLOYER_PRIVATE_KEY=<private key for the same funded deployer account>"
   );
 }

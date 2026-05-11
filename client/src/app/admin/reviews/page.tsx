@@ -99,7 +99,7 @@ export default function AdminReviewsPage() {
           icon={MessageSquare}
         />
         <StatCard
-          label="Blockchain Verified"
+          label="Signed by buyer"
           value={verifiedCount}
           icon={ShieldCheck}
           variant="chain"

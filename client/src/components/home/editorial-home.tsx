@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { Shield, ArrowRight, Star, Lock, CheckCircle2, Zap, Globe } from 'lucide-react';
-import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { motion, type Variants, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { useFeaturedProducts } from '@/hooks/use-products';
 import { ROUTES } from '@/lib/constants';
 import { getEditorialImage } from '@/lib/editorial';
@@ -66,7 +66,7 @@ function HeroSection({ products }: { products: Product[] }) {
   /* GSAP horizontal pin */
   useEffect(() => {
     if (mobile || typeof window === 'undefined') return;
-    let ctx: any;
+    let ctx: { revert: () => void } | undefined;
 
     (async () => {
       try {
@@ -78,17 +78,18 @@ function HeroSection({ products }: { products: Product[] }) {
         const track = trackRef.current;
         if (!wrap || !track) return;
 
-        const totalScroll = track.scrollWidth - window.innerWidth;
+        const getTotalScroll = () => Math.max(0, track.scrollWidth - window.innerWidth);
+        if (getTotalScroll() === 0) return;
 
         ctx = gsap.context(() => {
           gsap.to(track, {
-            x: () => -totalScroll,
+            x: () => -getTotalScroll(),
             ease: 'none',
             scrollTrigger: {
               trigger: wrap,
               pin: true,
               scrub: 1,
-              end: () => `+=${totalScroll}`,
+              end: () => `+=${getTotalScroll()}`,
               invalidateOnRefresh: true,
               onUpdate: (self) => {
                 if (barRef.current) barRef.current.style.transform = `scaleX(${self.progress})`;
@@ -192,7 +193,7 @@ function HeroSection({ products }: { products: Product[] }) {
                   { icon: Shield, title: 'Blockchain verified', desc: 'Every review is permanently recorded on-chain. Immutable, transparent, tamper-proof.' },
                   { icon: Zap, title: 'Lightning fast', desc: 'Built on Next.js with edge infrastructure. Sub-second page loads everywhere.' },
                   { icon: Globe, title: 'Open & transparent', desc: 'Review verification is publicly auditable. Anyone can verify authenticity on-chain.' },
-                ].map((f, i) => (
+                ].map((f) => (
                   <div key={f.title} className="card-hover p-6 bg-white/60 backdrop-blur-xl border-white/60">
                     <div className="w-10 h-10 rounded-xl bg-[#16a34a]/10 flex items-center justify-center mb-4">
                       <f.icon className="w-5 h-5 text-[#16a34a]" />
@@ -274,7 +275,7 @@ function Marquee() {
 function Products({ products }: { products: Product[] }) {
   if (!products.length) return null;
   
-  const container = {
+  const container: Variants = {
     hidden: { opacity: 0 },
     show: {
       opacity: 1,
@@ -282,14 +283,14 @@ function Products({ products }: { products: Product[] }) {
     }
   };
   
-  const item = {
+  const item: Variants = {
     hidden: { opacity: 0, y: 30 },
     show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 50 } }
   };
 
   return (
     <section className="py-24 px-6 md:px-12 bg-white/30 backdrop-blur-md">
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-100px" }}
@@ -551,30 +552,22 @@ export function EditorialHome() {
     <div className="relative min-h-screen overflow-x-hidden bg-[#fafaf8]">
       {/* Global Fixed Live Wallpaper Background */}
       <motion.div 
-        className="fixed inset-[-5%] z-[0] hidden md:block"
+        aria-hidden="true"
+        className="fixed inset-[-5%] z-[0] overflow-hidden"
         style={{ x: bgX, y: bgY }}
       >
-        <Image 
-          src="/bg-wallpaper-3d.png" 
-          alt="3D Abstract Background" 
-          fill 
-          className="object-cover opacity-[0.85] mix-blend-multiply" 
-          priority 
-        />
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="metadata"
+          className="h-full w-full scale-105 object-cover opacity-[0.78] mix-blend-multiply md:scale-100 md:opacity-[0.85]"
+        >
+          <source src="/background-video.mp4" type="video/mp4" />
+        </video>
         <div className="absolute inset-0 bg-gradient-to-b from-[#fafaf8]/5 via-[#fafaf8]/40 to-[#fafaf8]/80 pointer-events-none" />
       </motion.div>
-      
-      {/* Mobile Global Background */}
-      <div className="fixed inset-[-5%] z-[0] block md:hidden overflow-hidden">
-        <Image 
-          src="/bg-wallpaper-3d.png" 
-          alt="3D Abstract Background" 
-          fill 
-          className="object-cover opacity-[0.85] mix-blend-multiply scale-105 animate-[pulse_10s_ease-in-out_infinite]" 
-          priority 
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#fafaf8]/5 via-[#fafaf8]/40 to-[#fafaf8]/80 pointer-events-none" />
-      </div>
 
       <main className="relative z-10">
         <HeroSection products={products} />

@@ -20,7 +20,9 @@ export const shippingAddressSchema = z.object({
 
 export const checkoutSchema = z.object({
   shippingAddress: shippingAddressSchema,
-  paymentMethod: z.enum(['cod', 'esewa', 'khalti', 'bank_transfer']).default('cod'),
+  paymentMethod: z
+    .enum(['cod', 'esewa', 'khalti', 'bank_transfer', 'stripe'])
+    .default('cod'),
   notes: z.string().max(500).optional(),
 });
 

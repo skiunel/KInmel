@@ -62,7 +62,7 @@ export function TrustBar() {
             </div>
             <p className="mt-3 text-4xl font-semibold tracking-tight text-white">+14K</p>
             <p className="mt-2 text-sm leading-6 text-white/68">
-              People have already explored collections, reordered favorites, and shared blockchain-verified reviews.
+              People have already explored collections, reordered favorites, and shared signed reviews.
             </p>
             <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/8 px-3 py-1.5 text-xs font-medium text-white/82">
               <Sparkles className="size-3.5" />
