@@ -20,8 +20,8 @@ const pwRules = [
 ];
 
 const inputCls =
-  'h-12 w-full rounded-xl border border-[rgba(255,255,255,0.1)] bg-white/[0.04] px-4 text-sm text-white placeholder:text-white/40 outline-none transition-all focus:border-[#00F5FF]/60 focus:shadow-[0_0_0_3px_rgba(0,245,255,0.12)] pr-10';
-const labelCls = 'text-xs font-medium text-white/65 uppercase tracking-widest';
+  'h-12 w-full border border-[#0A0A0A]/15 bg-white px-4 text-sm text-[#0A0A0A] placeholder:text-[#0A0A0A]/35 outline-none transition-colors focus:border-[#0A0A0A] pr-10';
+const labelCls = 'font-mono text-[10px] font-semibold text-[#0A0A0A]/55 uppercase tracking-[0.22em]';
 
 export function RegisterForm() {
   const [showPw, setShowPw] = useState(false);
@@ -43,75 +43,37 @@ export function RegisterForm() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="font-heading text-3xl font-black tracking-tight text-white">
-          Create account
+        <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-[#E63946] mb-3">◆ Sign up</p>
+        <h2 className="font-sans text-3xl font-black uppercase tracking-[-0.03em] text-[#0A0A0A]">
+          Create account.
         </h2>
-        <p className="mt-2 text-sm text-white/55">
-          Join the Kinmel community
-        </p>
+        <p className="mt-2 text-sm text-[#0A0A0A]/55">Join the Kinmel community.</p>
       </div>
 
       <form onSubmit={handleSubmit((d) => reg.mutate(d))} className="space-y-3.5">
         <div className="flex flex-col gap-1.5">
           <label htmlFor="name" className={labelCls}>Full name</label>
-          <input
-            id="name"
-            type="text"
-            placeholder="John Doe"
-            autoComplete="name"
-            className={inputCls}
-            {...register('name')}
-          />
-          {errors.name && <p className="text-xs text-[#EF4444]">{errors.name.message}</p>}
+          <input id="name" type="text" placeholder="John Doe" autoComplete="name" className={inputCls} {...register('name')} />
+          {errors.name && <p className="font-mono text-[10px] uppercase tracking-widest text-[#E63946]">{errors.name.message}</p>}
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <label htmlFor="email" className={labelCls}>Email address</label>
-          <input
-            id="email"
-            type="email"
-            placeholder="you@example.com"
-            autoComplete="email"
-            className={inputCls}
-            {...register('email')}
-          />
-          {errors.email && (
-            <p className="text-xs text-[#EF4444]">{errors.email.message}</p>
-          )}
+          <label htmlFor="email" className={labelCls}>Email</label>
+          <input id="email" type="email" placeholder="you@example.com" autoComplete="email" className={inputCls} {...register('email')} />
+          {errors.email && <p className="font-mono text-[10px] uppercase tracking-widest text-[#E63946]">{errors.email.message}</p>}
         </div>
 
         <div className="flex flex-col gap-1.5">
           <label htmlFor="phone" className={labelCls}>Phone (optional)</label>
-          <input
-            id="phone"
-            type="tel"
-            placeholder="+977 98XXXXXXXX"
-            autoComplete="tel"
-            className={inputCls}
-            {...register('phone')}
-          />
-          {errors.phone && (
-            <p className="text-xs text-[#EF4444]">{errors.phone.message}</p>
-          )}
+          <input id="phone" type="tel" placeholder="+977 98XXXXXXXX" autoComplete="tel" className={inputCls} {...register('phone')} />
+          {errors.phone && <p className="font-mono text-[10px] uppercase tracking-widest text-[#E63946]">{errors.phone.message}</p>}
         </div>
 
         <div className="flex flex-col gap-1.5">
           <label htmlFor="password" className={labelCls}>Password</label>
           <div className="relative">
-            <input
-              id="password"
-              type={showPw ? 'text' : 'password'}
-              placeholder="••••••••"
-              autoComplete="new-password"
-              className={inputCls}
-              {...register('password')}
-            />
-            <button
-              type="button"
-              tabIndex={-1}
-              onClick={() => setShowPw(!showPw)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white/65 transition-colors"
-            >
+            <input id="password" type={showPw ? 'text' : 'password'} placeholder="••••••••" autoComplete="new-password" className={inputCls} {...register('password')} />
+            <button type="button" tabIndex={-1} onClick={() => setShowPw(!showPw)} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#0A0A0A]/40 hover:text-[#0A0A0A] transition-colors">
               {showPw ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
             </button>
           </div>
@@ -120,57 +82,37 @@ export function RegisterForm() {
               {pwRules.map((r) => {
                 const ok = r.test(pw);
                 return (
-                  <div key={r.label} className="flex items-center gap-1.5 text-[10px]">
-                    {ok ? (
-                      <Check className="h-3 w-3 text-[#22C55E]" />
-                    ) : (
-                      <X className="h-3 w-3 text-white/30" />
-                    )}
-                    <span className={ok ? 'text-[#22C55E]' : 'text-white/40'}>{r.label}</span>
+                  <div key={r.label} className="flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-[0.16em]">
+                    {ok ? <Check className="h-3 w-3 text-[#0A0A0A]" /> : <X className="h-3 w-3 text-[#0A0A0A]/30" />}
+                    <span className={ok ? 'text-[#0A0A0A]' : 'text-[#0A0A0A]/40'}>{r.label}</span>
                   </div>
                 );
               })}
             </div>
           )}
-          {errors.password && (
-            <p className="text-xs text-[#EF4444]">{errors.password.message}</p>
-          )}
+          {errors.password && <p className="font-mono text-[10px] uppercase tracking-widest text-[#E63946]">{errors.password.message}</p>}
         </div>
 
         <div className="flex flex-col gap-1.5">
           <label htmlFor="confirmPassword" className={labelCls}>Confirm password</label>
           <div className="relative">
-            <input
-              id="confirmPassword"
-              type={showCf ? 'text' : 'password'}
-              placeholder="••••••••"
-              autoComplete="new-password"
-              className={inputCls}
-              {...register('confirmPassword')}
-            />
-            <button
-              type="button"
-              tabIndex={-1}
-              onClick={() => setShowCf(!showCf)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white/65 transition-colors"
-            >
+            <input id="confirmPassword" type={showCf ? 'text' : 'password'} placeholder="••••••••" autoComplete="new-password" className={inputCls} {...register('confirmPassword')} />
+            <button type="button" tabIndex={-1} onClick={() => setShowCf(!showCf)} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#0A0A0A]/40 hover:text-[#0A0A0A] transition-colors">
               {showCf ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
             </button>
           </div>
-          {errors.confirmPassword && (
-            <p className="text-xs text-[#EF4444]">{errors.confirmPassword.message}</p>
-          )}
+          {errors.confirmPassword && <p className="font-mono text-[10px] uppercase tracking-widest text-[#E63946]">{errors.confirmPassword.message}</p>}
         </div>
 
         <button
           type="submit"
           disabled={reg.isPending}
-          className="group relative flex h-12 w-full items-center justify-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-[#00F5FF] to-[#00C9D6] text-sm font-bold text-white shadow-[0_4px_24px_rgba(0,245,255,0.35)] transition-all hover:shadow-[0_4px_32px_rgba(0,245,255,0.5)] hover:scale-[1.01] active:scale-[0.99] disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:scale-100 mt-2"
+          className="group flex h-12 w-full items-center justify-center gap-2 bg-[#0A0A0A] font-mono text-[11px] font-bold uppercase tracking-[0.22em] text-white hover:bg-[#E63946] transition-colors disabled:opacity-60 disabled:cursor-not-allowed mt-2"
         >
           {reg.isPending ? (
             <>
               <Loader2 className="size-4 animate-spin" />
-              Creating...
+              Creating…
             </>
           ) : (
             <>
@@ -181,13 +123,12 @@ export function RegisterForm() {
         </button>
       </form>
 
-      {/* Divider */}
       <div className="relative">
         <div className="absolute inset-0 flex items-center">
-          <span className="w-full border-t border-[rgba(255,255,255,0.1)]" />
+          <span className="w-full border-t border-[#0A0A0A]/10" />
         </div>
         <div className="relative flex justify-center text-xs">
-          <span className="px-3 text-white/40 bg-[#09090B] font-mono uppercase tracking-widest">
+          <span className="px-3 font-mono text-[10px] text-[#0A0A0A]/40 bg-white uppercase tracking-[0.22em]">
             or continue with
           </span>
         </div>
@@ -198,11 +139,11 @@ export function RegisterForm() {
         {GOOGLE_AUTH_ENABLED && <GoogleLoginButton />}
       </div>
 
-      <p className="text-center text-sm text-white/55">
+      <p className="text-center text-sm text-[#0A0A0A]/55">
         Already have an account?{' '}
         <Link
           href={ROUTES.login}
-          className="text-[#6C63FF] hover:text-[#8B7FFF] transition-colors font-semibold"
+          className="text-[#E63946] hover:text-[#0A0A0A] transition-colors font-semibold"
         >
           Sign in
         </Link>

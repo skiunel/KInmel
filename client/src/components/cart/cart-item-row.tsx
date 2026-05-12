@@ -55,11 +55,11 @@ export function CartItemRow({ item, compact }: CartItemRowProps) {
         <div>
           <Link
             href={ROUTES.product(product.slug)}
-            className="line-clamp-1 text-sm font-medium text-white hover:text-[#6C63FF] transition-colors"
+            className="line-clamp-1 text-sm font-medium text-white hover:text-[#E63946] transition-colors"
           >
             {product.name}
           </Link>
-          <p className="mt-0.5 text-sm font-semibold text-[#6C63FF]">
+          <p className="mt-0.5 text-sm font-semibold text-[#E63946]">
             {formatPrice(item.price)}
           </p>
         </div>

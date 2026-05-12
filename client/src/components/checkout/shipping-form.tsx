@@ -48,7 +48,7 @@ export function ShippingForm({ defaultValues, onSubmit }: ShippingFormProps) {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       <div>
-        <p className="font-mono text-xs uppercase tracking-widest text-[#6C63FF] mb-2">
+        <p className="font-mono text-xs uppercase tracking-widest text-[#E63946] mb-2">
           Step 1
         </p>
         <h2 className="font-heading text-3xl font-black text-white">Shipping Address</h2>
@@ -101,11 +101,11 @@ export function ShippingForm({ defaultValues, onSubmit }: ShippingFormProps) {
                 errors.state && 'border-[#FF6B6B]/60'
               )}
             >
-              <option value="" className="bg-[#07070F]">
+              <option value="" className="bg-white">
                 Select province
               </option>
               {NEPAL_PROVINCES.map((p) => (
-                <option key={p} value={p} className="bg-[#07070F]">
+                <option key={p} value={p} className="bg-white">
                   {p}
                 </option>
               ))}
@@ -137,7 +137,7 @@ export function ShippingForm({ defaultValues, onSubmit }: ShippingFormProps) {
         </div>
 
         <div className="flex items-center gap-2 px-4 py-3 rounded-xl border border-white/10 bg-white/[0.02] text-xs text-white/60">
-          <MapPin className="size-4 shrink-0 text-[#00F5FF]" />
+          <MapPin className="size-4 shrink-0 text-[#E63946]" />
           <span>We currently deliver within Nepal only.</span>
         </div>
       </div>

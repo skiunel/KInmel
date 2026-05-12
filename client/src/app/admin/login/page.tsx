@@ -152,7 +152,7 @@ export default function AdminLoginPage() {
                 Not an admin?{' '}
                 <Link
                   href="/login"
-                  className="text-[#6C63FF] hover:text-[#8B7FFF] transition-colors font-semibold"
+                  className="text-[#E63946] hover:text-[#E63946] transition-colors font-semibold"
                 >
                   Customer login
                 </Link>

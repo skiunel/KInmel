@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Shield, Search, ArrowRight, Lock, Zap, CheckCircle2 } from 'lucide-react';
+import { Search, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export default function VerifyIndexPage() {
@@ -16,90 +16,97 @@ export default function VerifyIndexPage() {
   };
 
   return (
-    <div className="relative min-h-screen flex flex-col items-center justify-center px-6 py-32 overflow-hidden">
-      <div className="orb orb-violet left-1/4 top-1/4 size-[28rem] opacity-30" />
-      <div className="orb orb-cyan right-1/4 bottom-1/4 size-[22rem] opacity-20" />
-
-      <div className="relative z-10 max-w-2xl w-full text-center">
+    <div className="relative min-h-screen bg-white pt-24 pb-24 border-b border-[#0A0A0A]/10">
+      <div className="max-w-[1600px] mx-auto px-6 lg:px-10">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.7 }}
+          className="grid lg:grid-cols-12 gap-8 mb-16 lg:mb-24 items-end border-b border-[#0A0A0A]/10 pb-12"
         >
-          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#6C63FF] to-[#8B7FFF] flex items-center justify-center text-white mx-auto mb-8 shadow-[0_8px_32px_rgba(108,99,255,0.5)]">
-            <Shield className="w-8 h-8" />
+          <div className="lg:col-span-8">
+            <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-[#E63946] mb-4">
+              ◆ Public Ledger
+            </p>
+            <h1 className="font-sans font-black uppercase tracking-[-0.04em] text-[#0A0A0A] leading-[0.9] text-[clamp(3rem,9vw,7rem)]">
+              Verify a review.
+            </h1>
           </div>
-
-          <p className="font-mono text-xs uppercase tracking-widest text-[#6C63FF] mb-4">
-            Blockchain Verification
-          </p>
-          <h1 className="font-heading text-5xl md:text-6xl font-black tracking-tight gradient-text mb-6">
-            Verify a Review
-          </h1>
-          <p className="text-white/50 text-base mb-12 max-w-xl mx-auto leading-relaxed">
-            Every review on Kinmel is permanently recorded on the blockchain.
-            Enter a review ID or transaction hash to view its cryptographic proof.
-          </p>
+          <div className="lg:col-span-4">
+            <p className="text-[14px] leading-[1.55] text-[#0A0A0A]/65 max-w-md">
+              Every review on Kinmel is signed by the buyer who placed the order
+              and recorded permanently on chain. Paste a review ID or transaction hash.
+            </p>
+          </div>
         </motion.div>
 
         <motion.form
           onSubmit={handleVerify}
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          className="relative max-w-xl mx-auto mb-16"
+          transition={{ duration: 0.7, delay: 0.1 }}
+          className="max-w-3xl mb-20 flex border border-[#0A0A0A]"
         >
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/30" />
-          <input
-            type="text"
-            placeholder="Enter review ID (e.g. 64abc123...)"
-            value={hash}
-            onChange={(e) => setHash(e.target.value)}
-            className="w-full h-14 pl-12 pr-32 rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-xl text-white text-sm outline-none placeholder:text-white/30 focus:border-[#6C63FF]/50 focus:shadow-[0_0_0_3px_rgba(108,99,255,0.15)] transition-all"
-            required
-          />
+          <div className="relative flex-1">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#0A0A0A]/40" />
+            <input
+              type="text"
+              placeholder="review ID or 0x… tx hash"
+              value={hash}
+              onChange={(e) => setHash(e.target.value)}
+              className="w-full h-14 pl-11 pr-4 bg-white text-[#0A0A0A] text-sm outline-none placeholder:text-[#0A0A0A]/35 font-mono"
+              required
+            />
+          </div>
           <button
             type="submit"
-            className="absolute right-1.5 top-1.5 bottom-1.5 inline-flex items-center gap-2 px-5 rounded-xl text-xs font-bold uppercase tracking-wider text-white transition-all"
-            style={{ background: 'linear-gradient(135deg, #6C63FF, #8B7FFF)', boxShadow: '0 4px 20px rgba(108,99,255,0.4)' }}
+            className="inline-flex items-center gap-2 px-7 h-14 bg-[#0A0A0A] text-white font-mono text-[11px] font-bold uppercase tracking-[0.22em] hover:bg-[#E63946] transition-colors"
           >
             Verify <ArrowRight className="w-4 h-4" />
           </button>
         </motion.form>
 
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-left"
+          transition={{ duration: 0.7, delay: 0.15 }}
+          className="grid grid-cols-1 md:grid-cols-3 border-t border-[#0A0A0A]/10"
         >
-          <div className="glass-card p-5">
-            <div className="w-9 h-9 rounded-xl bg-[#6C63FF]/15 border border-[#6C63FF]/30 flex items-center justify-center mb-4">
-              <Lock className="w-4 h-4 text-[#6C63FF]" />
+          {[
+            {
+              n: '001',
+              title: 'Tamper-proof',
+              body: 'Review content is hashed and pinned to IPFS. The text on chain cannot be silently altered.',
+            },
+            {
+              n: '002',
+              title: 'On-chain anchored',
+              body: 'A cryptographic proof of every review is anchored to Polygon Amoy with a public timestamp.',
+            },
+            {
+              n: '003',
+              title: 'Publicly auditable',
+              body: 'Anyone can independently verify a review without trusting Kinmel.',
+            },
+          ].map((step, idx, arr) => (
+            <div
+              key={step.n}
+              className={`py-10 lg:py-14 lg:px-8 ${idx < arr.length - 1 ? 'border-b md:border-b-0 md:border-r border-[#0A0A0A]/10' : ''}`}
+            >
+              <div className="flex items-baseline justify-between mb-10">
+                <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-[#0A0A0A]/40">
+                  Note {step.n}
+                </span>
+                <span className="font-mono text-[10px] text-[#E63946]">◆</span>
+              </div>
+              <h3 className="font-sans text-2xl md:text-3xl font-black uppercase tracking-[-0.02em] text-[#0A0A0A] leading-none">
+                {step.title}
+              </h3>
+              <p className="mt-5 text-sm leading-relaxed text-[#0A0A0A]/60 max-w-xs">
+                {step.body}
+              </p>
             </div>
-            <h3 className="font-bold text-sm text-white mb-2">Tamper-proof</h3>
-            <p className="text-xs text-white/40 leading-relaxed">
-              Reviews are hashed and pinned to IPFS, ensuring content can never be altered.
-            </p>
-          </div>
-          <div className="glass-card p-5">
-            <div className="w-9 h-9 rounded-xl bg-[#FFD700]/10 border border-[#FFD700]/30 flex items-center justify-center mb-4">
-              <Zap className="w-4 h-4 text-[#FFD700]" />
-            </div>
-            <h3 className="font-bold text-sm text-white mb-2">On-chain anchored</h3>
-            <p className="text-xs text-white/40 leading-relaxed">
-              Cryptographic proofs are anchored to the blockchain with public timestamps.
-            </p>
-          </div>
-          <div className="glass-card p-5">
-            <div className="w-9 h-9 rounded-xl bg-[#00F5FF]/10 border border-[#00F5FF]/30 flex items-center justify-center mb-4">
-              <CheckCircle2 className="w-4 h-4 text-[#00F5FF]" />
-            </div>
-            <h3 className="font-bold text-sm text-white mb-2">Publicly auditable</h3>
-            <p className="text-xs text-white/40 leading-relaxed">
-              Anyone can independently verify the authenticity of a review using our tools.
-            </p>
-          </div>
+          ))}
         </motion.div>
       </div>
     </div>

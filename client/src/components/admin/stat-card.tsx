@@ -13,9 +13,9 @@ interface StatCardProps {
 }
 
 const iconStyle: Record<string, { bg: string; color: string; ring: string }> = {
-  default: { bg: 'bg-[#6C63FF]/15', color: '#6C63FF', ring: 'rgba(108,99,255,0.3)' },
+  default: { bg: 'bg-[#E63946]/15', color: '#E63946', ring: 'rgba(230,57,70,0.3)' },
   verified: { bg: 'bg-[#FFD700]/15', color: '#FFD700', ring: 'rgba(255,215,0,0.3)' },
-  chain: { bg: 'bg-[#00F5FF]/15', color: '#00F5FF', ring: 'rgba(0,245,255,0.3)' },
+  chain: { bg: 'bg-[#E63946]/15', color: '#E63946', ring: 'rgba(230,57,70,0.3)' },
   success: { bg: 'bg-[#00FF88]/15', color: '#00FF88', ring: 'rgba(0,255,136,0.3)' },
 };
 

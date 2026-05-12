@@ -27,7 +27,7 @@ export function OrderReview({ items, shipping, paymentMethod, notes, onEditShipp
   return (
     <div className="space-y-5">
       <div className="mb-2 flex items-center gap-2">
-        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#6C63FF] text-sm font-bold text-white">
+        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#E63946] text-sm font-bold text-white">
           3
         </div>
         <h2 className="font-heading text-2xl font-bold text-white">Review your order</h2>
@@ -36,7 +36,7 @@ export function OrderReview({ items, shipping, paymentMethod, notes, onEditShipp
       <div className="glass-card p-5">
         <div className="mb-3 flex items-center justify-between">
           <div className="flex items-center gap-2 text-sm font-semibold text-white">
-            <MapPin className="size-4 text-[#6C63FF]" />
+            <MapPin className="size-4 text-[#E63946]" />
             Shipping To
           </div>
           <button onClick={onEditShipping} className="inline-flex items-center gap-1 text-xs text-white/40 hover:text-white transition-colors">
@@ -56,7 +56,7 @@ export function OrderReview({ items, shipping, paymentMethod, notes, onEditShipp
       <div className="glass-card p-5">
         <div className="mb-3 flex items-center justify-between">
           <div className="flex items-center gap-2 text-sm font-semibold text-white">
-            <CreditCard className="size-4 text-[#6C63FF]" />
+            <CreditCard className="size-4 text-[#E63946]" />
             Payment Method
           </div>
           <button onClick={onEditPayment} className="inline-flex items-center gap-1 text-xs text-white/40 hover:text-white transition-colors">
@@ -65,7 +65,7 @@ export function OrderReview({ items, shipping, paymentMethod, notes, onEditShipp
           </button>
         </div>
         <div className="pl-6">
-          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold border border-[#6C63FF]/30 bg-[#6C63FF]/10 text-[#6C63FF]">
+          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold border border-[#E63946]/30 bg-[#E63946]/10 text-[#E63946]">
             {PAYMENT_LABELS[paymentMethod] || paymentMethod}
           </span>
         </div>
@@ -78,7 +78,7 @@ export function OrderReview({ items, shipping, paymentMethod, notes, onEditShipp
         <div className="space-y-3">
           {items.map((item) => (
             <div key={item.product._id} className="flex items-center gap-3">
-              <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-xl bg-[#6C63FF]/10 border border-white/10">
+              <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-xl bg-[#E63946]/10 border border-white/10">
                 <Image
                   src={item.product.images[0] || getEditorialImage(item.product, 0)}
                   alt={item.product.name}
@@ -92,7 +92,7 @@ export function OrderReview({ items, shipping, paymentMethod, notes, onEditShipp
                 <p className="line-clamp-1 text-sm font-medium text-white">{item.product.name}</p>
                 <p className="text-xs text-white/40">Qty: {item.quantity} × {formatPrice(item.price)}</p>
               </div>
-              <p className="whitespace-nowrap text-sm font-semibold text-[#6C63FF]">
+              <p className="whitespace-nowrap text-sm font-semibold text-[#E63946]">
                 {formatPrice(item.price * item.quantity)}
               </p>
             </div>

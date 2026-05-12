@@ -34,7 +34,7 @@ export function CheckoutSummary({
       <div className="max-h-72 space-y-3 overflow-y-auto pr-1">
         {items.map((item) => (
           <div key={item.product._id} className="flex items-center gap-3">
-            <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl border border-white/10 bg-gradient-to-br from-[#6C63FF]/20 to-[#00F5FF]/10">
+            <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl border border-white/10 bg-gradient-to-br from-[#E63946]/20 to-[#E63946]/10">
               {item.product.images?.[0] ? (
                 <Image
                   src={item.product.images[0]}
@@ -49,7 +49,7 @@ export function CheckoutSummary({
                   📦
                 </span>
               )}
-              <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-[#6C63FF] text-[10px] font-bold text-white shadow-[0_0_8px_rgba(108,99,255,0.6)]">
+              <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-[#E63946] text-[10px] font-bold text-white shadow-[0_0_8px_rgba(230,57,70,0.6)]">
                 {item.quantity}
               </span>
             </div>
@@ -93,7 +93,7 @@ export function CheckoutSummary({
           <span className="text-white/80 font-semibold">Total</span>
           <span
             className="font-heading text-2xl font-black"
-            style={{ color: '#6C63FF' }}
+            style={{ color: '#E63946' }}
           >
             {formatPrice(totalAmount)}
           </span>
@@ -110,10 +110,10 @@ export function CheckoutSummary({
 
       {/* Trust signals */}
       <div className="space-y-2.5">
-        <TrustRow icon={Lock} color="#6C63FF">
+        <TrustRow icon={Lock} color="#E63946">
           Secure 256-bit SSL encryption
         </TrustRow>
-        <TrustRow icon={Truck} color="#00F5FF">
+        <TrustRow icon={Truck} color="#E63946">
           Estimated delivery in 5–7 business days
         </TrustRow>
         <TrustRow icon={Shield} color="#FFD700">

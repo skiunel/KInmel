@@ -68,7 +68,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <Link href={ROUTES.admin} className="flex items-center gap-1.5">
                 <span className="text-lg">⛓</span>
                 <span className="font-heading text-base font-black tracking-tight text-white">
-                  Kin<span className="text-[#6C63FF]">mel</span>
+                  Kin<span className="text-[#E63946]">mel</span>
                 </span>
               </Link>
               <span className="text-[10px] font-bold text-[#FFD700] bg-[#FFD700]/10 px-2.5 py-1 rounded-full border border-[#FFD700]/20 uppercase tracking-wider">
@@ -95,7 +95,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                           className={cn(
                             'flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-[13px] transition-all',
                             active
-                              ? 'bg-[#6C63FF]/15 text-[#6C63FF] border border-[#6C63FF]/30 shadow-[0_0_16px_rgba(108,99,255,0.2)] font-medium'
+                              ? 'bg-[#E63946]/15 text-[#E63946] border border-[#E63946]/30 shadow-[0_0_16px_rgba(230,57,70,0.2)] font-medium'
                               : 'text-white/60 hover:text-white hover:bg-white/[0.04] border border-transparent'
                           )}
                         >

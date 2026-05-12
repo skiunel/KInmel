@@ -131,7 +131,7 @@ export default function CheckoutPage() {
   if (authLoading || cartLoading) {
     return (
       <div className="flex items-center justify-center py-32">
-        <Loader2 className="size-8 animate-spin text-[#6C63FF]" />
+        <Loader2 className="size-8 animate-spin text-[#E63946]" />
       </div>
     );
   }
@@ -146,7 +146,7 @@ export default function CheckoutPage() {
       <div className="relative max-w-[1400px] mx-auto">
         {/* Header */}
         <div className="mb-10">
-          <p className="font-mono text-xs uppercase tracking-widest text-[#6C63FF] mb-3">
+          <p className="font-mono text-xs uppercase tracking-widest text-[#E63946] mb-3">
             Checkout
           </p>
           <h1 className="font-heading text-4xl md:text-5xl font-black tracking-tight gradient-text">
@@ -165,7 +165,7 @@ export default function CheckoutPage() {
                   <div
                     className={cn(
                       'h-px w-12 sm:w-24 transition-colors',
-                      isCompleted ? 'bg-[#6C63FF]' : 'bg-white/10'
+                      isCompleted ? 'bg-[#E63946]' : 'bg-white/10'
                     )}
                   />
                 )}
@@ -180,7 +180,7 @@ export default function CheckoutPage() {
                     className={cn(
                       'flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold transition-all',
                       isActive
-                        ? 'bg-gradient-to-r from-[#6C63FF] to-[#8B7FFF] text-white shadow-[0_0_20px_rgba(108,99,255,0.5)]'
+                        ? 'bg-gradient-to-r from-[#E63946] to-[#E63946] text-white shadow-[0_0_20px_rgba(230,57,70,0.5)]'
                         : isCompleted
                           ? 'bg-[#00FF88]/15 border border-[#00FF88]/30 text-[#00FF88] cursor-pointer'
                           : 'bg-white/[0.04] border border-white/10 text-white/40'
@@ -315,7 +315,7 @@ export default function CheckoutPage() {
                               className="absolute inset-0 rounded-full border-2 border-transparent"
                               style={{
                                 borderTopColor: '#FFFFFF',
-                                borderRightColor: '#00F5FF',
+                                borderRightColor: '#E63946',
                                 animation: 'spin 1s linear infinite',
                               }}
                             />

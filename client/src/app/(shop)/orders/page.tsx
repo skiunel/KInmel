@@ -44,7 +44,7 @@ export default function OrdersPage() {
   if (authLoading || !isAuthenticated) {
     return (
       <div className="flex items-center justify-center py-32">
-        <Loader2 className="size-8 animate-spin text-[#6C63FF]" />
+        <Loader2 className="size-8 animate-spin text-[#E63946]" />
       </div>
     );
   }
@@ -70,8 +70,8 @@ export default function OrdersPage() {
                 className={cn(
                   'whitespace-nowrap rounded-full border px-4 py-2 text-xs font-semibold uppercase tracking-wider transition-all backdrop-blur-xl',
                   statusFilter === filter.value
-                    ? 'bg-gradient-to-r from-[#6C63FF] to-[#8B7FFF] text-white shadow-[0_4px_20px_rgba(108,99,255,0.4)] border-[#6C63FF]'
-                    : 'bg-white/[0.04] text-white/60 border-white/10 hover:border-[#6C63FF]/40 hover:text-white'
+                    ? 'bg-gradient-to-r from-[#E63946] to-[#E63946] text-white shadow-[0_4px_20px_rgba(230,57,70,0.4)] border-[#E63946]'
+                    : 'bg-white/[0.04] text-white/60 border-white/10 hover:border-[#E63946]/40 hover:text-white'
                 )}
               >
                 {filter.label}

@@ -38,7 +38,7 @@ export default function AdminBlockchainPage() {
   if (statusLoading) {
     return (
       <div className="glass-card p-12 flex items-center justify-center">
-        <Loader2 className="size-6 animate-spin text-[#6C63FF]" />
+        <Loader2 className="size-6 animate-spin text-[#E63946]" />
       </div>
     );
   }
@@ -95,13 +95,13 @@ export default function AdminBlockchainPage() {
           icon={Box}
           label="Total Proofs"
           value={status.proofCount.toString()}
-          color="#6C63FF"
+          color="#E63946"
         />
         <KPI
           icon={Activity}
           label="Network"
           value={status.network?.name ?? '—'}
-          color="#00F5FF"
+          color="#E63946"
         />
         <KPI
           icon={Wallet}
@@ -174,7 +174,7 @@ export default function AdminBlockchainPage() {
 
         {feedLoading ? (
           <div className="py-12 flex items-center justify-center">
-            <Loader2 className="size-6 animate-spin text-[#6C63FF]" />
+            <Loader2 className="size-6 animate-spin text-[#E63946]" />
           </div>
         ) : feed.length === 0 ? (
           <div className="py-12 text-center text-white/40">
@@ -188,7 +188,7 @@ export default function AdminBlockchainPage() {
                 href={ev.explorerUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-between p-4 rounded-xl border border-white/10 bg-white/[0.02] hover:border-[#6C63FF]/40 hover:bg-white/[0.04] transition-all group"
+                className="flex items-center justify-between p-4 rounded-xl border border-white/10 bg-white/[0.02] hover:border-[#E63946]/40 hover:bg-white/[0.04] transition-all group"
               >
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2 mb-1">
@@ -212,7 +212,7 @@ export default function AdminBlockchainPage() {
                       on Polygonscan
                     </p>
                   </div>
-                  <ExternalLink className="size-4 text-white/40 group-hover:text-[#6C63FF] transition-colors" />
+                  <ExternalLink className="size-4 text-white/40 group-hover:text-[#E63946] transition-colors" />
                 </div>
               </a>
             ))}
@@ -307,7 +307,7 @@ function DetailRow({
             href={href}
             target="_blank"
             rel="noopener noreferrer"
-            className="font-mono text-sm text-[#6C63FF] hover:text-[#00F5FF] transition-colors inline-flex items-center gap-1 truncate"
+            className="font-mono text-sm text-[#E63946] hover:text-[#E63946] transition-colors inline-flex items-center gap-1 truncate"
           >
             {display}
             <ExternalLink className="size-3 shrink-0" />

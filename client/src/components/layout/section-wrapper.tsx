@@ -14,7 +14,7 @@ interface SectionWrapperProps {
 const bgClasses = {
   default: '',
   subtle: 'bg-white/[0.02]',
-  gradient: 'bg-gradient-to-br from-[#6C63FF]/5 via-transparent to-[#00F5FF]/5',
+  gradient: 'bg-gradient-to-br from-[#E63946]/5 via-transparent to-[#E63946]/5',
 };
 
 export function SectionWrapper({

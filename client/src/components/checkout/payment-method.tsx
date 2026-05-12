@@ -20,7 +20,7 @@ export function PaymentMethod({ selected, onChange }: PaymentMethodProps) {
   return (
     <div className="space-y-6">
       <div>
-        <p className="font-mono text-xs uppercase tracking-widest text-[#6C63FF] mb-2">
+        <p className="font-mono text-xs uppercase tracking-widest text-[#E63946] mb-2">
           Step 2
         </p>
         <h2 className="font-heading text-3xl font-black text-white">Payment Method</h2>
@@ -37,8 +37,8 @@ export function PaymentMethod({ selected, onChange }: PaymentMethodProps) {
             className={cn(
               'px-5 py-3 rounded-full text-sm font-semibold transition-all backdrop-blur-xl inline-flex items-center gap-2',
               selected === m.id
-                ? 'bg-gradient-to-r from-[#6C63FF] to-[#8B7FFF] text-white shadow-[0_4px_20px_rgba(108,99,255,0.4)] border border-[#6C63FF]'
-                : 'bg-white/[0.04] text-white/70 border border-white/10 hover:border-[#6C63FF]/40 hover:text-white',
+                ? 'bg-gradient-to-r from-[#E63946] to-[#E63946] text-white shadow-[0_4px_20px_rgba(230,57,70,0.4)] border border-[#E63946]'
+                : 'bg-white/[0.04] text-white/70 border border-white/10 hover:border-[#E63946]/40 hover:text-white',
               !m.available && 'opacity-40 cursor-not-allowed'
             )}
           >
@@ -58,15 +58,15 @@ export function PaymentMethod({ selected, onChange }: PaymentMethodProps) {
 
 function KhaltiBlock() {
   return (
-    <div className="rounded-2xl border border-[#EDE7DA]/10 bg-[#EDE7DA]/[0.03] p-6">
+    <div className="rounded-2xl border border-[#0A0A0A]/10 bg-[#EDE7DA]/[0.03] p-6">
       <div className="flex items-center gap-3 mb-3">
         <div className="size-10 rounded-xl bg-[#5C2D91] text-white flex items-center justify-center text-lg">🟣</div>
         <div>
-          <p className="font-heading text-base font-bold text-[#EDE7DA]">Pay with Khalti</p>
-          <p className="text-xs text-[#EDE7DA]/55">Redirects to Khalti for secure payment.</p>
+          <p className="font-heading text-base font-bold text-[#0A0A0A]">Pay with Khalti</p>
+          <p className="text-xs text-[#0A0A0A]/55">Redirects to Khalti for secure payment.</p>
         </div>
       </div>
-      <p className="text-[11px] font-mono uppercase tracking-widest text-[#EDE7DA]/40">
+      <p className="text-[11px] font-mono uppercase tracking-widest text-[#0A0A0A]/40">
         ◆ Continue to Khalti after placing order
       </p>
     </div>
@@ -108,7 +108,7 @@ function StripeCardPreview() {
             className="absolute inset-0 rounded-2xl p-6 flex flex-col justify-between"
             style={{
               background:
-                'linear-gradient(135deg, #6C63FF 0%, #8B7FFF 50%, #00F5FF 100%)',
+                'linear-gradient(135deg, #E63946 0%, #E63946 50%, #E63946 100%)',
               backgroundSize: '200% 200%',
               animation: 'gradient-shift 6s ease infinite',
               backfaceVisibility: 'hidden',
@@ -154,7 +154,7 @@ function StripeCardPreview() {
             className="absolute inset-0 rounded-2xl flex flex-col justify-center"
             style={{
               background:
-                'linear-gradient(135deg, #1a1a2e 0%, #6C63FF 100%)',
+                'linear-gradient(135deg, #1a1a2e 0%, #E63946 100%)',
               backfaceVisibility: 'hidden',
               transform: 'rotateY(180deg)',
               boxShadow: '0 20px 60px rgba(108, 99, 255, 0.4)',

@@ -141,7 +141,7 @@ export function ReviewSubmitModal({
 
           {/* Header */}
           <div className="pr-12 mb-6">
-            <p className="font-mono text-xs uppercase tracking-widest text-[#6C63FF] mb-2">
+            <p className="font-mono text-xs uppercase tracking-widest text-[#E63946] mb-2">
               Step {step} of 5
             </p>
             <h2 className="font-heading text-2xl font-black text-white">
@@ -166,7 +166,7 @@ export function ReviewSubmitModal({
                 style={
                   s <= step
                     ? {
-                        background: 'linear-gradient(90deg, #6C63FF, #00F5FF)',
+                        background: 'linear-gradient(90deg, #E63946, #E63946)',
                       }
                     : undefined
                 }
@@ -263,8 +263,8 @@ export function ReviewSubmitModal({
                   {title && <h4 className="font-semibold text-white mb-2">{title}</h4>}
                   <p className="text-sm text-white/70 whitespace-pre-wrap">{content}</p>
                 </div>
-                <div className="rounded-xl border border-[#6C63FF]/20 bg-[#6C63FF]/[0.05] p-4">
-                  <p className="font-mono text-[10px] uppercase tracking-widest text-[#6C63FF] mb-2">
+                <div className="rounded-xl border border-[#E63946]/20 bg-[#E63946]/[0.05] p-4">
+                  <p className="font-mono text-[10px] uppercase tracking-widest text-[#E63946] mb-2">
                     SHA-256 Content Hash
                   </p>
                   <p className="font-mono text-xs text-white/70 break-all">
@@ -279,7 +279,7 @@ export function ReviewSubmitModal({
                 <motion.div
                   animate={{ scale: [1, 1.05, 1] }}
                   transition={{ duration: 2, repeat: Infinity }}
-                  className="text-8xl mb-6 drop-shadow-[0_0_24px_rgba(108,99,255,0.6)]"
+                  className="text-8xl mb-6 drop-shadow-[0_0_24px_rgba(230,57,70,0.6)]"
                 >
                   🦊
                 </motion.div>

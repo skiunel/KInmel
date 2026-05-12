@@ -16,7 +16,7 @@ export function OrderCard({ order }: OrderCardProps) {
   const itemCount = order.items.reduce((sum, i) => sum + i.quantity, 0);
 
   return (
-    <div className="glass-card overflow-hidden hover:border-[#6C63FF]/40 transition-all">
+    <div className="glass-card overflow-hidden hover:border-[#E63946]/40 transition-all">
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 px-5 py-3.5">
         <div className="flex flex-wrap items-center gap-x-5 gap-y-1">
           <div>
@@ -29,7 +29,7 @@ export function OrderCard({ order }: OrderCardProps) {
           </div>
           <div>
             <p className="text-[11px] uppercase tracking-wider text-white/40">Total</p>
-            <p className="text-sm font-semibold text-[#6C63FF]">{formatPrice(order.totalAmount)}</p>
+            <p className="text-sm font-semibold text-[#E63946]">{formatPrice(order.totalAmount)}</p>
           </div>
         </div>
         <OrderStatusBadge status={order.status} size="md" />
@@ -41,7 +41,7 @@ export function OrderCard({ order }: OrderCardProps) {
             {order.items.slice(0, 4).map((item, i) => (
               <div
                 key={i}
-                className="relative h-12 w-12 overflow-hidden rounded-xl border-2 border-[#07070F] bg-[#6C63FF]/10"
+                className="relative h-12 w-12 overflow-hidden rounded-xl border-2 border-[#07070F] bg-[#E63946]/10"
                 style={{ zIndex: order.items.length - i }}
               >
                 {item.image ? (
@@ -65,7 +65,7 @@ export function OrderCard({ order }: OrderCardProps) {
 
           <Link
             href={ROUTES.order(order._id)}
-            className="shrink-0 inline-flex items-center gap-1.5 text-xs font-semibold text-[#6C63FF] hover:text-white transition-colors"
+            className="shrink-0 inline-flex items-center gap-1.5 text-xs font-semibold text-[#E63946] hover:text-white transition-colors"
           >
             Details
             <ArrowRight className="size-3.5" />

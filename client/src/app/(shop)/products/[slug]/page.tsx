@@ -146,7 +146,7 @@ export default function ProductDetailPage({
                 {product.images.slice(0, 4).map((image, index) => (
                   <div
                     key={`${image}-${index}`}
-                    className="relative aspect-square glass-card p-2 cursor-pointer hover:border-[#6C63FF]/40 transition-all"
+                    className="relative aspect-square glass-card p-2 cursor-pointer hover:border-[#E63946]/40 transition-all"
                   >
                     <Image
                       src={image}
@@ -171,7 +171,7 @@ export default function ProductDetailPage({
           >
             {/* Category */}
             {product.category && typeof product.category === 'object' && (
-              <p className="font-mono text-xs uppercase tracking-widest text-[#00F5FF] mb-3">
+              <p className="font-mono text-xs uppercase tracking-widest text-[#E63946] mb-3">
                 {product.category.name}
               </p>
             )}
@@ -208,7 +208,7 @@ export default function ProductDetailPage({
             <div className="mt-6">
               <p
                 className="font-heading font-black"
-                style={{ fontSize: '42px', color: '#6C63FF', lineHeight: 1 }}
+                style={{ fontSize: '42px', color: '#E63946', lineHeight: 1 }}
               >
                 {formatPrice(product.price)}
               </p>
@@ -273,7 +273,7 @@ export default function ProductDetailPage({
                 onClick={handleAddToBag}
                 disabled={!stockOk}
                 aria-label="Add to cart"
-                className="h-12 w-12 inline-flex items-center justify-center rounded-full border border-white/10 bg-white/[0.04] backdrop-blur-xl text-white hover:border-[#6C63FF]/40 hover:bg-[#6C63FF]/10 transition-all disabled:opacity-40"
+                className="h-12 w-12 inline-flex items-center justify-center rounded-full border border-white/10 bg-white/[0.04] backdrop-blur-xl text-white hover:border-[#E63946]/40 hover:bg-[#E63946]/10 transition-all disabled:opacity-40"
               >
                 <ShoppingCart className="w-4 h-4" />
               </button>
@@ -377,7 +377,7 @@ function TabButton({
         <span
           className="absolute -bottom-px left-0 right-0 h-[2px] rounded-full"
           style={{
-            background: 'linear-gradient(90deg, #6C63FF, #00F5FF)',
+            background: 'linear-gradient(90deg, #E63946, #E63946)',
           }}
         />
       )}
@@ -416,7 +416,7 @@ function BlockchainDataTab({
               href={explorerUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="font-mono text-sm text-[#6C63FF] hover:text-[#00F5FF] transition-colors inline-flex items-center gap-1"
+              className="font-mono text-sm text-[#E63946] hover:text-[#E63946] transition-colors inline-flex items-center gap-1"
             >
               {shortenAddress(address, 6)}
               <ExternalLink className="w-3 h-3" />

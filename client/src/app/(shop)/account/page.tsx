@@ -62,31 +62,31 @@ export default function AccountPage() {
       <div className="min-h-screen bg-[#09090B] pt-20 pb-16">
         {/* Subtle gradient top */}
         <div className="pointer-events-none fixed inset-0 overflow-hidden">
-          <div className="absolute -top-32 left-1/4 w-96 h-96 bg-[#6C63FF]/5 rounded-full blur-[120px]" />
-          <div className="absolute top-1/2 right-0 w-72 h-72 bg-[#00F5FF]/5 rounded-full blur-[100px]" />
+          <div className="absolute -top-32 left-1/4 w-96 h-96 bg-[#E63946]/5 rounded-full blur-[120px]" />
+          <div className="absolute top-1/2 right-0 w-72 h-72 bg-[#E63946]/5 rounded-full blur-[100px]" />
         </div>
 
         <div className="relative z-10 max-w-[1300px] mx-auto px-4 md:px-8">
           {/* Top profile bar */}
-          <div className="mb-6 flex items-center justify-between rounded-2xl border border-[rgba(255,255,255,0.1)] bg-[#111113] p-5">
+          <div className="mb-6 flex items-center justify-between rounded-2xl border border-[#0A0A0A]/15 bg-[#111113] p-5">
             <div className="flex items-center gap-4">
               <div className="relative">
-                <div className="h-12 w-12 rounded-xl border border-[rgba(255,255,255,0.1)] bg-gradient-to-br from-[#6C63FF]/20 to-[#00F5FF]/20 flex items-center justify-center overflow-hidden">
+                <div className="h-12 w-12 rounded-xl border border-[#0A0A0A]/15 bg-gradient-to-br from-[#E63946]/20 to-[#E63946]/20 flex items-center justify-center overflow-hidden">
                   {user.avatar ? (
                     <Image src={user.avatar} alt={user.name} width={48} height={48} unoptimized className="object-cover" />
                   ) : (
-                    <span className="font-heading text-base font-bold text-white">{initials}</span>
+                    <span className="font-heading text-base font-bold text-[#0A0A0A]">{initials}</span>
                   )}
                 </div>
                 <span className="absolute -bottom-0.5 -right-0.5 size-3 rounded-full bg-[#22C55E] border-2 border-[#111113]" />
               </div>
               <div>
-                <p className="font-semibold text-white text-sm">{user.name}</p>
-                <p className="text-xs text-white/55">{user.email}</p>
+                <p className="font-semibold text-[#0A0A0A] text-sm">{user.name}</p>
+                <p className="text-xs text-[#0A0A0A]/55">{user.email}</p>
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <button className="relative h-9 w-9 inline-flex items-center justify-center rounded-xl border border-[rgba(255,255,255,0.1)] bg-white/[0.04] text-white/55 hover:text-white transition-colors">
+              <button className="relative h-9 w-9 inline-flex items-center justify-center rounded-xl border border-[#0A0A0A]/15 bg-white text-[#0A0A0A]/55 hover:text-[#0A0A0A] transition-colors">
                 <Bell className="size-4" />
                 <span className="absolute -top-0.5 -right-0.5 size-2 rounded-full bg-[#EF4444]" />
               </button>
@@ -96,7 +96,7 @@ export default function AccountPage() {
           <div className="grid gap-5 lg:grid-cols-[220px_1fr]">
             {/* Sidebar */}
             <aside className="h-fit lg:sticky lg:top-24">
-              <div className="rounded-2xl border border-[rgba(255,255,255,0.1)] bg-[#111113] p-2">
+              <div className="rounded-2xl border border-[#0A0A0A]/15 bg-[#111113] p-2">
                 <nav className="flex flex-col gap-1">
                   {NAV.map((item) => {
                     const Icon = item.icon;
@@ -108,8 +108,8 @@ export default function AccountPage() {
                         className={cn(
                           'flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all text-left',
                           active
-                            ? 'bg-[#6C63FF]/10 text-[#6C63FF] border border-[#6C63FF]/20'
-                            : 'text-white/55 hover:text-white hover:bg-white/[0.04] border border-transparent'
+                            ? 'bg-[#E63946]/10 text-[#E63946] border border-[#E63946]/20'
+                            : 'text-[#0A0A0A]/55 hover:text-[#0A0A0A] hover:bg-white border border-transparent'
                         )}
                       >
                         <Icon className="size-4 shrink-0" />
@@ -139,7 +139,7 @@ export default function AccountPage() {
 
 function Card({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
-    <div className={cn('rounded-2xl border border-[rgba(255,255,255,0.1)] bg-[#111113]', className)}>
+    <div className={cn('rounded-2xl border border-[#0A0A0A]/15 bg-[#111113]', className)}>
       {children}
     </div>
   );
@@ -147,7 +147,7 @@ function Card({ children, className }: { children: React.ReactNode; className?: 
 
 function SectionTitle({ children }: { children: React.ReactNode }) {
   return (
-    <h3 className="font-heading text-lg font-black text-white">{children}</h3>
+    <h3 className="font-heading text-lg font-black text-[#0A0A0A]">{children}</h3>
   );
 }
 
@@ -156,8 +156,8 @@ function OverviewTab() {
   const orders = ordersData?.data ?? [];
 
   const kpis = [
-    { label: 'Orders', value: ordersData?.pagination.total ?? 0, color: '#6C63FF', bg: 'rgba(108,99,255,0.08)', border: 'rgba(108,99,255,0.2)' },
-    { label: 'Reviews', value: 0, color: '#00F5FF', bg: 'rgba(0,245,255,0.08)', border: 'rgba(0,245,255,0.2)' },
+    { label: 'Orders', value: ordersData?.pagination.total ?? 0, color: '#E63946', bg: 'rgba(230,57,70,0.08)', border: 'rgba(230,57,70,0.2)' },
+    { label: 'Reviews', value: 0, color: '#E63946', bg: 'rgba(230,57,70,0.08)', border: 'rgba(230,57,70,0.2)' },
     { label: 'Wallet', value: '0 POL', color: '#22C55E', bg: 'rgba(34,197,94,0.08)', border: 'rgba(34,197,94,0.2)' },
     { label: 'Points', value: '320', color: '#F59E0B', bg: 'rgba(245,158,11,0.08)', border: 'rgba(245,158,11,0.2)' },
   ];
@@ -171,7 +171,7 @@ function OverviewTab() {
             className="rounded-2xl p-5"
             style={{ background: k.bg, border: `1px solid ${k.border}` }}
           >
-            <p className="text-[10px] font-mono uppercase tracking-widest text-white/50 mb-2">
+            <p className="text-[10px] font-mono uppercase tracking-widest text-[#0A0A0A]/50 mb-2">
               {k.label}
             </p>
             <p className="font-heading text-3xl font-black" style={{ color: k.color }}>
@@ -186,7 +186,7 @@ function OverviewTab() {
           <SectionTitle>Recent Orders</SectionTitle>
           <Link
             href={ROUTES.orders}
-            className="text-xs text-[#6C63FF] hover:text-[#8B7FFF] transition-colors font-semibold flex items-center gap-1"
+            className="text-xs text-[#E63946] hover:text-[#E63946] transition-colors font-semibold flex items-center gap-1"
           >
             View all <ChevronRight className="size-3" />
           </Link>
@@ -212,7 +212,7 @@ function OrdersTab() {
   if (isLoading) {
     return (
       <Card className="p-12 flex items-center justify-center">
-        <Loader2 className="size-6 animate-spin text-[#6C63FF]" />
+        <Loader2 className="size-6 animate-spin text-[#E63946]" />
       </Card>
     );
   }
@@ -249,27 +249,27 @@ function OrderRow({
   const statusStyle: Record<string, { bg: string; text: string }> = {
     delivered: { bg: 'rgba(34,197,94,0.1)', text: '#22C55E' },
     shipped: { bg: 'rgba(245,158,11,0.1)', text: '#F59E0B' },
-    processing: { bg: 'rgba(0,245,255,0.1)', text: '#5EE9FF' },
+    processing: { bg: 'rgba(230,57,70,0.1)', text: '#5EE9FF' },
     pending: { bg: 'rgba(255,255,255,0.05)', text: '#71717A' },
-    confirmed: { bg: 'rgba(108,99,255,0.1)', text: '#6C63FF' },
+    confirmed: { bg: 'rgba(230,57,70,0.1)', text: '#E63946' },
     cancelled: { bg: 'rgba(239,68,68,0.1)', text: '#EF4444' },
   };
   const s = statusStyle[order.status] ?? statusStyle.pending;
   return (
     <Link
       href={ROUTES.order(order._id)}
-      className="flex items-center justify-between p-4 rounded-xl border border-[rgba(255,255,255,0.1)] bg-white/[0.04] hover:border-[#6C63FF]/30 transition-all group"
+      className="flex items-center justify-between p-4 rounded-xl border border-[#0A0A0A]/15 bg-white hover:border-[#E63946]/30 transition-all group"
     >
       <div>
-        <p className="text-sm font-bold text-white group-hover:text-[#6C63FF] transition-colors">
+        <p className="text-sm font-bold text-[#0A0A0A] group-hover:text-[#E63946] transition-colors">
           {order.orderNumber}
         </p>
-        <p className="text-xs text-white/40 mt-0.5 font-mono">
+        <p className="text-xs text-[#0A0A0A]/40 mt-0.5 font-mono">
           {formatDate(order.createdAt)}
         </p>
       </div>
       <div className="flex items-center gap-3">
-        <span className="font-mono text-sm font-semibold text-white">
+        <span className="font-mono text-sm font-semibold text-[#0A0A0A]">
           {formatPrice(order.totalAmount)}
         </span>
         <span
@@ -278,7 +278,7 @@ function OrderRow({
         >
           {order.status.replace(/_/g, ' ')}
         </span>
-        <ChevronRight className="size-4 text-white/30 group-hover:text-[#6C63FF] transition-colors" />
+        <ChevronRight className="size-4 text-[#0A0A0A]/30 group-hover:text-[#E63946] transition-colors" />
       </div>
     </Link>
   );
@@ -310,7 +310,7 @@ function WalletTab() {
     <div className="space-y-4">
       <Card className="p-5">
         <SectionTitle>Connected Wallet</SectionTitle>
-        <p className="text-sm text-white/55 mt-1 mb-5">
+        <p className="text-sm text-[#0A0A0A]/55 mt-1 mb-5">
           Your wallet signs signed reviews.
         </p>
 
@@ -318,9 +318,9 @@ function WalletTab() {
           <div className="space-y-3">
             <div
               className="rounded-xl p-4"
-              style={{ background: 'rgba(108,99,255,0.06)', border: '1px solid rgba(108,99,255,0.2)' }}
+              style={{ background: 'rgba(230,57,70,0.06)', border: '1px solid rgba(230,57,70,0.2)' }}
             >
-              <p className="text-[10px] font-mono uppercase tracking-widest text-[#6C63FF] mb-2">
+              <p className="text-[10px] font-mono uppercase tracking-widest text-[#E63946] mb-2">
                 Address
               </p>
               <div className="flex items-center justify-between">
@@ -328,14 +328,14 @@ function WalletTab() {
                   href={buildExplorerAddressUrl(wallet.address)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="font-mono text-sm text-white hover:text-[#6C63FF] transition-colors flex items-center gap-1.5"
+                  className="font-mono text-sm text-[#0A0A0A] hover:text-[#E63946] transition-colors flex items-center gap-1.5"
                 >
                   {shortenAddress(wallet.address, 8)}
                   <ExternalLink className="size-3" />
                 </a>
                 <button
                   onClick={handleCopy}
-                  className="h-8 w-8 inline-flex items-center justify-center rounded-lg border border-[rgba(255,255,255,0.1)] bg-white/[0.04] text-white/55 hover:text-white transition-colors"
+                  className="h-8 w-8 inline-flex items-center justify-center rounded-lg border border-[#0A0A0A]/15 bg-white text-[#0A0A0A]/55 hover:text-[#0A0A0A] transition-colors"
                 >
                   {copied ? <Check className="size-3.5 text-[#22C55E]" /> : <Copy className="size-3.5" />}
                 </button>
@@ -343,8 +343,8 @@ function WalletTab() {
             </div>
 
             <div className="grid grid-cols-2 gap-3">
-              <div className="rounded-xl border border-[rgba(255,255,255,0.1)] bg-white/[0.04] p-4">
-                <p className="text-[10px] font-mono uppercase tracking-widest text-white/40 mb-1.5">
+              <div className="rounded-xl border border-[#0A0A0A]/15 bg-white p-4">
+                <p className="text-[10px] font-mono uppercase tracking-widest text-[#0A0A0A]/40 mb-1.5">
                   Network
                 </p>
                 <p className="text-sm font-bold" style={{ color: wallet.isOnAmoy ? '#22C55E' : '#EF4444' }}>
@@ -365,7 +365,7 @@ function WalletTab() {
             {!wallet.isOnAmoy && (
               <button
                 onClick={wallet.switchToAmoy}
-                className="w-full h-10 rounded-xl border border-[rgba(255,255,255,0.1)] bg-white/[0.04] text-sm font-semibold text-white/55 hover:text-white hover:border-[#6C63FF]/40 transition-all"
+                className="w-full h-10 rounded-xl border border-[#0A0A0A]/15 bg-white text-sm font-semibold text-[#0A0A0A]/55 hover:text-[#0A0A0A] hover:border-[#E63946]/40 transition-all"
               >
                 Switch to Polygon Amoy
               </button>
@@ -374,7 +374,7 @@ function WalletTab() {
         ) : (
           <button
             onClick={wallet.connect}
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#6C63FF] to-[#5448E0] text-sm font-bold text-white shadow-[0_4px_24px_rgba(108,99,255,0.3)] hover:shadow-[0_4px_32px_rgba(108,99,255,0.45)] transition-all"
+            className="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#E63946] to-[#0A0A0A] text-sm font-bold text-[#0A0A0A] shadow-[0_4px_24px_rgba(230,57,70,0.3)] hover:shadow-[0_4px_32px_rgba(230,57,70,0.45)] transition-all"
           >
             <span>🦊</span>
             Connect MetaMask Wallet
@@ -404,7 +404,7 @@ function SettingsTab() {
 
   if (!user) return null;
   const initials = getInitials(user.name);
-  const inputCls = 'h-11 w-full rounded-xl border border-[rgba(255,255,255,0.1)] bg-white/[0.04] px-4 text-sm text-white placeholder:text-white/30 outline-none transition-all focus:border-[#6C63FF]/50 focus:shadow-[0_0_0_3px_rgba(108,99,255,0.1)]';
+  const inputCls = 'h-11 w-full rounded-xl border border-[#0A0A0A]/15 bg-white px-4 text-sm text-[#0A0A0A] placeholder:text-[#0A0A0A]/30 outline-none transition-all focus:border-[#E63946]/50 focus:shadow-[0_0_0_3px_rgba(230,57,70,0.1)]';
 
   const handleSave = () => updateProfile.mutate({ name, phone });
 
@@ -429,11 +429,11 @@ function SettingsTab() {
       <Card className="p-5">
         <SectionTitle>Profile Photo</SectionTitle>
         <div className="mt-4 flex items-center gap-5">
-          <div className="relative h-20 w-20 shrink-0 rounded-2xl border border-[rgba(255,255,255,0.1)] bg-gradient-to-br from-[#6C63FF]/20 to-[#00F5FF]/20 flex items-center justify-center overflow-hidden">
+          <div className="relative h-20 w-20 shrink-0 rounded-2xl border border-[#0A0A0A]/15 bg-gradient-to-br from-[#E63946]/20 to-[#E63946]/20 flex items-center justify-center overflow-hidden">
             {user.avatar ? (
               <Image src={user.avatar} alt={user.name} fill unoptimized className="object-cover" />
             ) : (
-              <span className="font-heading text-2xl font-bold text-white">{initials}</span>
+              <span className="font-heading text-2xl font-bold text-[#0A0A0A]">{initials}</span>
             )}
           </div>
           <div>
@@ -447,12 +447,12 @@ function SettingsTab() {
             <button
               onClick={() => fileInputRef.current?.click()}
               disabled={updateProfile.isPending}
-              className="flex h-9 items-center gap-2 rounded-xl border border-[rgba(255,255,255,0.1)] bg-white/[0.04] px-4 text-xs font-semibold text-white/65 hover:text-white hover:border-[#6C63FF]/40 transition-all disabled:opacity-50"
+              className="flex h-9 items-center gap-2 rounded-xl border border-[#0A0A0A]/15 bg-white px-4 text-xs font-semibold text-[#0A0A0A]/65 hover:text-[#0A0A0A] hover:border-[#E63946]/40 transition-all disabled:opacity-50"
             >
               <Upload className="size-3.5" />
               {updateProfile.isPending ? 'Updating...' : 'Upload Photo'}
             </button>
-            <div className="mt-2.5 flex items-center gap-1.5 text-xs text-white/40">
+            <div className="mt-2.5 flex items-center gap-1.5 text-xs text-[#0A0A0A]/40">
               <Mail className="size-3" /> {user.email}
             </div>
           </div>
@@ -466,14 +466,14 @@ function SettingsTab() {
           <button
             onClick={handleSave}
             disabled={updateProfile.isPending || (name === user.name && phone === user.phone)}
-            className="flex h-9 items-center gap-1.5 rounded-xl bg-gradient-to-r from-[#6C63FF] to-[#5448E0] px-4 text-xs font-bold text-white shadow-[0_2px_12px_rgba(108,99,255,0.3)] transition-all hover:shadow-[0_2px_16px_rgba(108,99,255,0.45)] disabled:opacity-40 disabled:cursor-not-allowed"
+            className="flex h-9 items-center gap-1.5 rounded-xl bg-gradient-to-r from-[#E63946] to-[#0A0A0A] px-4 text-xs font-bold text-[#0A0A0A] shadow-[0_2px_12px_rgba(230,57,70,0.3)] transition-all hover:shadow-[0_2px_16px_rgba(230,57,70,0.45)] disabled:opacity-40 disabled:cursor-not-allowed"
           >
             <Save className="size-3.5" /> Save
           </button>
         </div>
         <div className="grid gap-4 md:grid-cols-2">
           <div>
-            <label className="text-xs font-medium text-white/65 uppercase tracking-widest mb-1.5 block">
+            <label className="text-xs font-medium text-[#0A0A0A]/65 uppercase tracking-widest mb-1.5 block">
               Full Name
             </label>
             <input
@@ -484,7 +484,7 @@ function SettingsTab() {
             />
           </div>
           <div>
-            <label className="text-xs font-medium text-white/65 uppercase tracking-widest mb-1.5 block">
+            <label className="text-xs font-medium text-[#0A0A0A]/65 uppercase tracking-widest mb-1.5 block">
               Phone
             </label>
             <input
@@ -495,7 +495,7 @@ function SettingsTab() {
             />
           </div>
           <div className="md:col-span-2">
-            <label className="text-xs font-medium text-white/65 uppercase tracking-widest mb-1.5 block">
+            <label className="text-xs font-medium text-[#0A0A0A]/65 uppercase tracking-widest mb-1.5 block">
               Email (cannot be changed)
             </label>
             <input
@@ -512,9 +512,9 @@ function SettingsTab() {
 
 function EmptyState({ message }: { message: string }) {
   return (
-    <div className="flex flex-col items-center justify-center py-12 rounded-xl border border-dashed border-[rgba(255,255,255,0.1)]">
-      <Package className="size-7 text-white/30 mb-3" />
-      <p className="text-sm text-white/40">{message}</p>
+    <div className="flex flex-col items-center justify-center py-12 rounded-xl border border-dashed border-[#0A0A0A]/15">
+      <Package className="size-7 text-[#0A0A0A]/30 mb-3" />
+      <p className="text-sm text-[#0A0A0A]/40">{message}</p>
     </div>
   );
 }

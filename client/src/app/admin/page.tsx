@@ -26,8 +26,8 @@ import { ROUTES } from '@/lib/constants';
 import { useDashboardStats } from '@/hooks/use-admin';
 import { formatDate, formatPrice } from '@/lib/utils';
 
-const VIOLET = '#6C63FF';
-const CYAN = '#00F5FF';
+const VIOLET = '#E63946';
+const CYAN = '#E63946';
 const GOLD = '#FFD700';
 
 export default function AdminDashboardPage() {
@@ -157,7 +157,7 @@ export default function AdminDashboardPage() {
       {/* Priority panel */}
       <section className="grid gap-5 xl:grid-cols-[1.1fr_0.9fr]">
         <div className="glass-card p-6">
-          <p className="font-mono text-[10px] uppercase tracking-widest text-[#6C63FF] mb-2">
+          <p className="font-mono text-[10px] uppercase tracking-widest text-[#E63946] mb-2">
             Overview
           </p>
           <h2 className="font-heading text-2xl font-black text-white mb-4">
@@ -237,10 +237,10 @@ export default function AdminDashboardPage() {
               <Link
                 key={item.label}
                 href={item.href}
-                className="flex items-center justify-between rounded-xl border border-white/10 bg-white/[0.02] px-4 py-3 transition-all hover:border-[#6C63FF]/40 hover:bg-white/[0.04] group"
+                className="flex items-center justify-between rounded-xl border border-white/10 bg-white/[0.02] px-4 py-3 transition-all hover:border-[#E63946]/40 hover:bg-white/[0.04] group"
               >
                 <div className="flex items-center gap-3">
-                  <div className="rounded-lg bg-[#6C63FF]/15 p-2 text-[#6C63FF]">
+                  <div className="rounded-lg bg-[#E63946]/15 p-2 text-[#E63946]">
                     <item.icon className="size-4" />
                   </div>
                   <div>
@@ -252,7 +252,7 @@ export default function AdminDashboardPage() {
                   <span className="text-xl font-bold tracking-tight text-white">
                     {item.val}
                   </span>
-                  <ArrowUpRight className="size-4 text-white/40 group-hover:text-[#6C63FF] transition-colors" />
+                  <ArrowUpRight className="size-4 text-white/40 group-hover:text-[#E63946] transition-colors" />
                 </div>
               </Link>
             ))}
@@ -267,7 +267,7 @@ export default function AdminDashboardPage() {
             <Link
               key={order._id}
               href={ROUTES.adminOrder(order._id)}
-              className="grid gap-3 rounded-xl border border-white/10 bg-white/[0.02] px-4 py-3 transition-all hover:border-[#6C63FF]/40 hover:bg-white/[0.04] md:grid-cols-[1fr_auto_auto_auto] items-center"
+              className="grid gap-3 rounded-xl border border-white/10 bg-white/[0.02] px-4 py-3 transition-all hover:border-[#E63946]/40 hover:bg-white/[0.04] md:grid-cols-[1fr_auto_auto_auto] items-center"
             >
               <div>
                 <p className="text-sm font-semibold text-white">{order.orderNumber}</p>
@@ -282,7 +282,7 @@ export default function AdminDashboardPage() {
                 {formatPrice(order.totalAmount)}
               </span>
               <span className="text-xs text-white/50 capitalize">{order.paymentStatus}</span>
-              <span className="rounded-full bg-[#6C63FF]/15 border border-[#6C63FF]/30 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-[#6C63FF] capitalize">
+              <span className="rounded-full bg-[#E63946]/15 border border-[#E63946]/30 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-[#E63946] capitalize">
                 {order.status.replace(/_/g, ' ')}
               </span>
             </Link>

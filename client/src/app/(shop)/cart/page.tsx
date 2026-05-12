@@ -36,7 +36,7 @@ export default function CartPage() {
 
       <div className="relative max-w-[1200px] mx-auto">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-10">
-          <p className="font-mono text-xs uppercase tracking-widest text-[#6C63FF] mb-3">Shopping Cart</p>
+          <p className="font-mono text-xs uppercase tracking-widest text-[#E63946] mb-3">Shopping Cart</p>
           <h1 className="font-heading text-4xl md:text-5xl font-black tracking-tight gradient-text">
             Your Bag
           </h1>
@@ -44,8 +44,8 @@ export default function CartPage() {
 
         {!isAuthenticated ? (
           <div className="glass-card mx-auto max-w-xl text-center py-16 px-8">
-            <div className="mx-auto mb-5 flex size-16 items-center justify-center rounded-full bg-[#6C63FF]/15 border border-[#6C63FF]/30">
-              <ShoppingBag className="size-7 text-[#6C63FF]" />
+            <div className="mx-auto mb-5 flex size-16 items-center justify-center rounded-full bg-[#E63946]/15 border border-[#E63946]/30">
+              <ShoppingBag className="size-7 text-[#E63946]" />
             </div>
             <h2 className="font-heading text-2xl font-bold text-white">Sign in to view your cart</h2>
             <p className="mt-3 text-sm text-white/60 leading-relaxed">
@@ -60,7 +60,7 @@ export default function CartPage() {
           </div>
         ) : isLoading ? (
           <div className="flex items-center justify-center py-20">
-            <Loader2 className="size-8 animate-spin text-[#6C63FF]" />
+            <Loader2 className="size-8 animate-spin text-[#E63946]" />
           </div>
         ) : items.length === 0 ? (
           <motion.div
@@ -68,8 +68,8 @@ export default function CartPage() {
             animate={{ opacity: 1, y: 0 }}
             className="glass-card mx-auto max-w-xl py-16 px-8 text-center"
           >
-            <div className="mx-auto mb-5 flex size-16 items-center justify-center rounded-full bg-[#6C63FF]/15 border border-[#6C63FF]/30">
-              <ShoppingBag className="size-7 text-[#6C63FF]" />
+            <div className="mx-auto mb-5 flex size-16 items-center justify-center rounded-full bg-[#E63946]/15 border border-[#E63946]/30">
+              <ShoppingBag className="size-7 text-[#E63946]" />
             </div>
             <h2 className="font-heading text-2xl font-bold text-white">Your cart is empty</h2>
             <p className="mt-3 text-sm text-white/60 leading-relaxed">
@@ -131,7 +131,7 @@ export default function CartPage() {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-white/50">Shipping</span>
-                    <span className={shippingCost === 0 ? 'font-medium text-[#00F5FF]' : 'font-medium text-white'}>
+                    <span className={shippingCost === 0 ? 'font-medium text-[#E63946]' : 'font-medium text-white'}>
                       {shippingCost === 0 ? 'Free' : formatPrice(shippingCost)}
                     </span>
                   </div>
@@ -145,7 +145,7 @@ export default function CartPage() {
 
                 <div className="flex justify-between text-lg font-bold text-white">
                   <span>Total</span>
-                  <span style={{ color: '#6C63FF' }}>{formatPrice(totalAmount)}</span>
+                  <span style={{ color: '#E63946' }}>{formatPrice(totalAmount)}</span>
                 </div>
 
                 {shippingCost > 0 && (
@@ -162,7 +162,7 @@ export default function CartPage() {
                         className="h-full rounded-full transition-all"
                         style={{
                           width: `${Math.min((subtotal / FREE_SHIPPING_THRESHOLD) * 100, 100)}%`,
-                          background: 'linear-gradient(90deg, #6C63FF, #00F5FF)',
+                          background: 'linear-gradient(90deg, #E63946, #E63946)',
                         }}
                       />
                     </div>

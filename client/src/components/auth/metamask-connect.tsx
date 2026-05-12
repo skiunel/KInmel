@@ -40,7 +40,7 @@ export function MetaMaskConnect({ onConnect, className }: MetaMaskConnectProps) 
         type="button"
         onClick={handleClick}
         disabled={isConnecting}
-        className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-[#6C63FF]/40 bg-[#6C63FF]/[0.08] text-white font-semibold transition-all hover:bg-[#6C63FF]/15 hover:shadow-[0_0_24px_rgba(108,99,255,0.4)] hover:border-[#6C63FF]/60 disabled:opacity-50"
+        className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-[#E63946]/40 bg-[#E63946]/[0.08] text-white font-semibold transition-all hover:bg-[#E63946]/15 hover:shadow-[0_0_24px_rgba(230,57,70,0.4)] hover:border-[#E63946]/60 disabled:opacity-50"
       >
         {isConnecting ? (
           <>

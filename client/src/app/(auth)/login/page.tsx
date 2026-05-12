@@ -9,89 +9,55 @@ export const metadata: Metadata = {
 
 export default function LoginPage() {
   return (
-    <div className="flex min-h-screen bg-[#07070F]">
+    <div className="flex min-h-screen bg-white">
       {/* Left brand panel */}
-      <div className="hidden lg:flex lg:w-[48%] xl:w-[52%] flex-col relative overflow-hidden bg-mesh-2 noise">
-        {/* Gradient mesh */}
-        <div className="absolute inset-0">
-          <div className="orb orb-violet top-0 left-0 size-[28rem] -translate-x-1/3 -translate-y-1/3" />
-          <div className="orb orb-cyan bottom-0 right-0 size-[26rem] translate-x-1/3 translate-y-1/3" />
-          <div className="orb top-1/2 left-1/2 size-[18rem] -translate-x-1/2 -translate-y-1/2" style={{ background: 'rgba(255,107,180,0.18)' }} />
-        </div>
-
-        {/* Grid overlay */}
-        <div
-          className="absolute inset-0 opacity-[0.03]"
-          style={{
-            backgroundImage:
-              'linear-gradient(rgba(255,255,255,0.8) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.8) 1px, transparent 1px)',
-            backgroundSize: '60px 60px',
-          }}
-        />
-
+      <div className="hidden lg:flex lg:w-[48%] xl:w-[52%] flex-col relative bg-[#F4F4F4] border-r border-[#0A0A0A]/10">
         <div className="relative z-10 flex flex-col h-full p-12 xl:p-16">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-3 group">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#6C63FF] to-[#00F5FF] glow-violet">
-              <span className="text-white font-black text-lg">K</span>
-            </div>
-            <span className="font-heading text-xl font-black tracking-tight text-white">
-              Kinmel
-            </span>
+          <Link href="/" className="font-sans text-lg font-black uppercase tracking-[-0.02em] text-[#0A0A0A]">
+            Kinmel<span className="text-[#E63946]">®</span>
           </Link>
 
-          {/* Main content */}
           <div className="flex-1 flex flex-col justify-center max-w-md">
-            <div className="mb-3">
-              <span className="inline-flex items-center gap-2 rounded-full border border-[#6C63FF]/40 bg-[#6C63FF]/10 px-3 py-1 text-[11px] font-mono uppercase tracking-widest text-[#6C63FF]">
-                <span className="size-1.5 rounded-full bg-[#6C63FF] animate-pulse" />
-                Signed by buyer
-              </span>
-            </div>
-            <h1 className="font-heading text-5xl xl:text-6xl font-black text-white leading-[0.9] tracking-tight mb-6">
-              Trust the<br />
-              <span className="gradient-text-animated">chain.</span>
+            <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-[#E63946] mb-5">
+              ◆ Signed by buyer
+            </p>
+            <h1 className="font-sans font-black uppercase tracking-[-0.04em] text-[#0A0A0A] leading-[0.9] text-[clamp(2.5rem,5vw,4.5rem)] mb-6">
+              Trust the chain.
             </h1>
-            <p className="text-white/55 text-lg leading-relaxed max-w-xs">
-              Every review on Kinmel is signed with MetaMask and anchored permanently on Polygon Amoy.
+            <p className="text-[#0A0A0A]/60 text-base leading-relaxed max-w-sm mb-12">
+              Every review on Kinmel is signed with the buyer&apos;s wallet and anchored permanently on Polygon Amoy.
             </p>
 
-            {/* Feature list */}
-            <div className="mt-10 space-y-4">
+            <div className="space-y-5 border-t border-[#0A0A0A]/10 pt-8">
               {[
-                { icon: '🔐', label: 'MetaMask signing', sub: 'Wallet-signed review proofs', color: '#6C63FF' },
-                { icon: '⛓', label: 'Polygon Amoy', sub: 'Immutable on-chain anchoring', color: '#00F5FF' },
-                { icon: '✓', label: 'Verified buyers only', sub: 'No fake stars, ever', color: '#FFD700' },
+                { n: '001', label: 'MetaMask signing', sub: 'Wallet-signed review proofs' },
+                { n: '002', label: 'Polygon Amoy', sub: 'Immutable on-chain anchoring' },
+                { n: '003', label: 'Verified buyers only', sub: 'No fake stars, ever' },
               ].map((f) => (
-                <div key={f.label} className="flex items-center gap-4">
-                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border text-lg" style={{ background: `${f.color}15`, borderColor: `${f.color}55`, boxShadow: `0 0 20px ${f.color}30` }}>
-                    {f.icon}
-                  </div>
+                <div key={f.label} className="flex items-baseline gap-6">
+                  <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-[#E63946] w-8 shrink-0">
+                    {f.n}
+                  </span>
                   <div>
-                    <p className="text-sm font-semibold text-white">{f.label}</p>
-                    <p className="text-xs text-white/45">{f.sub}</p>
+                    <p className="text-sm font-semibold uppercase tracking-tight text-[#0A0A0A]">{f.label}</p>
+                    <p className="text-xs text-[#0A0A0A]/50 mt-0.5">{f.sub}</p>
                   </div>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Bottom */}
-          <p className="text-xs text-white/30 font-mono">
-            © {new Date().getFullYear()} Kinmel. All rights reserved.
+          <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[#0A0A0A]/40">
+            © {new Date().getFullYear()} Kinmel® · All rights reserved
           </p>
         </div>
       </div>
 
       {/* Right form panel */}
-      <div className="flex flex-1 flex-col items-center justify-center px-6 py-12 sm:px-12">
-        {/* Mobile logo */}
-        <div className="flex items-center gap-2 mb-10 lg:hidden">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-[#6C63FF] to-[#00F5FF]">
-            <span className="text-white font-black">K</span>
-          </div>
-          <span className="font-heading text-lg font-black tracking-tight text-white">Kinmel</span>
-        </div>
+      <div className="flex flex-1 flex-col items-center justify-center px-6 py-12 sm:px-12 bg-white">
+        <Link href="/" className="flex items-center gap-2 mb-10 lg:hidden font-sans text-base font-black uppercase tracking-[-0.02em] text-[#0A0A0A]">
+          Kinmel<span className="text-[#E63946]">®</span>
+        </Link>
 
         <div className="w-full max-w-sm">
           <LoginForm />
