@@ -63,30 +63,28 @@ function ProductsContent() {
   };
 
   return (
-    <div className="relative min-h-screen pt-28 pb-24 px-6 md:px-10 bg-[#0B0B0D]">
+    <div className="relative min-h-screen pt-24 pb-24 px-6 md:px-10 bg-white">
       <div className="relative max-w-[1600px] mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7 }}
-          className="mb-12 border-b border-[#EDE7DA]/8 pb-10"
+          className="mb-12 border-b border-[#0A0A0A]/10 pb-10"
         >
-          <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-[#FF3D00] mb-5">
-            ◆ The Catalogue
+          <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-[#E63946] mb-4">
+            ◆ Catalogue
           </p>
-          <h1 className="font-heading text-6xl md:text-8xl font-black uppercase tracking-[-0.04em] text-[#EDE7DA] leading-[0.88]">
-            Every<br />
-            <span className="italic font-light">object.</span>
+          <h1 className="font-sans font-black uppercase tracking-[-0.04em] text-[#0A0A0A] leading-[0.9] text-[clamp(3rem,9vw,7rem)]">
+            Every object.
           </h1>
-          <p className="mt-6 text-[14px] leading-relaxed text-[#EDE7DA]/55 max-w-md">
-            A small, edited inventory. Reviewed by people who actually own them.
+          <p className="mt-6 text-[14px] leading-relaxed text-[#0A0A0A]/60 max-w-md">
+            Small, edited inventory. Reviewed by people who actually own them.
           </p>
         </motion.div>
 
-        {/* Top bar: Search + Sort + Count */}
-        <div className="mb-8 flex flex-col md:flex-row gap-4 items-center">
+        <div className="mb-8 flex flex-col md:flex-row gap-4 md:items-center">
           <div className="relative flex-1 w-full md:max-w-md">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 size-4 text-white/40" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-[#0A0A0A]/40" />
             <input
               type="text"
               value={search}
@@ -94,13 +92,13 @@ function ProductsContent() {
                 setSearch(e.target.value);
                 setPage(1);
               }}
-              placeholder="Search products..."
-              className="glass-input w-full h-12 pl-11 placeholder:text-white/30"
+              placeholder="Search…"
+              className="w-full h-11 pl-10 border border-[#0A0A0A]/15 bg-white text-sm text-[#0A0A0A] placeholder:text-[#0A0A0A]/35 outline-none focus:border-[#0A0A0A]"
             />
           </div>
 
           <div className="flex items-center gap-3 w-full md:w-auto">
-            <span className="text-xs font-mono text-white/40 px-3 py-2 rounded-full border border-white/10 bg-white/[0.04] backdrop-blur-xl">
+            <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#0A0A0A]/55">
               {data?.pagination.total ?? 0} items
             </span>
             <select
@@ -109,14 +107,10 @@ function ProductsContent() {
                 setSort(e.target.value);
                 setPage(1);
               }}
-              className="text-xs font-medium text-white/80 bg-white/[0.04] border border-white/10 px-4 py-2 rounded-full outline-none cursor-pointer hover:border-[#6C63FF]/40 backdrop-blur-xl transition-all"
+              className="font-mono text-[11px] uppercase tracking-[0.16em] text-[#0A0A0A] bg-white border border-[#0A0A0A]/15 px-3 h-11 outline-none cursor-pointer hover:border-[#0A0A0A] transition-colors"
             >
               {SORT_OPTIONS.map((o) => (
-                <option
-                  key={o.value}
-                  value={o.value}
-                  className="bg-[#07070F] text-white"
-                >
+                <option key={o.value} value={o.value} className="bg-white text-[#0A0A0A]">
                   {o.label}
                 </option>
               ))}
@@ -143,27 +137,22 @@ function ProductsContent() {
           ))}
         </div>
 
-        {/* Auto-fill grid: minmax(280px, 1fr) */}
         {isLoading ? (
-          <div
-            className="grid gap-6"
-            style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))' }}
-          >
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 lg:gap-8">
             {[...Array(8)].map((_, i) => (
-              <div key={i} className="glass-card aspect-[4/5] animate-pulse" />
+              <div key={i} className="aspect-[3/4] bg-[#F4F4F4] animate-pulse" />
             ))}
           </div>
         ) : products.length === 0 ? (
-          <div className="glass-card text-center py-20">
-            <p className="text-sm text-white/50">No products found matching your criteria.</p>
+          <div className="border border-[#0A0A0A]/10 text-center py-20">
+            <p className="font-mono text-xs uppercase tracking-widest text-[#0A0A0A]/55">No products found.</p>
           </div>
         ) : (
           <motion.div
             variants={container}
             initial="hidden"
             animate="show"
-            className="grid gap-6"
-            style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))' }}
+            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 lg:gap-8"
           >
             {products.map((p) => (
               <motion.div key={p._id} variants={item}>
@@ -174,7 +163,7 @@ function ProductsContent() {
         )}
 
         {data?.pagination && data.pagination.pages > 1 && (
-          <div className="mt-12 pt-8 border-t border-white/10 flex justify-center">
+          <div className="mt-12 pt-6 border-t border-[#0A0A0A]/10 flex justify-center">
             <Pagination pagination={data.pagination} onPageChange={setPage} />
           </div>
         )}
@@ -196,10 +185,10 @@ function FilterPill({
     <button
       onClick={onClick}
       className={cn(
-        'px-5 py-2 rounded-full text-xs font-semibold uppercase tracking-wider transition-all backdrop-blur-xl',
+        'px-4 h-9 font-mono text-[11px] font-semibold uppercase tracking-[0.18em] transition-colors',
         active
-          ? 'bg-gradient-to-r from-[#6C63FF] to-[#8B7FFF] text-white shadow-[0_4px_20px_rgba(108,99,255,0.4)] border border-[#6C63FF]'
-          : 'bg-white/[0.04] text-white/60 border border-white/10 hover:border-[#6C63FF]/40 hover:text-white'
+          ? 'bg-[#0A0A0A] text-white'
+          : 'bg-white text-[#0A0A0A] border border-[#0A0A0A]/15 hover:bg-[#0A0A0A] hover:text-white'
       )}
     >
       {children}

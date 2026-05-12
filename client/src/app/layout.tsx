@@ -21,7 +21,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
-      <body className="font-sans antialiased bg-[#0B0B0D] text-[#EDE7DA]" suppressHydrationWarning>
+      <body className="font-sans antialiased bg-white text-[#0A0A0A]" suppressHydrationWarning>
         <div className="relative z-10">
           <Providers>{children}</Providers>
         </div>

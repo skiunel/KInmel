@@ -4,16 +4,15 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
-import { ShoppingCart, Menu, X, Search } from 'lucide-react';
+import { ShoppingBag, Menu, X } from 'lucide-react';
 import { ROUTES } from '@/lib/constants';
 import { useAuth } from '@/providers/auth-provider';
 import { useCartStore } from '@/stores/cart-store';
 import { cn } from '@/lib/utils';
 
 const NAV_LINKS = [
-  { label: 'Home', href: '/' },
   { label: 'Shop', href: ROUTES.products },
-  { label: 'Reviews', href: '/verify' },
+  { label: 'Ledger', href: '/verify' },
   { label: 'About', href: '/about' },
 ];
 
@@ -42,23 +41,19 @@ export function Navbar() {
     <>
       <header
         className={cn(
-          'fixed z-40 transition-all duration-500 left-1/2 -translate-x-1/2',
-          scrolled
-            ? 'top-3 w-[min(96%,1400px)] rounded-2xl bg-[#0B0B0D]/55 backdrop-blur-2xl border border-[#EDE7DA]/10 shadow-[0_20px_60px_-10px_rgba(0,0,0,0.6),0_1px_0_rgba(237,231,218,0.06)_inset]'
-            : 'top-4 w-[min(96%,1400px)] rounded-2xl bg-[#0B0B0D]/30 backdrop-blur-xl border border-[#EDE7DA]/8'
+          'fixed inset-x-0 top-0 z-40 transition-all duration-300 bg-white',
+          scrolled ? 'border-b border-[#0A0A0A]/10 shadow-[0_1px_0_rgba(0,0,0,0.02)]' : 'border-b border-transparent'
         )}
       >
-        <div className="flex items-center justify-between px-5 lg:px-7 h-14">
-          {/* Logo */}
+        <div className="max-w-[1600px] mx-auto flex items-center justify-between px-6 lg:px-10 h-14">
           <Link
             href="/"
-            className="font-heading text-lg font-black uppercase tracking-[0.18em] text-white"
+            className="font-sans text-base font-black uppercase tracking-[-0.02em] text-[#0A0A0A]"
           >
-            Kinmel
+            Kinmel<span className="text-[#E63946]">®</span>
           </Link>
 
-          {/* Desktop Nav */}
-          <nav className="hidden lg:flex items-center gap-10 text-[11px] font-semibold uppercase tracking-[0.2em]">
+          <nav className="hidden lg:flex items-center gap-8 font-mono text-[11px] font-semibold uppercase tracking-[0.18em]">
             {NAV_LINKS.map((link) => (
               <NL key={link.label} href={link.href} active={pathname === link.href}>
                 {link.label}
@@ -66,26 +61,14 @@ export function Navbar() {
             ))}
           </nav>
 
-          {/* Right cluster */}
-          <div className="flex items-center gap-2">
-            <button
-              aria-label="Search"
-              className="h-10 w-10 inline-flex items-center justify-center text-[#EDE7DA]/60 hover:text-[#FF3D00] transition-colors"
-            >
-              <Search className="size-4" />
-            </button>
-
+          <div className="flex items-center gap-4">
             <button
               onClick={openDrawer}
               aria-label="Cart"
-              className="relative h-10 w-10 inline-flex items-center justify-center text-[#EDE7DA]/60 hover:text-[#FF3D00] transition-colors"
+              className="relative inline-flex items-center gap-2 text-[#0A0A0A] hover:text-[#E63946] transition-colors font-mono text-[11px] font-semibold uppercase tracking-[0.18em]"
             >
-              <ShoppingCart className="size-4" />
-              {itemCount > 0 && (
-                <span className="absolute top-1 right-1 size-4 inline-flex items-center justify-center rounded-full bg-white text-[9px] font-bold text-black">
-                  {itemCount > 9 ? '9+' : itemCount}
-                </span>
-              )}
+              <ShoppingBag className="size-4" />
+              <span className="hidden sm:inline">Bag ({itemCount})</span>
             </button>
 
             {isAuthenticated ? (
@@ -93,7 +76,7 @@ export function Navbar() {
             ) : (
               <Link
                 href={ROUTES.login}
-                className="hidden sm:inline-flex h-10 items-center px-4 text-[11px] font-semibold uppercase tracking-[0.2em] text-white border border-white/20 hover:bg-white hover:text-black transition-all"
+                className="hidden sm:inline-flex items-center font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-[#0A0A0A] hover:text-[#E63946] transition-colors"
               >
                 Sign in
               </Link>
@@ -102,7 +85,7 @@ export function Navbar() {
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
               aria-label="Menu"
-              className="lg:hidden h-10 w-10 inline-flex items-center justify-center text-white"
+              className="lg:hidden h-8 w-8 inline-flex items-center justify-center text-[#0A0A0A]"
             >
               {mobileOpen ? <X className="size-4" /> : <Menu className="size-4" />}
             </button>
@@ -110,52 +93,48 @@ export function Navbar() {
         </div>
       </header>
 
-      {/* Mobile menu */}
       {mobileOpen && (
         <div
-          className="fixed inset-0 z-30 bg-black/60 backdrop-blur-sm lg:hidden"
+          className="fixed inset-0 z-30 bg-[#0A0A0A]/40 lg:hidden"
           onClick={() => setMobileOpen(false)}
         />
       )}
       <div
         className={cn(
-          'fixed top-0 right-0 z-40 h-full w-72 bg-black border-l border-[#EDE7DA]/8 transform transition-transform duration-300 lg:hidden',
+          'fixed top-0 right-0 z-40 h-full w-72 bg-white border-l border-[#0A0A0A]/10 transform transition-transform duration-300 lg:hidden',
           mobileOpen ? 'translate-x-0' : 'translate-x-full'
         )}
       >
         <div className="pt-20 px-8">
-          <nav className="flex flex-col gap-6">
+          <nav className="flex flex-col gap-5 font-mono text-[12px] font-semibold uppercase tracking-[0.2em]">
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.label}
                 href={link.href}
                 className={cn(
-                  'text-sm font-semibold uppercase tracking-[0.22em] transition-colors',
-                  pathname === link.href ? 'text-white' : 'text-[#EDE7DA]/45 hover:text-[#FF3D00]'
+                  'transition-colors',
+                  pathname === link.href ? 'text-[#0A0A0A]' : 'text-[#0A0A0A]/45 hover:text-[#E63946]'
                 )}
               >
                 {link.label}
               </Link>
             ))}
-            <div className="h-px bg-white/10 my-4" />
+            <div className="h-px bg-[#0A0A0A]/10 my-3" />
             {isAuthenticated ? (
               <button
                 onClick={() => void logout()}
-                className="text-left text-sm font-semibold uppercase tracking-[0.22em] text-[#EDE7DA]/45 hover:text-[#FF3D00] transition-colors"
+                className="text-left text-[#0A0A0A]/45 hover:text-[#E63946] transition-colors"
               >
                 Log out
               </button>
             ) : (
               <>
-                <Link
-                  href={ROUTES.login}
-                  className="text-sm font-semibold uppercase tracking-[0.22em] text-white"
-                >
+                <Link href={ROUTES.login} className="text-[#0A0A0A]">
                   Sign in
                 </Link>
                 <Link
                   href={ROUTES.register}
-                  className="text-sm font-semibold uppercase tracking-[0.22em] text-[#EDE7DA]/45 hover:text-[#FF3D00] transition-colors"
+                  className="text-[#0A0A0A]/45 hover:text-[#E63946] transition-colors"
                 >
                   Create account
                 </Link>
@@ -181,8 +160,8 @@ function NL({
     <Link
       href={href}
       className={cn(
-        'relative transition-colors duration-200',
-        active ? 'text-white' : 'text-[#EDE7DA]/45 hover:text-[#FF3D00]'
+        'transition-colors duration-200',
+        active ? 'text-[#0A0A0A]' : 'text-[#0A0A0A]/55 hover:text-[#E63946]'
       )}
     >
       {children}
@@ -214,41 +193,34 @@ function ProfileDropdown() {
     <div className="relative hidden sm:block" onClick={(e) => e.stopPropagation()}>
       <button
         onClick={() => setOpen(!open)}
-        className="h-9 w-9 inline-flex items-center justify-center border border-white/20 text-white hover:border-white transition-colors"
+        className="h-8 w-8 inline-flex items-center justify-center border border-[#0A0A0A]/15 text-[#0A0A0A] hover:border-[#0A0A0A] transition-colors"
       >
         {user.avatar ? (
-          <Image
-            src={user.avatar}
-            alt={user.name}
-            width={36}
-            height={36}
-            unoptimized
-            className="object-cover"
-          />
+          <Image src={user.avatar} alt={user.name} width={32} height={32} unoptimized className="object-cover" />
         ) : (
-          <span className="font-heading text-xs font-bold">{initials}</span>
+          <span className="font-mono text-[10px] font-bold">{initials}</span>
         )}
       </button>
 
       {open && (
-        <div className="absolute right-0 mt-2 w-56 bg-black border border-[#EDE7DA]/8 py-2 z-50">
-          <div className="px-4 py-3 border-b border-[#EDE7DA]/8">
-            <p className="text-xs font-bold uppercase tracking-widest text-white">
+        <div className="absolute right-0 mt-2 w-56 bg-white border border-[#0A0A0A]/10 py-2 z-50 shadow-lg">
+          <div className="px-4 py-3 border-b border-[#0A0A0A]/10">
+            <p className="font-mono text-[10px] font-bold uppercase tracking-widest text-[#0A0A0A]">
               {user.name}
             </p>
-            <p className="text-[10px] text-white/40 truncate">{user.email}</p>
+            <p className="text-[10px] text-[#0A0A0A]/45 truncate">{user.email}</p>
           </div>
           <Link
             href={ROUTES.account}
             onClick={() => setOpen(false)}
-            className="block px-4 py-2 text-xs font-semibold uppercase tracking-widest text-[#EDE7DA]/60 hover:text-[#FF3D00] hover:bg-white/5 transition-colors"
+            className="block px-4 py-2 font-mono text-[10px] font-semibold uppercase tracking-widest text-[#0A0A0A]/60 hover:text-[#E63946] hover:bg-[#F4F4F4] transition-colors"
           >
             Account
           </Link>
           <Link
             href={ROUTES.orders}
             onClick={() => setOpen(false)}
-            className="block px-4 py-2 text-xs font-semibold uppercase tracking-widest text-[#EDE7DA]/60 hover:text-[#FF3D00] hover:bg-white/5 transition-colors"
+            className="block px-4 py-2 font-mono text-[10px] font-semibold uppercase tracking-widest text-[#0A0A0A]/60 hover:text-[#E63946] hover:bg-[#F4F4F4] transition-colors"
           >
             Orders
           </Link>
@@ -257,7 +229,7 @@ function ProfileDropdown() {
               setOpen(false);
               void logout();
             }}
-            className="w-full text-left block px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white/40 hover:text-white hover:bg-white/5 transition-colors"
+            className="w-full text-left block px-4 py-2 font-mono text-[10px] font-semibold uppercase tracking-widest text-[#0A0A0A]/45 hover:text-[#E63946] hover:bg-[#F4F4F4] transition-colors"
           >
             Log out
           </button>

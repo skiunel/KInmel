@@ -4,48 +4,45 @@ import Link from 'next/link';
 
 export function Footer() {
   return (
-    <footer className="bg-[#0B0B0D] border-t border-[#EDE7DA]/8">
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-10 py-16">
-        {/* Big mark */}
-        <div className="mb-16">
-          <p className="font-heading text-[clamp(3rem,12vw,10rem)] font-black uppercase tracking-tighter text-[#EDE7DA] leading-[0.85]">
-            Kinmel.
-          </p>
+    <footer className="bg-white border-t border-[#0A0A0A]/10">
+      <div className="max-w-[1600px] mx-auto px-6 lg:px-10 py-16 lg:py-24">
+        <div className="grid lg:grid-cols-12 gap-10 mb-16 items-start">
+          <div className="lg:col-span-7">
+            <p className="font-sans text-[clamp(3rem,11vw,9rem)] font-black uppercase tracking-[-0.04em] text-[#0A0A0A] leading-[0.86]">
+              Kinmel<span className="text-[#E63946]">®</span>
+            </p>
+            <p className="mt-6 max-w-md text-sm leading-relaxed text-[#0A0A0A]/55">
+              Goods curated. Reviews signed. Made to be worn. Or judged. Or both.
+            </p>
+          </div>
+
+          <div className="lg:col-span-5 grid grid-cols-2 sm:grid-cols-3 gap-8">
+            <FooterColumn title="Shop">
+              <FooterLink href="/products">All</FooterLink>
+              <FooterLink href="/products?category=electronics">Electronics</FooterLink>
+              <FooterLink href="/products?category=peripherals">Peripherals</FooterLink>
+            </FooterColumn>
+            <FooterColumn title="Trust">
+              <FooterLink href="/verify">Ledger</FooterLink>
+              <FooterLink href="/about">Method</FooterLink>
+              <FooterLink href="https://amoy.polygonscan.com" external>
+                Polygonscan
+              </FooterLink>
+            </FooterColumn>
+            <FooterColumn title="Info">
+              <FooterLink href="/contact">Contact</FooterLink>
+              <FooterLink href="/terms">Terms</FooterLink>
+              <FooterLink href="/privacy">Privacy</FooterLink>
+            </FooterColumn>
+          </div>
         </div>
 
-        {/* Columns */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-10 mb-16">
-          <FooterColumn title="Shop">
-            <FooterLink href="/products">All Products</FooterLink>
-            <FooterLink href="/products?category=electronics">Electronics</FooterLink>
-            <FooterLink href="/products?category=peripherals">Peripherals</FooterLink>
-          </FooterColumn>
-          <FooterColumn title="Trust">
-            <FooterLink href="/verify">Verify Reviews</FooterLink>
-            <FooterLink href="/about">How it Works</FooterLink>
-            <FooterLink href="https://amoy.polygonscan.com" external>
-              Polygonscan
-            </FooterLink>
-          </FooterColumn>
-          <FooterColumn title="Company">
-            <FooterLink href="/contact">Contact</FooterLink>
-            <FooterLink href="/about">About</FooterLink>
-            <FooterLink href="/careers">Careers</FooterLink>
-          </FooterColumn>
-          <FooterColumn title="Legal">
-            <FooterLink href="/terms">Terms</FooterLink>
-            <FooterLink href="/privacy">Privacy</FooterLink>
-            <FooterLink href="/cookies">Cookies</FooterLink>
-          </FooterColumn>
-        </div>
-
-        {/* Bottom */}
-        <div className="flex flex-wrap items-center justify-between gap-4 pt-8 border-t border-[#EDE7DA]/8">
-          <p className="text-[10px] font-mono font-semibold uppercase tracking-[0.22em] text-[#EDE7DA]/40">
-            © {new Date().getFullYear()} Kinmel — All Rights Reserved
+        <div className="flex flex-wrap items-center justify-between gap-4 pt-6 border-t border-[#0A0A0A]/10">
+          <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.22em] text-[#0A0A0A]/45">
+            © {new Date().getFullYear()} Kinmel® · All rights reserved
           </p>
-          <p className="text-[10px] font-mono font-semibold uppercase tracking-[0.22em] text-[#EDE7DA]/40">
-            Made in Kathmandu × Los Angeles
+          <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.22em] text-[#0A0A0A]/45">
+            Kathmandu × Los Angeles
           </p>
         </div>
       </div>
@@ -53,19 +50,13 @@ export function Footer() {
   );
 }
 
-function FooterColumn({
-  title,
-  children,
-}: {
-  title: string;
-  children: React.ReactNode;
-}) {
+function FooterColumn({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div>
-      <p className="text-[10px] font-mono font-semibold uppercase tracking-[0.32em] text-[#EDE7DA]/40 mb-5">
-        {title}
+      <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.28em] text-[#E63946] mb-4">
+        ◆ {title}
       </p>
-      <div className="flex flex-col gap-3">{children}</div>
+      <div className="flex flex-col gap-2.5">{children}</div>
     </div>
   );
 }
@@ -80,7 +71,7 @@ function FooterLink({
   external?: boolean;
 }) {
   const cls =
-    'text-sm text-[#EDE7DA]/55 hover:text-[#FF3D00] transition-colors uppercase tracking-wider font-medium';
+    'font-mono text-[11px] text-[#0A0A0A]/70 hover:text-[#E63946] transition-colors uppercase tracking-[0.16em]';
   if (external) {
     return (
       <a href={href} target="_blank" rel="noopener noreferrer" className={cls}>

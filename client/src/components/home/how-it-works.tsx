@@ -3,79 +3,63 @@
 import { motion } from 'framer-motion';
 
 const STEPS = [
-  {
-    n: '001',
-    title: 'Acquire',
-    body: 'Browse a small catalogue. Order. Pay how you prefer — card, eSewa, Khalti, on delivery.',
-  },
-  {
-    n: '002',
-    title: 'Receive',
-    body: 'Use the object. Live with it. Form an actual opinion. There is no rush to review.',
-  },
-  {
-    n: '003',
-    title: 'Sign',
-    body: 'When you write a review, you sign it. It becomes part of a public ledger that no one — not us — can quietly edit.',
-  },
+  { n: '001', title: 'Buy', body: 'Pick something. Pay with eSewa, Khalti, or cash on delivery.' },
+  { n: '002', title: 'Use', body: 'Receive. Live with it. Form an actual opinion.' },
+  { n: '003', title: 'Sign', body: 'Write a review. Sign it with your wallet. It enters the public ledger.' },
 ];
 
 export function HowItWorks() {
   return (
-    <section className="relative bg-[#0B0B0D] py-24 sm:py-32 border-t border-[#EDE7DA]/8">
+    <section className="bg-white py-16 lg:py-24 border-b border-[#0A0A0A]/10">
       <div className="max-w-[1600px] mx-auto px-6 lg:px-10">
-        <div className="grid lg:grid-cols-12 gap-6 mb-20">
-          <div className="lg:col-span-7">
-            <p className="font-mono text-[10px] uppercase tracking-[0.32em] text-[#FF3D00] mb-6">
-              ◆ 003 / The Method
+        <div className="grid lg:grid-cols-12 gap-8 mb-12 items-end">
+          <div className="lg:col-span-8">
+            <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[#E63946] mb-3">
+              ◆ Method
             </p>
-            <h2 className="font-heading text-6xl md:text-8xl font-black uppercase tracking-[-0.04em] leading-[0.88] text-[#EDE7DA]">
-              How
-              <br />
-              <span className="italic font-light">it</span> works.
+            <h2 className="font-sans font-black uppercase tracking-[-0.03em] text-[clamp(2rem,5vw,4rem)] text-[#0A0A0A] leading-[0.95]">
+              Three steps.
             </h2>
           </div>
-          <div className="lg:col-span-5 lg:pt-10">
-            <p className="text-[15px] leading-[1.7] text-[#EDE7DA]/65 max-w-md">
+          <div className="lg:col-span-4">
+            <p className="text-[14px] leading-[1.55] text-[#0A0A0A]/65 max-w-md">
               No paid placements. No vanishing comments. No incentivised five-stars.
-              A buyer writes, signs, and that is the record.
             </p>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 border-t border-[#EDE7DA]/8">
+        <div className="grid grid-cols-1 md:grid-cols-3 border-t border-[#0A0A0A]/10">
           {STEPS.map((step, idx) => (
             <motion.div
               key={step.n}
-              initial={{ opacity: 0, y: 24 }}
+              initial={{ opacity: 0, y: 18 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-50px' }}
-              transition={{ duration: 0.7, delay: idx * 0.1 }}
-              className={`py-12 lg:py-16 lg:px-10 px-6 ${idx < STEPS.length - 1 ? 'border-b md:border-b-0 md:border-r border-[#EDE7DA]/8' : ''}`}
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ duration: 0.6, delay: idx * 0.1 }}
+              className={`py-10 lg:py-14 lg:px-8 ${idx < STEPS.length - 1 ? 'border-b md:border-b-0 md:border-r border-[#0A0A0A]/10' : ''}`}
             >
-              <div className="flex items-baseline justify-between mb-12">
-                <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-[#EDE7DA]/40">
+              <div className="flex items-baseline justify-between mb-10">
+                <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-[#0A0A0A]/40">
                   Step {step.n}
                 </span>
-                <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-[#FF3D00]">◆</span>
+                <span className="font-mono text-[10px] text-[#E63946]">◆</span>
               </div>
-              <h3 className="font-heading text-4xl md:text-5xl font-black uppercase tracking-[-0.02em] text-[#EDE7DA] leading-none">
+              <h3 className="font-sans text-3xl md:text-4xl font-black uppercase tracking-[-0.02em] text-[#0A0A0A] leading-none">
                 {step.title}
               </h3>
-              <p className="mt-6 text-sm leading-relaxed text-[#EDE7DA]/55 max-w-xs">
+              <p className="mt-5 text-sm leading-relaxed text-[#0A0A0A]/60 max-w-xs">
                 {step.body}
               </p>
             </motion.div>
           ))}
         </div>
 
-        {/* Footnote */}
-        <div className="mt-16 pt-8 border-t border-[#EDE7DA]/8 flex flex-wrap items-baseline justify-between gap-4">
-          <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-[#EDE7DA]/40">
-            Signatures verified on a public chain · Polygon Amoy
+        <div className="mt-10 pt-6 border-t border-[#0A0A0A]/10 flex flex-wrap items-baseline justify-between gap-4">
+          <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[#0A0A0A]/40">
+            Signed on Polygon Amoy · Public ledger
           </p>
-          <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-[#EDE7DA]/40">
-            K / 2026
+          <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[#0A0A0A]/40">
+            K · 2026
           </p>
         </div>
       </div>
