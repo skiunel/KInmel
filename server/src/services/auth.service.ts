@@ -12,6 +12,8 @@ import type {
   ResetPasswordInput,
 } from '../validators/auth.validators';
 import { verifyGoogleToken } from './google-auth.service';
+import { emailService } from './email.service';
+import { logger } from '../utils/logger';
 
 // ─── Token Payloads ───
 
@@ -37,6 +39,19 @@ const buildPreviewUrl = (
   path: string,
   token: string
 ): string | null => {
+  // Hide preview link in production when email service IS configured
+  // (real email gets sent — no need to expose link in API response).
+  // Keep visible in dev or when email service NOT configured (fallback so user can test).
+  if (env.NODE_ENV === 'production' && env.RESEND_API_KEY) {
+    return null;
+  }
+
+  const url = new URL(path, env.CLIENT_URL);
+  url.searchParams.set('token', token);
+  return url.toString();
+};
+
+const buildActionUrl = (path: string, token: string): string => {
   const url = new URL(path, env.CLIENT_URL);
   url.searchParams.set('token', token);
   return url.toString();
@@ -60,7 +75,7 @@ const clearEmailVerificationState = (user: IUser) => {
   user.emailVerificationExpiresAt = null;
 };
 
-const issuePasswordResetToken = (user: IUser): PreviewLink => {
+const issuePasswordResetToken = (user: IUser): PreviewLink & { token: string; actionUrl: string } => {
   const token = createOpaqueToken();
   const expiresAt = new Date(Date.now() + ONE_TIME_TOKEN_TTL_MS);
 
@@ -68,6 +83,8 @@ const issuePasswordResetToken = (user: IUser): PreviewLink => {
   user.passwordResetExpiresAt = expiresAt;
 
   return {
+    token,
+    actionUrl: buildActionUrl('/reset-password', token),
     previewUrl: buildPreviewUrl('/reset-password', token),
     expiresAt,
   };
@@ -319,13 +336,21 @@ export const forgotPassword = async (input: ForgotPasswordInput) => {
     };
   }
 
-  const passwordReset = issuePasswordResetToken(user);
+  const reset = issuePasswordResetToken(user);
   await user.save();
+
+  // Fire-and-forget email send
+  void emailService.sendPasswordReset(user.email, reset.actionUrl).then((r) => {
+    if (!r.ok) logger.warn(`Password reset email NOT sent to ${user.email}: ${r.error}`);
+  });
 
   return {
     message:
-      'If an account exists for that email, password reset instructions have been generated.',
-    passwordReset,
+      'If an account exists for that email, password reset instructions have been sent.',
+    passwordReset: {
+      previewUrl: reset.previewUrl,
+      expiresAt: reset.expiresAt,
+    },
   };
 };
 

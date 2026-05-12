@@ -45,6 +45,10 @@ const envSchema = z.object({
   // eSewa (optional)
   ESEWA_MERCHANT_ID: z.string().optional(),
   ESEWA_SECRET_KEY: z.string().optional(),
+
+  // Email (Resend)
+  RESEND_API_KEY: z.string().optional(),
+  EMAIL_FROM: z.string().optional(),
 });
 
 const parsed = envSchema.safeParse(process.env);
