@@ -22,7 +22,7 @@ export default function AdminLoginPage() {
   });
 
   return (
-    <div className="flex min-h-screen bg-[#09090B]">
+    <div className="flex min-h-screen bg-[#F4F4F4]">
       {/* Ambient glow */}
       <div className="pointer-events-none fixed inset-0 overflow-hidden">
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-[#FF6B6B]/5 rounded-full blur-[120px]" />
@@ -71,7 +71,7 @@ export default function AdminLoginPage() {
           </div>
 
           {/* Form card */}
-          <div className="rounded-2xl border border-[rgba(255,255,255,0.1)] bg-[#111113] p-7 shadow-[0_0_40px_rgba(0,0,0,0.5)]">
+          <div className="rounded-2xl border border-[rgba(255,255,255,0.1)] bg-white p-7 shadow-[0_0_40px_rgba(0,0,0,0.5)]">
             <form onSubmit={handleSubmit((d) => login.mutate(d))} className="space-y-4">
               <div className="flex flex-col gap-1.5">
                 <label

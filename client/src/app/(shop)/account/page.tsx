@@ -59,16 +59,10 @@ export default function AccountPage() {
 
   return (
     <ProtectedRoute>
-      <div className="min-h-screen bg-[#09090B] pt-20 pb-16">
-        {/* Subtle gradient top */}
-        <div className="pointer-events-none fixed inset-0 overflow-hidden">
-          <div className="absolute -top-32 left-1/4 w-96 h-96 bg-[#E63946]/5 rounded-full blur-[120px]" />
-          <div className="absolute top-1/2 right-0 w-72 h-72 bg-[#E63946]/5 rounded-full blur-[100px]" />
-        </div>
-
+      <div className="min-h-screen bg-[#F4F4F4] pt-24 pb-16">
         <div className="relative z-10 max-w-[1300px] mx-auto px-4 md:px-8">
           {/* Top profile bar */}
-          <div className="mb-6 flex items-center justify-between rounded-2xl border border-[#0A0A0A]/15 bg-[#111113] p-5">
+          <div className="mb-6 flex items-center justify-between rounded-2xl border border-[#0A0A0A]/15 bg-white p-5">
             <div className="flex items-center gap-4">
               <div className="relative">
                 <div className="h-12 w-12 rounded-xl border border-[#0A0A0A]/15 bg-gradient-to-br from-[#E63946]/20 to-[#E63946]/20 flex items-center justify-center overflow-hidden">
@@ -78,7 +72,7 @@ export default function AccountPage() {
                     <span className="font-heading text-base font-bold text-[#0A0A0A]">{initials}</span>
                   )}
                 </div>
-                <span className="absolute -bottom-0.5 -right-0.5 size-3 rounded-full bg-[#22C55E] border-2 border-[#111113]" />
+                <span className="absolute -bottom-0.5 -right-0.5 size-3 rounded-full bg-[#22C55E] border-2 border-[#0A0A0A]/10" />
               </div>
               <div>
                 <p className="font-semibold text-[#0A0A0A] text-sm">{user.name}</p>
@@ -96,7 +90,7 @@ export default function AccountPage() {
           <div className="grid gap-5 lg:grid-cols-[220px_1fr]">
             {/* Sidebar */}
             <aside className="h-fit lg:sticky lg:top-24">
-              <div className="rounded-2xl border border-[#0A0A0A]/15 bg-[#111113] p-2">
+              <div className="rounded-2xl border border-[#0A0A0A]/15 bg-white p-2">
                 <nav className="flex flex-col gap-1">
                   {NAV.map((item) => {
                     const Icon = item.icon;
@@ -139,7 +133,7 @@ export default function AccountPage() {
 
 function Card({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
-    <div className={cn('rounded-2xl border border-[#0A0A0A]/15 bg-[#111113]', className)}>
+    <div className={cn('rounded-2xl border border-[#0A0A0A]/15 bg-white', className)}>
       {children}
     </div>
   );
