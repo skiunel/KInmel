@@ -37,10 +37,6 @@ const buildPreviewUrl = (
   path: string,
   token: string
 ): string | null => {
-  if (env.NODE_ENV === 'production') {
-    return null;
-  }
-
   const url = new URL(path, env.CLIENT_URL);
   url.searchParams.set('token', token);
   return url.toString();
@@ -116,14 +112,17 @@ export const register = async (input: RegisterInput) => {
   }
 
   // Create user (password is hashed by the pre-save hook)
+  // Auto-verify since no SMTP configured — flip to issueEmailVerificationToken when email service added
   const user = await User.create({
     name: input.name,
     email: input.email,
     password: input.password,
     phone: input.phone || null,
+    isEmailVerified: true,
+    emailVerifiedAt: new Date(),
   });
 
-  const emailVerification = issueEmailVerificationToken(user);
+  const emailVerification: PreviewLink = { previewUrl: null, expiresAt: null };
 
   // Generate tokens
   const accessToken = generateAccessToken(user);

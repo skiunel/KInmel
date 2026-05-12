@@ -160,26 +160,27 @@
   }
 
   .button-brand {
-    @apply inline-flex items-center justify-center rounded-full px-7 py-3 text-sm font-semibold text-white transition-all duration-300;
-    background: linear-gradient(135deg, #6C63FF, #8B7FFF) !important;
-    box-shadow: 0 14px 30px rgba(108, 99, 255, 0.4);
+    @apply inline-flex items-center justify-center px-6 h-11 text-[11px] font-mono font-bold uppercase tracking-[0.22em] text-white transition-colors duration-200;
+    background: #0A0A0A !important;
     color: #FFFFFF !important;
     border: none !important;
+    border-radius: 0 !important;
   }
   .button-brand:hover {
-    box-shadow: 0 18px 40px rgba(108, 99, 255, 0.6);
-    transform: translateY(-2px);
+    background: #E63946 !important;
   }
 
   .button-soft {
-    @apply inline-flex items-center justify-center rounded-full px-7 py-3 text-sm font-semibold transition-all duration-300;
-    border: 1px solid rgba(255, 255, 255, 0.2) !important;
-    color: #FFFFFF !important;
-    background: rgba(255, 255, 255, 0.02) !important;
+    @apply inline-flex items-center justify-center px-6 h-11 text-[11px] font-mono font-bold uppercase tracking-[0.22em] transition-colors duration-200;
+    border: 1px solid rgba(10, 10, 10, 0.15) !important;
+    color: #0A0A0A !important;
+    background: #FFFFFF !important;
+    border-radius: 0 !important;
   }
   .button-soft:hover {
-    border-color: rgba(108, 99, 255, 0.5) !important;
-    background: rgba(108, 99, 255, 0.1) !important;
+    border-color: #0A0A0A !important;
+    background: #0A0A0A !important;
+    color: #FFFFFF !important;
   }
 
   /* ── Gradient Text ── */
