@@ -25,11 +25,11 @@ export function MetaMaskConnect({ onConnect, className }: MetaMaskConnectProps) 
   if (isConnected && address) {
     return (
       <div
-        className={`flex items-center gap-2 justify-center px-4 py-3 rounded-xl border border-[#00FF88]/30 bg-[#00FF88]/[0.08] text-sm ${className ?? ''}`}
+        className={`flex items-center gap-2 justify-center px-4 py-3 border border-[#0A0A0A]/15 bg-[#F4F4F4] text-sm ${className ?? ''}`}
       >
         <span className="text-lg">🦊</span>
-        <span className="font-mono text-[#00FF88]">{shortenAddress(address)}</span>
-        <span className="text-xs text-white/40">connected</span>
+        <span className="font-mono text-[#0A0A0A]">{shortenAddress(address)}</span>
+        <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-[#0A0A0A]/55">connected</span>
       </div>
     );
   }
@@ -40,21 +40,21 @@ export function MetaMaskConnect({ onConnect, className }: MetaMaskConnectProps) 
         type="button"
         onClick={handleClick}
         disabled={isConnecting}
-        className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-[#E63946]/40 bg-[#E63946]/[0.08] text-white font-semibold transition-all hover:bg-[#E63946]/15 hover:shadow-[0_0_24px_rgba(230,57,70,0.4)] hover:border-[#E63946]/60 disabled:opacity-50"
+        className="w-full flex items-center justify-center gap-2 px-4 h-12 border border-[#0A0A0A]/15 bg-white text-[#0A0A0A] font-mono text-[11px] font-semibold uppercase tracking-[0.22em] transition-colors hover:bg-[#0A0A0A] hover:text-white disabled:opacity-50"
       >
         {isConnecting ? (
           <>
             <Loader2 className="size-4 animate-spin" />
-            Connecting...
+            Connecting…
           </>
         ) : (
           <>
             <span className="text-lg">🦊</span>
-            {isMetaMaskInstalled ? 'Connect MetaMask Wallet' : 'Install MetaMask'}
+            {isMetaMaskInstalled ? 'Connect MetaMask' : 'Install MetaMask'}
           </>
         )}
       </button>
-      {error && <p className="mt-2 text-xs text-[#FF6B6B]">{error}</p>}
+      {error && <p className="mt-2 font-mono text-[10px] uppercase tracking-widest text-[#E63946]">{error}</p>}
     </div>
   );
 }
