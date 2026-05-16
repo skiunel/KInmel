@@ -20,10 +20,10 @@ export function PaymentMethod({ selected, onChange }: PaymentMethodProps) {
   return (
     <div className="space-y-6">
       <div>
-        <p className="font-mono text-xs uppercase tracking-widest text-[#E63946] mb-2">
-          Step 2
+        <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-[#E63946] mb-2">
+          ◆ Step 02
         </p>
-        <h2 className="font-heading text-3xl font-black text-white">Payment Method</h2>
+        <h2 className="font-sans text-2xl md:text-3xl font-black uppercase tracking-[-0.02em] text-[#0A0A0A]">Payment method</h2>
       </div>
 
       {/* Pill selector */}
@@ -35,10 +35,10 @@ export function PaymentMethod({ selected, onChange }: PaymentMethodProps) {
             onClick={() => onChange(m.id)}
             disabled={!m.available}
             className={cn(
-              'px-5 py-3 rounded-full text-sm font-semibold transition-all backdrop-blur-xl inline-flex items-center gap-2',
+              'px-5 h-11 font-mono text-[11px] font-semibold uppercase tracking-[0.18em] transition-colors inline-flex items-center gap-2',
               selected === m.id
-                ? 'bg-gradient-to-r from-[#E63946] to-[#E63946] text-white shadow-[0_4px_20px_rgba(230,57,70,0.4)] border border-[#E63946]'
-                : 'bg-white/[0.04] text-white/70 border border-white/10 hover:border-[#E63946]/40 hover:text-white',
+                ? 'bg-[#0A0A0A] text-white border border-[#0A0A0A]'
+                : 'bg-white text-[#0A0A0A] border border-[#0A0A0A]/15 hover:bg-[#0A0A0A] hover:text-white',
               !m.available && 'opacity-40 cursor-not-allowed'
             )}
           >
@@ -58,9 +58,9 @@ export function PaymentMethod({ selected, onChange }: PaymentMethodProps) {
 
 function KhaltiBlock() {
   return (
-    <div className="rounded-2xl border border-[#0A0A0A]/10 bg-[#EDE7DA]/[0.03] p-6">
+    <div className="rounded-none border border-[#0A0A0A]/10 bg-[#EDE7DA]/[0.03] p-6">
       <div className="flex items-center gap-3 mb-3">
-        <div className="size-10 rounded-xl bg-[#5C2D91] text-white flex items-center justify-center text-lg">🟣</div>
+        <div className="size-10 rounded-none bg-[#5C2D91] text-[#0A0A0A] flex items-center justify-center text-lg">🟣</div>
         <div>
           <p className="font-heading text-base font-bold text-[#0A0A0A]">Pay with Khalti</p>
           <p className="text-xs text-[#0A0A0A]/55">Redirects to Khalti for secure payment.</p>
@@ -105,7 +105,7 @@ function StripeCardPreview() {
         >
           {/* Front */}
           <div
-            className="absolute inset-0 rounded-2xl p-6 flex flex-col justify-between"
+            className="absolute inset-0 rounded-none p-6 flex flex-col justify-between"
             style={{
               background:
                 'linear-gradient(135deg, #E63946 0%, #E63946 50%, #E63946 100%)',
@@ -116,33 +116,33 @@ function StripeCardPreview() {
             }}
           >
             <div className="flex justify-between items-start">
-              <span className="font-mono text-xs uppercase tracking-widest text-white/80">
+              <span className="font-mono text-xs uppercase tracking-widest text-[#0A0A0A]/80">
                 Kinmel
               </span>
-              <span className="text-white text-xl font-bold italic">VISA</span>
+              <span className="text-[#0A0A0A] text-xl font-bold italic">VISA</span>
             </div>
             <div>
-              <p className="font-mono text-xs uppercase tracking-widest text-white/70 mb-1">
+              <p className="font-mono text-xs uppercase tracking-widest text-[#0A0A0A]/70 mb-1">
                 Card Number
               </p>
-              <p className="font-mono text-lg text-white tracking-wider">
+              <p className="font-mono text-lg text-[#0A0A0A] tracking-wider">
                 {formattedNumber || '•••• •••• •••• ••••'}
               </p>
             </div>
             <div className="flex justify-between">
               <div>
-                <p className="font-mono text-[10px] uppercase tracking-widest text-white/70">
+                <p className="font-mono text-[10px] uppercase tracking-widest text-[#0A0A0A]/70">
                   Cardholder
                 </p>
-                <p className="text-sm text-white font-semibold mt-1">
+                <p className="text-sm text-[#0A0A0A] font-semibold mt-1">
                   {name || 'YOUR NAME'}
                 </p>
               </div>
               <div>
-                <p className="font-mono text-[10px] uppercase tracking-widest text-white/70">
+                <p className="font-mono text-[10px] uppercase tracking-widest text-[#0A0A0A]/70">
                   Expires
                 </p>
-                <p className="text-sm text-white font-semibold mt-1">
+                <p className="text-sm text-[#0A0A0A] font-semibold mt-1">
                   {expiry || 'MM/YY'}
                 </p>
               </div>
@@ -151,7 +151,7 @@ function StripeCardPreview() {
 
           {/* Back */}
           <div
-            className="absolute inset-0 rounded-2xl flex flex-col justify-center"
+            className="absolute inset-0 rounded-none flex flex-col justify-center"
             style={{
               background:
                 'linear-gradient(135deg, #1a1a2e 0%, #E63946 100%)',
@@ -173,7 +173,7 @@ function StripeCardPreview() {
       {/* Inputs */}
       <div className="space-y-3">
         <div>
-          <label className="font-mono text-xs uppercase tracking-widest text-white/60 mb-2 block">
+          <label className="font-mono text-xs uppercase tracking-widest text-[#0A0A0A]/60 mb-2 block">
             Card Number
           </label>
           <input
@@ -185,7 +185,7 @@ function StripeCardPreview() {
           />
         </div>
         <div>
-          <label className="font-mono text-xs uppercase tracking-widest text-white/60 mb-2 block">
+          <label className="font-mono text-xs uppercase tracking-widest text-[#0A0A0A]/60 mb-2 block">
             Cardholder Name
           </label>
           <input
@@ -197,7 +197,7 @@ function StripeCardPreview() {
         </div>
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <label className="font-mono text-xs uppercase tracking-widest text-white/60 mb-2 block">
+            <label className="font-mono text-xs uppercase tracking-widest text-[#0A0A0A]/60 mb-2 block">
               Expiry
             </label>
             <input
@@ -209,7 +209,7 @@ function StripeCardPreview() {
             />
           </div>
           <div>
-            <label className="font-mono text-xs uppercase tracking-widest text-white/60 mb-2 block">
+            <label className="font-mono text-xs uppercase tracking-widest text-[#0A0A0A]/60 mb-2 block">
               CVC
             </label>
             <input
@@ -224,7 +224,7 @@ function StripeCardPreview() {
           </div>
         </div>
       </div>
-      <p className="text-xs text-white/40">
+      <p className="text-xs text-[#0A0A0A]/40">
         Test mode: this preview is for display only. Real cards processed by Stripe on submit.
       </p>
     </div>
@@ -234,7 +234,7 @@ function StripeCardPreview() {
 function EsewaBlock() {
   return (
     <div
-      className="glass-card p-6 border-[#60BB46]/30"
+      className="border border-[#0A0A0A]/10 bg-white p-6 border-[#60BB46]/30"
       style={{
         background: 'linear-gradient(135deg, rgba(96,187,70,0.1), rgba(96,187,70,0.05))',
       }}
@@ -242,8 +242,8 @@ function EsewaBlock() {
       <div className="flex items-start gap-4">
         <div className="text-4xl">🟢</div>
         <div>
-          <h3 className="font-heading text-xl font-black text-white">eSewa Wallet</h3>
-          <p className="mt-2 text-sm text-white/70">
+          <h3 className="font-heading text-xl font-black text-[#0A0A0A]">eSewa Wallet</h3>
+          <p className="mt-2 text-sm text-[#0A0A0A]/70">
             You will be redirected to eSewa to complete your payment securely. After
             successful payment, you&apos;ll come back here.
           </p>
@@ -255,12 +255,12 @@ function EsewaBlock() {
 
 function CashOnDeliveryBlock() {
   return (
-    <div className="glass-card p-6">
+    <div className="border border-[#0A0A0A]/10 bg-white p-6">
       <div className="flex items-start gap-4">
         <div className="text-4xl">💵</div>
         <div>
-          <h3 className="font-heading text-xl font-black text-white">Cash on Delivery</h3>
-          <p className="mt-2 text-sm text-white/70">
+          <h3 className="font-heading text-xl font-black text-[#0A0A0A]">Cash on Delivery</h3>
+          <p className="mt-2 text-sm text-[#0A0A0A]/70">
             Pay in cash when your order arrives. Available for in-country deliveries only.
           </p>
         </div>

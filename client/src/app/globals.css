@@ -284,18 +284,18 @@
 
   /* ── Input ── */
   .glass-input {
-    @apply rounded-xl border px-4 py-3 text-sm outline-none transition-all;
-    background: rgba(255, 255, 255, 0.04);
-    border-color: rgba(255, 255, 255, 0.1);
-    color: #FFFFFF;
-    backdrop-filter: blur(10px);
+    @apply border px-4 py-3 text-sm outline-none transition-colors;
+    background: #FFFFFF;
+    border-color: rgba(10, 10, 10, 0.15);
+    color: #0A0A0A;
+    border-radius: 0;
   }
   .glass-input::placeholder {
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(10, 10, 10, 0.35);
   }
   .glass-input:focus {
-    border-color: rgba(108, 99, 255, 0.5);
-    box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.1);
+    border-color: #0A0A0A;
+    box-shadow: none;
   }
 
   /* ── Responsive helper ── */

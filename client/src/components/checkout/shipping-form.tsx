@@ -24,7 +24,7 @@ const NEPAL_PROVINCES = [
   'Sudurpashchim',
 ];
 
-const labelCls = 'font-mono text-xs uppercase tracking-widest text-white/60 mb-2 block';
+const labelCls = 'font-mono text-xs uppercase tracking-widest text-[#0A0A0A]/60 mb-2 block';
 
 export function ShippingForm({ defaultValues, onSubmit }: ShippingFormProps) {
   const {
@@ -51,10 +51,10 @@ export function ShippingForm({ defaultValues, onSubmit }: ShippingFormProps) {
         <p className="font-mono text-xs uppercase tracking-widest text-[#E63946] mb-2">
           Step 1
         </p>
-        <h2 className="font-heading text-3xl font-black text-white">Shipping Address</h2>
+        <h2 className="font-heading text-3xl font-black text-[#0A0A0A]">Shipping Address</h2>
       </div>
 
-      <div className="glass-card p-6 space-y-5">
+      <div className="border border-[#0A0A0A]/10 bg-white p-6 space-y-5">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <Field
             label="Full Name"
@@ -91,14 +91,14 @@ export function ShippingForm({ defaultValues, onSubmit }: ShippingFormProps) {
 
           <div>
             <label htmlFor="state" className={labelCls}>
-              Province <span className="text-[#FF6B6B]">*</span>
+              Province <span className="text-[#E63946]">*</span>
             </label>
             <select
               id="state"
               {...register('state')}
               className={cn(
                 'glass-input w-full appearance-none cursor-pointer',
-                errors.state && 'border-[#FF6B6B]/60'
+                errors.state && 'border-[#E63946]/60'
               )}
             >
               <option value="" className="bg-white">
@@ -111,7 +111,7 @@ export function ShippingForm({ defaultValues, onSubmit }: ShippingFormProps) {
               ))}
             </select>
             {errors.state && (
-              <p className="mt-1 text-xs text-[#FF6B6B]">{errors.state.message}</p>
+              <p className="mt-1 text-xs text-[#E63946]">{errors.state.message}</p>
             )}
           </div>
 
@@ -136,14 +136,14 @@ export function ShippingForm({ defaultValues, onSubmit }: ShippingFormProps) {
           />
         </div>
 
-        <div className="flex items-center gap-2 px-4 py-3 rounded-xl border border-white/10 bg-white/[0.02] text-xs text-white/60">
+        <div className="flex items-center gap-2 px-4 py-3 rounded-none border border-[#0A0A0A]/10 bg-[#F4F4F4] text-xs text-[#0A0A0A]/60">
           <MapPin className="size-4 shrink-0 text-[#E63946]" />
           <span>We currently deliver within Nepal only.</span>
         </div>
       </div>
 
       <div className="flex justify-end">
-        <button type="submit" className="btn-primary group">
+        <button type="submit" className="inline-flex items-center justify-center px-6 h-12 bg-[#0A0A0A] text-white font-mono text-[11px] font-bold uppercase tracking-[0.22em] hover:bg-[#E63946] transition-colors group">
           Continue to Payment
           <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
         </button>
@@ -170,15 +170,15 @@ function Field({
   return (
     <div>
       <label htmlFor={id} className={labelCls}>
-        {label} {required && <span className="text-[#FF6B6B]">*</span>}
+        {label} {required && <span className="text-[#E63946]">*</span>}
       </label>
       <input
         id={id}
         placeholder={placeholder}
-        className={cn('glass-input w-full', error && 'border-[#FF6B6B]/60')}
+        className={cn('glass-input w-full', error && 'border-[#E63946]/60')}
         {...register}
       />
-      {error && <p className="mt-1 text-xs text-[#FF6B6B]">{error}</p>}
+      {error && <p className="mt-1 text-xs text-[#E63946]">{error}</p>}
     </div>
   );
 }

@@ -92,7 +92,7 @@ export function CartDrawer() {
                 </div>
               ) : items.length === 0 ? (
                 <div className="flex h-full flex-col items-center justify-center gap-4 px-6 text-center">
-                  <div className="flex size-16 items-center justify-center rounded-full bg-muted">
+                  <div className="flex size-16 items-center justify-center rounded-none bg-muted">
                     <ShoppingBag className="size-7 text-muted-foreground" />
                   </div>
                   <div>
@@ -116,9 +116,9 @@ export function CartDrawer() {
                       <p className="text-xs text-muted-foreground">
                         Add <span className="font-semibold text-primary">{formatPrice(freeShippingDelta)}</span> more for free shipping
                       </p>
-                      <div className="mt-2 h-1.5 rounded-full bg-muted overflow-hidden">
+                      <div className="mt-2 h-1.5 rounded-none bg-muted overflow-hidden">
                         <div
-                          className="h-full rounded-full bg-primary transition-all"
+                          className="h-full rounded-none bg-primary transition-all"
                           style={{ width: `${Math.min(100, (subtotal / FREE_SHIPPING_THRESHOLD) * 100)}%` }}
                         />
                       </div>

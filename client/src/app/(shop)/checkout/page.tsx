@@ -139,64 +139,61 @@ export default function CheckoutPage() {
   if (!isAuthenticated || items.length === 0) return null;
 
   return (
-    <div className="relative min-h-screen pt-32 pb-24 px-6 md:px-12 overflow-hidden">
-      <div className="orb orb-violet -left-20 top-40 size-[24rem] opacity-40" />
-      <div className="orb orb-cyan right-0 top-1/2 size-[20rem] opacity-40" />
-
-      <div className="relative max-w-[1400px] mx-auto">
+    <div className="min-h-screen bg-white pt-24 pb-24">
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-10">
         {/* Header */}
-        <div className="mb-10">
-          <p className="font-mono text-xs uppercase tracking-widest text-[#E63946] mb-3">
-            Checkout
+        <div className="mb-10 border-b border-[#0A0A0A]/10 pb-8">
+          <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-[#E63946] mb-3">
+            ◆ Checkout
           </p>
-          <h1 className="font-heading text-4xl md:text-5xl font-black tracking-tight gradient-text">
-            Complete your order
+          <h1 className="font-sans text-4xl md:text-6xl font-black uppercase tracking-[-0.04em] text-[#0A0A0A] leading-[0.95]">
+            Complete your order.
           </h1>
         </div>
 
         {/* Step indicator */}
-        <div className="mb-12 flex items-center justify-center">
+        <div className="mb-12 flex items-center">
           {STEPS.map((s, i) => {
             const isActive = s.id === step;
             const isCompleted = i < currentStepIndex;
             return (
-              <div key={s.id} className="flex items-center">
-                {i > 0 && (
-                  <div
-                    className={cn(
-                      'h-px w-12 sm:w-24 transition-colors',
-                      isCompleted ? 'bg-[#E63946]' : 'bg-white/10'
-                    )}
-                  />
-                )}
+              <div key={s.id} className="flex items-center flex-1">
                 <button
                   onClick={() => {
                     if (isCompleted) setStep(s.id);
                   }}
                   disabled={!isCompleted}
-                  className="flex flex-col items-center gap-2 px-2"
+                  className="flex items-center gap-3"
                 >
                   <div
                     className={cn(
-                      'flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold transition-all',
+                      'flex h-9 w-9 items-center justify-center font-mono text-xs font-bold transition-colors',
                       isActive
-                        ? 'bg-gradient-to-r from-[#E63946] to-[#E63946] text-white shadow-[0_0_20px_rgba(230,57,70,0.5)]'
+                        ? 'bg-[#0A0A0A] text-white'
                         : isCompleted
-                          ? 'bg-[#00FF88]/15 border border-[#00FF88]/30 text-[#00FF88] cursor-pointer'
-                          : 'bg-white/[0.04] border border-white/10 text-white/40'
+                          ? 'bg-[#E63946] text-white cursor-pointer'
+                          : 'bg-white border border-[#0A0A0A]/15 text-[#0A0A0A]/40'
                     )}
                   >
                     {isCompleted ? <Check className="size-4" /> : i + 1}
                   </div>
                   <span
                     className={cn(
-                      'text-xs font-medium font-mono uppercase tracking-widest',
-                      isActive ? 'text-white' : 'text-white/40'
+                      'font-mono text-[11px] font-semibold uppercase tracking-[0.22em] hidden sm:inline',
+                      isActive ? 'text-[#0A0A0A]' : 'text-[#0A0A0A]/45'
                     )}
                   >
                     {s.label}
                   </span>
                 </button>
+                {i < STEPS.length - 1 && (
+                  <div
+                    className={cn(
+                      'flex-1 h-px mx-4 transition-colors',
+                      isCompleted ? 'bg-[#0A0A0A]' : 'bg-[#0A0A0A]/10'
+                    )}
+                  />
+                )}
               </div>
             );
           })}
@@ -232,10 +229,10 @@ export default function CheckoutPage() {
                 >
                   <PaymentMethod selected={paymentMethod} onChange={setPaymentMethod} />
 
-                  <div className="glass-card p-6">
+                  <div className="border border-[#0A0A0A]/10 bg-white p-6">
                     <label
                       htmlFor="notes"
-                      className="font-mono text-xs uppercase tracking-widest text-white/60 mb-2 block"
+                      className="font-mono text-[10px] uppercase tracking-[0.22em] text-[#0A0A0A]/55 mb-2 block"
                     >
                       Order notes (optional)
                     </label>
@@ -246,19 +243,22 @@ export default function CheckoutPage() {
                       onChange={(e) => setNotes(e.target.value)}
                       rows={3}
                       maxLength={500}
-                      className="glass-input w-full resize-none"
+                      className="w-full border border-[#0A0A0A]/15 bg-white p-3 text-sm text-[#0A0A0A] placeholder:text-[#0A0A0A]/35 outline-none focus:border-[#0A0A0A] resize-none"
                     />
-                    <p className="mt-2 text-right text-xs text-white/40">
+                    <p className="mt-2 text-right font-mono text-[10px] text-[#0A0A0A]/40">
                       {notes.length}/500
                     </p>
                   </div>
 
                   <div className="flex justify-between gap-3">
-                    <button onClick={() => setStep('shipping')} className="btn-ghost">
+                    <button
+                      onClick={() => setStep('shipping')}
+                      className="inline-flex items-center justify-center px-6 h-12 border border-[#0A0A0A]/15 bg-white text-[#0A0A0A] font-mono text-[11px] font-bold uppercase tracking-[0.22em] hover:bg-[#0A0A0A] hover:text-white transition-colors"
+                    >
                       <ArrowLeft className="size-4 mr-2" />
                       Back
                     </button>
-                    <button onClick={handlePaymentContinue} className="btn-primary group">
+                    <button onClick={handlePaymentContinue} className="inline-flex items-center justify-center px-6 h-12 bg-[#0A0A0A] text-white font-mono text-[11px] font-bold uppercase tracking-[0.22em] hover:bg-[#E63946] transition-colors group">
                       Review order
                       <ArrowRight className="ml-2 size-4 transition-transform group-hover:translate-x-1" />
                     </button>
@@ -285,10 +285,10 @@ export default function CheckoutPage() {
                   />
 
                   {error && (
-                    <div className="glass-card p-4 border-[#FF6B6B]/40 bg-[#FF6B6B]/[0.08]">
+                    <div className="border border-[#E63946] bg-[#E63946]/[0.05] p-4">
                       <div className="flex items-center gap-3">
-                        <AlertCircle className="size-5 shrink-0 text-[#FF6B6B]" />
-                        <p className="text-sm text-[#FF6B6B]">{error}</p>
+                        <AlertCircle className="size-4 shrink-0 text-[#E63946]" />
+                        <p className="text-sm text-[#E63946]">{error}</p>
                       </div>
                     </div>
                   )}
@@ -297,7 +297,7 @@ export default function CheckoutPage() {
                     <button
                       onClick={() => setStep('payment')}
                       disabled={isPlacing}
-                      className="btn-ghost"
+                      className="inline-flex items-center justify-center px-6 h-12 border border-[#0A0A0A]/15 bg-white text-[#0A0A0A] font-mono text-[11px] font-bold uppercase tracking-[0.22em] hover:bg-[#0A0A0A] hover:text-white transition-colors disabled:opacity-50"
                     >
                       <ArrowLeft className="size-4 mr-2" />
                       Back
@@ -305,27 +305,17 @@ export default function CheckoutPage() {
                     <button
                       onClick={handlePlaceOrder}
                       disabled={isPlacing}
-                      className="btn-primary pulse-glow group min-w-[240px]"
+                      className="inline-flex items-center justify-center px-6 h-12 bg-[#0A0A0A] text-white font-mono text-[11px] font-bold uppercase tracking-[0.22em] hover:bg-[#E63946] transition-colors group min-w-[260px] disabled:opacity-60"
                     >
                       {isPlacing ? (
                         <>
-                          {/* Spinning blockchain ring */}
-                          <div className="relative size-5 mr-2">
-                            <div
-                              className="absolute inset-0 rounded-full border-2 border-transparent"
-                              style={{
-                                borderTopColor: '#FFFFFF',
-                                borderRightColor: '#E63946',
-                                animation: 'spin 1s linear infinite',
-                              }}
-                            />
-                          </div>
-                          Processing...
+                          <Loader2 className="size-4 mr-2 animate-spin" />
+                          Processing…
                         </>
                       ) : (
                         <>
                           <ShoppingBag className="size-4 mr-2" />
-                          Place Order — {formatPrice(totalAmount)}
+                          Place order — {formatPrice(totalAmount)}
                           <ArrowRight className="ml-2 size-4 transition-transform group-hover:translate-x-1" />
                         </>
                       )}
