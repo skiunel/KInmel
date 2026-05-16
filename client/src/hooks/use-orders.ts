@@ -8,6 +8,8 @@ export function useOrders(params: OrderQueryParams = {}) {
   return useQuery({
     queryKey: ['orders', params],
     queryFn: () => orderService.getMyOrders(params),
+    staleTime: 0,
+    refetchInterval: 30 * 1000,
   });
 }
 
@@ -16,6 +18,8 @@ export function useOrder(id: string) {
     queryKey: ['order', id],
     queryFn: () => orderService.getOrder(id),
     enabled: !!id,
+    staleTime: 0,
+    refetchInterval: 30 * 1000,
   });
 }
 
