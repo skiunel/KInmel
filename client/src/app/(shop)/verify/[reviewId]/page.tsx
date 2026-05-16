@@ -122,52 +122,42 @@ function CheckRow({ check, index }: { check: CheckItem; index: number }) {
     <motion.div
       initial={{ opacity: 0, x: -10 }}
       animate={{ opacity: 1, x: 0 }}
-      transition={{ delay: 0.8 + index * 0.12 }}
-      className={cn(
-        'flex items-start gap-3 rounded-xl border p-4 transition-colors',
-        check.passed === true && 'border-success/30 bg-success/[0.03]',
-        check.passed === false && 'border-destructive/30 bg-destructive/[0.03]',
-        check.passed === null && 'border-border bg-muted/30'
-      )}
+      transition={{ delay: 0.5 + index * 0.06 }}
+      className="flex items-start gap-4 border-b border-[#0A0A0A]/10 last:border-b-0 px-5 py-4"
     >
       <div
         className={cn(
-          'flex h-8 w-8 shrink-0 items-center justify-center rounded-lg',
-          check.passed === true && 'bg-success/10',
-          check.passed === false && 'bg-destructive/10',
-          check.passed === null && 'bg-muted'
+          'flex h-8 w-8 shrink-0 items-center justify-center border',
+          check.passed === true && 'bg-[#0A0A0A] border-[#0A0A0A] text-white',
+          check.passed === false && 'bg-[#E63946] border-[#E63946] text-white',
+          check.passed === null && 'bg-white border-[#0A0A0A]/15 text-[#0A0A0A]/50'
         )}
       >
         {check.passed === true ? (
-          <CheckCircle2 className="size-4 text-success" />
+          <CheckCircle2 className="size-4" />
         ) : check.passed === false ? (
-          <XCircle className="size-4 text-destructive" />
+          <XCircle className="size-4" />
         ) : (
-          <Icon className="size-4 text-muted-foreground" />
+          <Icon className="size-4" />
         )}
       </div>
-      <div>
-        <p className="text-sm font-semibold text-foreground">{check.label}</p>
-        <p className="text-xs text-muted-foreground mt-0.5">
+      <div className="min-w-0 flex-1">
+        <p className="text-sm font-semibold text-[#0A0A0A] uppercase tracking-tight">{check.label}</p>
+        <p className="text-xs text-[#0A0A0A]/55 mt-1 leading-relaxed">
           {check.description}
         </p>
       </div>
       <div className="ml-auto shrink-0">
-        {check.passed === true && (
-          <Chip variant="success" className="text-[10px]">
-            Passed
-          </Chip>
-        )}
-        {check.passed === false && (
-          <Chip variant="destructive" className="text-[10px]">
-            Failed
-          </Chip>
-        )}
-        {check.passed === null && (
-          <Chip variant="muted" className="text-[10px]">
-            N/A
-          </Chip>
-        )}
+        <span
+          className={cn(
+            'inline-flex items-center px-2.5 py-1 font-mono text-[9px] font-bold uppercase tracking-[0.22em]',
+            check.passed === true && 'bg-[#0A0A0A] text-white',
+            check.passed === false && 'bg-[#E63946] text-white',
+            check.passed === null && 'bg-[#F4F4F4] text-[#0A0A0A]/55 border border-[#0A0A0A]/10'
+          )}
+        >
+          {check.passed === true ? 'Passed' : check.passed === false ? 'Failed' : 'N/A'}
+        </span>
       </div>
     </motion.div>
   );
@@ -468,11 +458,15 @@ export default function VerifyReviewPage({
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
         >
-          <h2 className="text-base font-bold font-heading mb-4 flex items-center gap-2">
-            <Fingerprint className="size-4 text-chain" />
-            Verification Checks
-          </h2>
-          <div className="space-y-3">
+          <div className="mb-4 flex items-baseline justify-between">
+            <h2 className="font-mono text-[10px] uppercase tracking-[0.28em] text-[#E63946] flex items-center gap-2">
+              <Fingerprint className="size-3" /> ◆ Verification Checks
+            </h2>
+            <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-[#0A0A0A]/55">
+              {passedCount} of {checks.length} passed
+            </span>
+          </div>
+          <div className="border border-[#0A0A0A]/10 bg-white">
             {checks.map((check, i) => (
               <CheckRow key={check.id} check={check} index={i} />
             ))}
@@ -575,37 +569,42 @@ export default function VerifyReviewPage({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.4 }}
-          className="rounded-2xl border bg-muted/30 p-6"
+          className="border border-[#0A0A0A]/10 bg-white p-8"
         >
-          <h2 className="text-base font-bold font-heading mb-4">
-            How Kinmel Verification Works
+          <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-[#E63946] mb-2">◆ How it works</p>
+          <h2 className="font-sans text-xl font-bold tracking-[-0.02em] text-[#0A0A0A] mb-6">
+            Kinmel verification.
           </h2>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <div className="grid grid-cols-1 gap-px bg-[#0A0A0A]/10 border border-[#0A0A0A]/10 sm:grid-cols-3">
             {[
               {
                 icon: User,
-                title: '1. Purchase Verified',
+                n: '001',
+                title: 'Purchase verified',
                 desc: 'Only customers who bought and received the product can submit reviews.',
               },
               {
                 icon: Database,
-                title: '2. External Record',
+                n: '002',
+                title: 'External record',
                 desc: 'A SHA-256 fingerprint and optional IPFS record make quiet tampering easier to detect.',
               },
               {
                 icon: Lock,
-                title: '3. Blockchain Proof',
+                n: '003',
+                title: 'Blockchain proof',
                 desc: 'If chain services are configured, the fingerprint is anchored on-chain for an extra public timestamp.',
               },
             ].map((step) => (
-              <div key={step.title} className="text-center">
-                <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-xl bg-chain/10 mb-3">
-                  <step.icon className="size-5 text-chain" />
+              <div key={step.title} className="bg-white p-5">
+                <div className="flex items-center justify-between mb-4">
+                  <step.icon className="size-4 text-[#0A0A0A]" />
+                  <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-[#E63946]">{step.n}</span>
                 </div>
-                <h3 className="text-sm font-semibold text-foreground">
+                <h3 className="font-sans text-sm font-bold uppercase tracking-tight text-[#0A0A0A]">
                   {step.title}
                 </h3>
-                <p className="mt-1 text-xs text-muted-foreground leading-relaxed">
+                <p className="mt-2 text-xs text-[#0A0A0A]/60 leading-relaxed">
                   {step.desc}
                 </p>
               </div>
