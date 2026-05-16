@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Package, ShoppingBag, Loader2 } from 'lucide-react';
 import { PageHeader } from '@/components/layout';
-import { Container } from '@/components/layout';
 import { Pagination } from '@/components/shared/pagination';
 import { EmptyState } from '@/components/shared';
 import { OrderCard } from '@/components/orders';
@@ -60,18 +59,18 @@ export default function OrdersPage() {
         ]}
       />
 
-      <section className="px-6 md:px-12 pb-24">
-        <Container className="max-w-[1400px] px-0">
+      <section className="bg-white pb-24">
+        <div className="max-w-[1600px] mx-auto px-6 lg:px-10 pt-10">
           <div className="mb-8 flex gap-2 overflow-x-auto pb-2 scrollbar-none">
             {STATUS_FILTERS.map((filter) => (
               <button
                 key={filter.value}
                 onClick={() => { setStatusFilter(filter.value); setPage(1); }}
                 className={cn(
-                  'whitespace-nowrap rounded-full border px-4 py-2 text-xs font-semibold uppercase tracking-wider transition-all backdrop-blur-xl',
+                  'whitespace-nowrap px-4 h-9 font-mono text-[11px] font-semibold uppercase tracking-[0.18em] transition-colors',
                   statusFilter === filter.value
-                    ? 'bg-gradient-to-r from-[#E63946] to-[#E63946] text-white shadow-[0_4px_20px_rgba(230,57,70,0.4)] border-[#E63946]'
-                    : 'bg-white/[0.04] text-white/60 border-white/10 hover:border-[#E63946]/40 hover:text-white'
+                    ? 'bg-[#0A0A0A] text-white'
+                    : 'bg-white text-[#0A0A0A] border border-[#0A0A0A]/15 hover:bg-[#0A0A0A] hover:text-white'
                 )}
               >
                 {filter.label}
@@ -82,11 +81,11 @@ export default function OrdersPage() {
           {isLoading ? (
             <div className="space-y-3">
               {Array.from({ length: 3 }).map((_, i) => (
-                <div key={i} className="glass-card h-[120px] animate-pulse" />
+                <div key={i} className="h-[120px] bg-[#F4F4F4] border border-[#0A0A0A]/10 animate-pulse" />
               ))}
             </div>
           ) : !data?.data.length ? (
-            <div className="glass-card p-10 text-center">
+            <div className="border border-[#0A0A0A]/10 bg-white p-10 text-center">
               <EmptyState
                 icon={statusFilter ? Package : ShoppingBag}
                 title={
@@ -124,11 +123,11 @@ export default function OrdersPage() {
           )}
 
           {data?.pagination && data.pagination.pages > 1 && (
-            <div className="glass-card mt-8 p-4">
+            <div className="mt-8 pt-6 border-t border-[#0A0A0A]/10 flex justify-center">
               <Pagination pagination={data.pagination} onPageChange={setPage} />
             </div>
           )}
-        </Container>
+        </div>
       </section>
     </>
   );
