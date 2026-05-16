@@ -5,15 +5,19 @@ import { env } from '../config/env';
 // Uses eSewa's epay API for payment processing
 // Docs: https://developer.esewa.com.np/
 
+// Live eSewa only when ESEWA_LIVE=true AND merchant creds set.
+// Otherwise default to UAT sandbox (works with EPAYTEST creds).
+const isLive = process.env.ESEWA_LIVE === 'true' && !!process.env.ESEWA_MERCHANT_ID;
+
 const ESEWA_CONFIG = {
   merchantId: process.env.ESEWA_MERCHANT_ID || 'EPAYTEST',
   secretKey: process.env.ESEWA_SECRET_KEY || '8gBm/:&EnhH.1/q',
-  baseUrl: process.env.NODE_ENV === 'production'
+  baseUrl: isLive
     ? 'https://epay.esewa.com.np'
     : 'https://rc-epay.esewa.com.np',
-  verifyUrl: process.env.NODE_ENV === 'production'
+  verifyUrl: isLive
     ? 'https://epay.esewa.com.np/api/epay/transaction/status/'
-    : 'https://uat.esewa.com.np/api/epay/transaction/status/',
+    : 'https://rc.esewa.com.np/api/epay/transaction/status/',
 };
 
 export interface EsewaPaymentInit {
