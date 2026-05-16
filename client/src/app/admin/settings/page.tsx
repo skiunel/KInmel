@@ -69,14 +69,14 @@ export default function AdminSettingsPage() {
               <label className="text-sm font-medium text-foreground">Hero headline</label>
               <Textarea
                 defaultValue="The power of clean wellness in every dose."
-                className="mt-2 min-h-24 border-white/10 bg-white/[0.04] text-white"
+                className="mt-2 min-h-24 border-[#0A0A0A]/10 bg-white text-[#0A0A0A]"
               />
             </div>
             <div className="md:col-span-2">
               <label className="text-sm font-medium text-foreground">Footer trust note</label>
               <Textarea
                 defaultValue="This store sells only products with signed reviews."
-                className="mt-2 min-h-20 border-white/10 bg-white/[0.04] text-white"
+                className="mt-2 min-h-20 border-[#0A0A0A]/10 bg-white text-[#0A0A0A]"
               />
             </div>
           </div>

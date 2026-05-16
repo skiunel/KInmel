@@ -1,6 +1,7 @@
 'use client';
 
 import { cn } from '@/lib/utils';
+import { TrendingUp, TrendingDown } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 
 interface StatCardProps {
@@ -12,13 +13,6 @@ interface StatCardProps {
   className?: string;
 }
 
-const iconStyle: Record<string, { bg: string; color: string; ring: string }> = {
-  default: { bg: 'bg-[#E63946]/15', color: '#E63946', ring: 'rgba(230,57,70,0.3)' },
-  verified: { bg: 'bg-[#FFD700]/15', color: '#FFD700', ring: 'rgba(255,215,0,0.3)' },
-  chain: { bg: 'bg-[#E63946]/15', color: '#E63946', ring: 'rgba(230,57,70,0.3)' },
-  success: { bg: 'bg-[#00FF88]/15', color: '#00FF88', ring: 'rgba(0,255,136,0.3)' },
-};
-
 export function StatCard({
   label,
   value,
@@ -27,42 +21,35 @@ export function StatCard({
   variant = 'default',
   className,
 }: StatCardProps) {
-  const s = iconStyle[variant];
+  const accent = variant === 'verified' ? '#E63946' : variant === 'success' ? '#0A0A0A' : '#0A0A0A';
+  const isPositive = (change?.value ?? 0) >= 0;
+
   return (
-    <div className={cn('glass-card p-5 float', className)}>
-      <div className="flex items-start justify-between">
-        <div>
-          <p className="font-mono text-[10px] uppercase tracking-widest text-white/50">
-            {label}
-          </p>
-          <p
-            className="mt-2 font-heading text-3xl font-black"
-            style={{ color: s.color }}
-          >
-            {value}
-          </p>
-          {change && (
-            <p
-              className={cn(
-                'mt-1 text-xs font-semibold',
-                change.value >= 0 ? 'text-[#00FF88]' : 'text-[#FF6B6B]'
-              )}
-            >
-              {change.value >= 0 ? '+' : ''}
-              {change.value}% {change.label}
-            </p>
-          )}
-        </div>
-        <div
-          className={cn('rounded-2xl p-3 border', s.bg)}
-          style={{
-            borderColor: s.ring,
-            boxShadow: `0 0 24px ${s.ring}`,
-          }}
-        >
-          <Icon className="size-5" style={{ color: s.color }} />
-        </div>
+    <div className={cn('border border-[#0A0A0A]/10 bg-white p-6', className)}>
+      <div className="flex items-start justify-between mb-3">
+        <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-[#0A0A0A]/45">
+          ◆ {label}
+        </p>
+        <Icon className="size-3.5 text-[#0A0A0A]/35" />
       </div>
+      <p
+        className="font-sans text-3xl md:text-4xl font-black tracking-[-0.02em] tabular-nums"
+        style={{ color: accent }}
+      >
+        {value}
+      </p>
+      {change && (
+        <p
+          className={cn(
+            'mt-2 font-mono text-[10px] inline-flex items-center gap-1 uppercase tracking-[0.16em]',
+            isPositive ? 'text-[#0A0A0A]' : 'text-[#E63946]'
+          )}
+        >
+          {isPositive ? <TrendingUp className="size-3" /> : <TrendingDown className="size-3" />}
+          {isPositive ? '+' : ''}
+          {change.value}% {change.label}
+        </p>
+      )}
     </div>
   );
 }
