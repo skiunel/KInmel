@@ -22,35 +22,35 @@ const STATUS_CONFIG: Record<
 > = {
   pending: {
     icon: Clock,
-    className: 'bg-[#f6efe4] text-[#8a6b41] border-[#eadcc6]',
+    className: 'bg-[#E63946] text-white',
   },
   confirmed: {
     icon: CheckCircle2,
-    className: 'bg-[#e7eef9] text-[#546989] border-[#cfdbef]',
+    className: 'bg-white text-[#0A0A0A] border border-[#0A0A0A]/15',
   },
   processing: {
     icon: Package,
-    className: 'bg-[#edf1f8] text-[#5c6880] border-[#d7deea]',
+    className: 'bg-white text-[#0A0A0A] border border-[#0A0A0A]/15',
   },
   shipped: {
     icon: Truck,
-    className: 'bg-[#eef2fb] text-[#5f7395] border-[#d8e1f1]',
+    className: 'bg-[#0A0A0A]/65 text-white',
   },
   out_for_delivery: {
     icon: MapPin,
-    className: 'bg-[#eaf3f4] text-[#4f7b82] border-[#d1e4e7]',
+    className: 'bg-[#0A0A0A]/65 text-white',
   },
   delivered: {
     icon: CircleCheck,
-    className: 'bg-[#edf5ef] text-[#51725d] border-[#d6e6da]',
+    className: 'bg-[#0A0A0A] text-white',
   },
   cancelled: {
     icon: XCircle,
-    className: 'bg-[#f9ecec] text-[#9b5d5d] border-[#efd3d3]',
+    className: 'bg-white text-[#E63946] border border-[#E63946]',
   },
   returned: {
     icon: RotateCcw,
-    className: 'bg-[#f1f2f4] text-[#69707a] border-[#dde0e6]',
+    className: 'bg-[#F4F4F4] text-[#0A0A0A]/65 border border-[#0A0A0A]/10',
   },
 };
 
@@ -72,8 +72,8 @@ export function OrderStatusBadge({
   return (
     <span
       className={cn(
-        'inline-flex items-center gap-1.5 rounded-full border font-medium',
-        size === 'sm' ? 'px-2.5 py-0.5 text-xs' : 'px-3 py-1 text-sm',
+        'inline-flex items-center gap-1.5 font-mono font-bold uppercase tracking-[0.18em]',
+        size === 'sm' ? 'px-2.5 py-1 text-[9px]' : 'px-3 py-1 text-[10px]',
         config.className,
         className
       )}
@@ -87,10 +87,10 @@ export function OrderStatusBadge({
 // ─── Payment Status Badge ───
 
 const PAYMENT_CONFIG: Record<string, string> = {
-  pending: 'bg-[#f6efe4] text-[#8a6b41] border-[#eadcc6]',
-  paid: 'bg-[#edf5ef] text-[#51725d] border-[#d6e6da]',
-  failed: 'bg-[#f9ecec] text-[#9b5d5d] border-[#efd3d3]',
-  refunded: 'bg-[#f1f2f4] text-[#69707a] border-[#dde0e6]',
+  pending: 'bg-[#E63946] text-white',
+  paid: 'bg-[#0A0A0A] text-white',
+  failed: 'bg-white text-[#E63946] border border-[#E63946]',
+  refunded: 'bg-[#F4F4F4] text-[#0A0A0A]/65 border border-[#0A0A0A]/10',
 };
 
 const PAYMENT_LABELS: Record<string, string> = {
@@ -112,7 +112,7 @@ export function PaymentStatusBadge({
   return (
     <span
       className={cn(
-        'inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium',
+        'inline-flex items-center px-2.5 py-1 font-mono text-[9px] font-bold uppercase tracking-[0.18em]',
         PAYMENT_CONFIG[status] || PAYMENT_CONFIG.pending,
         className
       )}
