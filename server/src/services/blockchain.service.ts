@@ -106,10 +106,13 @@ let _writeContract: ethers.Contract | null = null;
 let _readContract: ethers.Contract | null = null;
 let _networkInfo: NetworkInfo | null = null;
 
+const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
+
 function isConfigured(): boolean {
   return !!(
     env.BLOCKCHAIN_RPC_URL &&
     env.REVIEW_CONTRACT_ADDRESS &&
+    env.REVIEW_CONTRACT_ADDRESS.toLowerCase() !== ZERO_ADDRESS &&
     env.DEPLOYER_PRIVATE_KEY
   );
 }
@@ -332,31 +335,37 @@ export async function verifyReviewOnChain(
     return { exists: false, verified: false, proof: null };
   }
 
-  const contract = getReadContract();
-  const reviewIdHash = idHash(reviewId);
+  try {
+    const contract = getReadContract();
+    const reviewIdHash = idHash(reviewId);
 
-  const raw = await contract.getProof(reviewIdHash);
+    const raw = await contract.getProof(reviewIdHash);
 
-  if (!raw.exists) {
+    if (!raw.exists) {
+      return { exists: false, verified: false, proof: null };
+    }
+
+    const contentBytes32 = toBytes32(contentHash);
+    const verified = await contract.verifyContent(reviewIdHash, contentBytes32);
+
+    return {
+      exists: true,
+      verified: verified as boolean,
+      proof: {
+        contentHash: raw.contentHash as string,
+        ipfsCidHash: raw.ipfsCidHash as string,
+        productIdHash: raw.productIdHash as string,
+        orderIdHash: raw.orderIdHash as string,
+        reviewerHash: raw.reviewerHash as string,
+        timestamp: Number(raw.timestamp),
+        exists: true,
+      },
+    };
+  } catch (e) {
+    // RPC unreachable, contract not deployed at configured address, or call reverted.
+    // Treat as "not anchored" so /verify page renders cleanly instead of 500.
     return { exists: false, verified: false, proof: null };
   }
-
-  const contentBytes32 = toBytes32(contentHash);
-  const verified = await contract.verifyContent(reviewIdHash, contentBytes32);
-
-  return {
-    exists: true,
-    verified: verified as boolean,
-    proof: {
-      contentHash: raw.contentHash as string,
-      ipfsCidHash: raw.ipfsCidHash as string,
-      productIdHash: raw.productIdHash as string,
-      orderIdHash: raw.orderIdHash as string,
-      reviewerHash: raw.reviewerHash as string,
-      timestamp: Number(raw.timestamp),
-      exists: true,
-    },
-  };
 }
 
 // ─── Read: Quick Check ───
