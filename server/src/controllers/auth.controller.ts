@@ -7,25 +7,27 @@ import { env } from '../config/env';
 
 const REFRESH_COOKIE_NAME = 'kinmel_refresh';
 
+// Cross-origin in prod (Vercel → Render): need sameSite='none' + secure=true.
+// In dev (same-origin localhost): use 'lax' to keep CSRF protection.
+const isProd = env.NODE_ENV === 'production';
+
 const refreshCookieOptions = {
-  httpOnly: true,                               // Not accessible via JS
-  secure: env.NODE_ENV === 'production',        // HTTPS only in prod
-  sameSite: 'strict' as const,                  // CSRF protection
-  path: '/api/v1/auth',                         // Only sent to auth routes
-  maxAge: 7 * 24 * 60 * 60 * 1000,             // 7 days in ms
+  httpOnly: true,
+  secure: isProd,
+  sameSite: (isProd ? 'none' : 'lax') as 'none' | 'lax',
+  path: '/api/v1/auth',
+  maxAge: 7 * 24 * 60 * 60 * 1000,
 };
 
-// Helper: set refresh token cookie
 const setRefreshCookie = (res: Response, token: string) => {
   res.cookie(REFRESH_COOKIE_NAME, token, refreshCookieOptions);
 };
 
-// Helper: clear refresh token cookie
 const clearRefreshCookie = (res: Response) => {
   res.clearCookie(REFRESH_COOKIE_NAME, {
     httpOnly: true,
-    secure: env.NODE_ENV === 'production',
-    sameSite: 'strict',
+    secure: isProd,
+    sameSite: isProd ? 'none' : 'lax',
     path: '/api/v1/auth',
   });
 };
