@@ -25,6 +25,9 @@ router.get('/ipfs/:cid', reviewController.getStoredIpfsDocument);
 // Verify a review on-chain (no auth required)
 router.get('/:id/verify', reviewController.verifyOnChain);
 
+// Public blockchain config diagnostic
+router.get('/blockchain/status', reviewController.getChainStatus);
+
 // ─── Authenticated Customer ───
 
 router.use(authenticate);

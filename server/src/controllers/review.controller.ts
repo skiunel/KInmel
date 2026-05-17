@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import * as reviewService from '../services/review.service';
+import { getBlockchainStatus } from '../services/blockchain.service';
 import { asyncHandler } from '../utils/async-handler';
 
 // ─── GET /reviews/eligibility/:orderId ───
@@ -118,6 +119,13 @@ export const getStoredIpfsDocument = asyncHandler(
     const result = await reviewService.getStoredIpfsDocument(req.params.cid as string);
 
     res.status(200).json(result);
+  }
+);
+
+export const getChainStatus = asyncHandler(
+  async (_req: Request, res: Response) => {
+    const status = await getBlockchainStatus();
+    res.status(200).json({ success: true, data: status });
   }
 );
 

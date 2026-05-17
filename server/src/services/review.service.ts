@@ -287,35 +287,39 @@ export const getPublicVerification = async (reviewId: string) => {
     timestamp: review.createdAt.toISOString(),
   };
 
-  // Lazy retry: if review has IPFS + content hash but no chain anchor yet,
-  // attempt anchor inline on verify-page hit. Keeps reviews self-healing
-  // without a separate cron, even when initial anchor fired before chain
-  // env was configured on the server.
   if (
     review.ipfsHash &&
     review.contentHash &&
-    !review.blockchainTxHash &&
-    isBlockchainConfigured()
+    !review.blockchainTxHash
   ) {
-    try {
-      const result = await anchorReviewOnChain({
-        reviewId: review._id.toString(),
-        contentHash: review.contentHash,
-        ipfsCid: review.ipfsHash,
-        productId,
-        orderId: review.order.toString(),
-        userId,
-      });
-      review.blockchainTxHash = result.txHash;
-      review.blockNumber = result.blockNumber;
-      review.contractAddress = result.contractAddress;
-      review.isVerified = true;
-      review.verificationStatus = VERIFICATION_STATUSES.VERIFIED;
-      review.verificationMessage = null;
+    if (!isBlockchainConfigured()) {
+      review.verificationMessage =
+        'Blockchain anchoring is not configured on the server (missing RPC URL, contract address, or signer key).';
       await review.save();
-      logger.info(`[Blockchain] Lazy-anchored review ${review._id} (verify hit) — TX: ${result.txHash}`);
-    } catch (e) {
-      logger.warn(`[Blockchain] Lazy-anchor failed for ${review._id}: ${(e as Error).message}`);
+    } else {
+      try {
+        const result = await anchorReviewOnChain({
+          reviewId: review._id.toString(),
+          contentHash: review.contentHash,
+          ipfsCid: review.ipfsHash,
+          productId,
+          orderId: review.order.toString(),
+          userId,
+        });
+        review.blockchainTxHash = result.txHash;
+        review.blockNumber = result.blockNumber;
+        review.contractAddress = result.contractAddress;
+        review.isVerified = true;
+        review.verificationStatus = VERIFICATION_STATUSES.VERIFIED;
+        review.verificationMessage = null;
+        await review.save();
+        logger.info(`[Blockchain] Lazy-anchored review ${review._id} (verify hit) — TX: ${result.txHash}`);
+      } catch (e) {
+        const msg = (e as Error).message || 'unknown error';
+        logger.warn(`[Blockchain] Lazy-anchor failed for ${review._id}: ${msg}`);
+        review.verificationMessage = `Blockchain anchor attempt failed: ${msg.slice(0, 240)}`;
+        await review.save();
+      }
     }
   }
 
