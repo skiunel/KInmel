@@ -256,7 +256,8 @@ export async function anchorReviewOnChain(input: AnchorInput): Promise<AnchorRes
       ipfsCidHash,
       productIdHash,
       orderIdHash,
-      reviewerHash
+      reviewerHash,
+      buildLowGasOverrides()
     );
     return tx.wait();
   });
@@ -270,6 +271,17 @@ export async function anchorReviewOnChain(input: AnchorInput): Promise<AnchorRes
     gasUsed: receipt.gasUsed.toString(),
     explorerUrl: buildExplorerTxUrl(network, receipt.hash as string),
     network,
+  };
+}
+
+// Cap fee at ~30 gwei so testnet wallet with tiny POL balance can still
+// afford the anchor. Amoy basefee is normally well under this; ethers
+// otherwise auto-pads maxFeePerGas to 2x basefee + tip, which spikes during
+// congestion and drains the faucet allowance.
+function buildLowGasOverrides() {
+  return {
+    maxFeePerGas: ethers.parseUnits('30', 'gwei'),
+    maxPriorityFeePerGas: ethers.parseUnits('25', 'gwei'),
   };
 }
 
@@ -308,7 +320,8 @@ export async function batchAnchorReviewsOnChain(
       ipfsCidHashes,
       productIdHashes,
       orderIdHashes,
-      reviewerHashes
+      reviewerHashes,
+      buildLowGasOverrides()
     );
     return tx.wait();
   });
