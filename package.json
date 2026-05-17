@@ -4,20 +4,20 @@
   "private": true,
   "description": "E-commerce platform with blockchain-verified reviews",
   "workspaces": [
-    "client",
-    "server",
+    "frontend",
+    "backend",
     "shared",
-    "blockchain"
+    "smart-contracts"
   ],
   "scripts": {
-    "dev:server": "npm run dev --workspace=server",
-    "dev:client": "npm run dev --workspace=client",
-    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
-    "build:server": "npm run build --workspace=server",
-    "build:client": "npm run build --workspace=client",
-    "build": "npm run build:server && npm run build:client",
-    "test:server": "npm run test --workspace=server",
-    "test:blockchain": "npm run test --workspace=blockchain"
+    "dev:backend": "npm run dev --workspace=backend",
+    "dev:frontend": "npm run dev --workspace=frontend",
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "build:backend": "npm run build --workspace=backend",
+    "build:frontend": "npm run build --workspace=frontend",
+    "build": "npm run build:backend && npm run build:frontend",
+    "test:backend": "npm run test --workspace=backend",
+    "test:contracts": "npm run test --workspace=smart-contracts"
   },
   "devDependencies": {
     "concurrently": "^9.1.2",

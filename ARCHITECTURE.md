@@ -560,7 +560,7 @@ Backend                          Blockchain
 ## 11. Backend Services Architecture
 
 ```
-server/src/
+backend/src/
 ├── index.ts                    # Entry point, server bootstrap
 ├── app.ts                      # Express app configuration
 │
@@ -658,7 +658,7 @@ blockchain.service
 ## 12. Frontend Sections & Component Architecture
 
 ```
-client/
+frontend/
 ├── app/                              # Next.js App Router
 │   ├── layout.tsx                    # Root layout (providers, navbar, footer)
 │   ├── page.tsx                      # Homepage

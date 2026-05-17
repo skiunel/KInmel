@@ -8,7 +8,7 @@
 ## 1. Frontend Folder Structure
 
 ```
-client/
+frontend/
 ├── next.config.ts
 ├── tailwind.config.ts
 ├── tsconfig.json
@@ -165,7 +165,7 @@ STRATEGY:
 ## 2. Backend Folder Structure
 
 ```
-server/
+backend/
 ├── package.json
 ├── tsconfig.json
 ├── .env.example
@@ -1160,13 +1160,13 @@ GAS:
 ### Contract Deployment
 
 ```
-SCRIPT: blockchain/scripts/deploy.ts
+SCRIPT: smart-contracts/scripts/deploy.ts
 
 Steps:
   1. Get deployer account (first Hardhat account)
   2. Deploy ReviewVerification contract
   3. Log contract address
-  4. Save address to server/.env or a config file
+  4. Save address to backend/.env or a config file
 
 Commands:
   Terminal 1: cd blockchain && npx hardhat node
@@ -1402,7 +1402,7 @@ config/env.ts    → Committed. Zod schema + validation + typed export.
 ### Frontend Environment
 
 ```
-client/.env.local (NOT committed):
+frontend/.env.local (NOT committed):
   NEXT_PUBLIC_API_URL=http://localhost:5000/api/v1
 
 Usage:

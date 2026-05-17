@@ -28,10 +28,10 @@ npm-debug.log*
 # Testing
 coverage/
 
-# Blockchain
-blockchain/artifacts/
-blockchain/cache/
-blockchain/typechain-types/
+# Smart contracts
+smart-contracts/artifacts/
+smart-contracts/cache/
+smart-contracts/typechain-types/
 
 # Misc
 .dist/

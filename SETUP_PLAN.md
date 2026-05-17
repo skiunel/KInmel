@@ -11,9 +11,9 @@
 
 ```
 Kinmel/                  ← Single git repo
-├── client/              ← Next.js frontend      (workspace)
-├── server/              ← Express backend        (workspace)
-├── blockchain/          ← Hardhat + Solidity     (workspace)
+├── frontend/              ← Next.js frontend      (workspace)
+├── backend/              ← Express backend        (workspace)
+├── smart-contracts/          ← Hardhat + Solidity     (workspace)
 └── shared/              ← Shared TypeScript types (workspace)
 ```
 
@@ -49,11 +49,11 @@ Already exists:
   ✅ .gitignore
   ✅ shared/types/index.ts
   ✅ shared/package.json
-  ✅ server/package.json
-  ✅ server/tsconfig.json
-  ✅ server/.env.example
-  ✅ blockchain/package.json
-  ✅ blockchain/hardhat.config.ts
+  ✅ backend/package.json
+  ✅ backend/tsconfig.json
+  ✅ backend/.env.example
+  ✅ smart-contracts/package.json
+  ✅ smart-contracts/hardhat.config.ts
 ```
 
 ### Step 2: Root Config Files (NEW)
@@ -71,35 +71,35 @@ CREATE:
 
 ```
 CREATE directories:
-  server/src/config/
-  server/src/controllers/
-  server/src/middleware/
-  server/src/models/
-  server/src/routes/
-  server/src/services/
-  server/src/utils/
-  server/src/types/
-  server/src/validators/
-  server/scripts/
+  backend/src/config/
+  backend/src/controllers/
+  backend/src/middleware/
+  backend/src/models/
+  backend/src/routes/
+  backend/src/services/
+  backend/src/utils/
+  backend/src/types/
+  backend/src/validators/
+  backend/scripts/
 
 CREATE files:
-  server/src/index.ts             ← Entry point
-  server/src/app.ts               ← Express app setup
-  server/src/config/env.ts        ← Zod env validation
-  server/src/config/database.ts   ← MongoDB connection
-  server/src/config/constants.ts  ← App constants
-  server/src/middleware/error-handler.ts
-  server/src/middleware/not-found.ts
-  server/src/middleware/auth.ts
-  server/src/middleware/validate.ts
-  server/src/utils/api-error.ts
-  server/src/utils/async-handler.ts
-  server/src/utils/logger.ts
-  server/src/utils/helpers.ts
-  server/src/types/express.d.ts
-  server/src/routes/index.ts
-  server/.eslintrc.json           ← Server-specific lint
-  server/.env                     ← Local env (NOT committed)
+  backend/src/index.ts             ← Entry point
+  backend/src/app.ts               ← Express app setup
+  backend/src/config/env.ts        ← Zod env validation
+  backend/src/config/database.ts   ← MongoDB connection
+  backend/src/config/constants.ts  ← App constants
+  backend/src/middleware/error-handler.ts
+  backend/src/middleware/not-found.ts
+  backend/src/middleware/auth.ts
+  backend/src/middleware/validate.ts
+  backend/src/utils/api-error.ts
+  backend/src/utils/async-handler.ts
+  backend/src/utils/logger.ts
+  backend/src/utils/helpers.ts
+  backend/src/types/express.d.ts
+  backend/src/routes/index.ts
+  backend/.eslintrc.json           ← Server-specific lint
+  backend/.env                     ← Local env (NOT committed)
 ```
 
 ### Step 4: Client Setup (Next.js)
@@ -109,38 +109,38 @@ RUN:
   npx create-next-app@latest client --typescript --tailwind --eslint --app --src-dir --no-import-alias
 
 THEN CREATE:
-  client/components/ui/            ← shadcn primitives
-  client/components/layout/
-  client/components/shared/
-  client/components/product/
-  client/components/cart/
-  client/components/checkout/
-  client/components/order/
-  client/components/review/
-  client/components/admin/
-  client/components/home/
-  client/lib/api.ts
-  client/lib/utils.ts
-  client/lib/constants.ts
-  client/lib/validators.ts
-  client/hooks/
-  client/stores/
-  client/providers/
-  client/types/
-  client/.env.local                ← NEXT_PUBLIC_API_URL
+  frontend/components/ui/            ← shadcn primitives
+  frontend/components/layout/
+  frontend/components/shared/
+  frontend/components/product/
+  frontend/components/cart/
+  frontend/components/checkout/
+  frontend/components/order/
+  frontend/components/review/
+  frontend/components/admin/
+  frontend/components/home/
+  frontend/lib/api.ts
+  frontend/lib/utils.ts
+  frontend/lib/constants.ts
+  frontend/lib/validators.ts
+  frontend/hooks/
+  frontend/stores/
+  frontend/providers/
+  frontend/types/
+  frontend/.env.local                ← NEXT_PUBLIC_API_URL
 ```
 
 ### Step 5: Blockchain Setup
 
 ```
 Already exists:
-  ✅ blockchain/package.json
-  ✅ blockchain/hardhat.config.ts
+  ✅ smart-contracts/package.json
+  ✅ smart-contracts/hardhat.config.ts
 
 CREATE:
-  blockchain/contracts/ReviewVerification.sol
-  blockchain/scripts/deploy.ts
-  blockchain/test/ReviewVerification.test.ts
+  smart-contracts/contracts/ReviewVerification.sol
+  smart-contracts/scripts/deploy.ts
+  smart-contracts/test/ReviewVerification.test.ts
 ```
 
 ---
@@ -156,7 +156,7 @@ CREATE:
 | `prettier` | ^3.5.3 | Code formatting |
 | `eslint` | ^9.x | Already installed by Next.js, shared config |
 
-### Server (`server/`)
+### Server (`backend/`)
 
 **Dependencies** (runtime):
 
@@ -198,7 +198,7 @@ CREATE:
 | `@typescript-eslint/parser` | ^8.x | TS lint parser |
 | `@typescript-eslint/eslint-plugin` | ^8.x | TS lint rules |
 
-### Client (`client/`)
+### Client (`frontend/`)
 
 **Dependencies** (runtime):
 
@@ -228,7 +228,7 @@ CREATE:
 | `@types/node` | ^22.x | |
 | `eslint-config-next` | ^15.x | Next.js ESLint config |
 
-### Blockchain (`blockchain/`)
+### Blockchain (`smart-contracts/`)
 
 | Package | Version | Purpose |
 |---------|---------|---------|
@@ -245,7 +245,7 @@ No dependencies — just TypeScript type definitions exported as source.
 
 ## 4. Environment Variables
 
-### `server/.env` (Create from .env.example)
+### `backend/.env` (Create from .env.example)
 
 ```bash
 # ──── Server ────
@@ -276,7 +276,7 @@ REVIEW_CONTRACT_ADDRESS=
 DEPLOYER_PRIVATE_KEY=
 ```
 
-### `client/.env.local`
+### `frontend/.env.local`
 
 ```bash
 NEXT_PUBLIC_API_URL=http://localhost:5000/api/v1
@@ -313,7 +313,7 @@ node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
     "test:chain": "npm run test --workspace=blockchain",
     "deploy:chain": "npm run deploy:local --workspace=blockchain",
     "seed": "npm run seed --workspace=server",
-    "clean": "rm -rf node_modules server/node_modules client/node_modules blockchain/node_modules server/dist client/.next"
+    "clean": "rm -rf node_modules backend/node_modules frontend/node_modules smart-contracts/node_modules backend/dist frontend/.next"
   }
 }
 ```
@@ -398,7 +398,7 @@ Each workspace has its own lint config because:
 }
 ```
 
-### Server `server/.eslintrc.json`
+### Server `backend/.eslintrc.json`
 
 ```json
 {
@@ -448,9 +448,9 @@ dist/
 .next/
 out/
 coverage/
-blockchain/artifacts/
-blockchain/cache/
-blockchain/typechain-types/
+smart-contracts/artifacts/
+smart-contracts/cache/
+smart-contracts/typechain-types/
 *.sol
 package-lock.json
 ```
@@ -489,7 +489,7 @@ indent_size = 4
 - Blockchain uses Hardhat's TS resolution
 - A shared root config would need so many overrides it's useless
 
-### Server `server/tsconfig.json` (EXISTS — needs updates)
+### Server `backend/tsconfig.json` (EXISTS — needs updates)
 
 ```json
 {
@@ -523,7 +523,7 @@ indent_size = 4
 - Added `"types": ["node", "jest"]` for test support
 - Added `"**/*.test.ts"` to exclude (tests compiled separately by ts-jest)
 
-### Client `client/tsconfig.json` (Generated by create-next-app, then tweaked)
+### Client `frontend/tsconfig.json` (Generated by create-next-app, then tweaked)
 
 ```json
 {
@@ -552,7 +552,7 @@ indent_size = 4
 }
 ```
 
-### Blockchain `blockchain/tsconfig.json` (Create new)
+### Blockchain `smart-contracts/tsconfig.json` (Create new)
 
 ```json
 {
@@ -578,7 +578,7 @@ indent_size = 4
 ### Server Aliases
 
 ```
-@/*         → server/src/*           import { env } from '@/config/env'
+@/*         → backend/src/*           import { env } from '@/config/env'
 @shared/*   → shared/*              import type { IUser } from '@shared/types'
 ```
 
@@ -597,7 +597,7 @@ Add to server `package.json`:
 }
 ```
 
-And at the top of `server/src/index.ts`:
+And at the top of `backend/src/index.ts`:
 ```typescript
 import 'module-alias/register';
 ```
@@ -607,7 +607,7 @@ import 'module-alias/register';
 ### Client Aliases
 
 ```
-@/*         → client/src/*          import { Button } from '@/components/ui/button'
+@/*         → frontend/src/*          import { Button } from '@/components/ui/button'
 @shared/*   → shared/*             import type { IProduct } from '@shared/types'
 ```
 
@@ -651,7 +651,7 @@ services:
     build: ./server
     ports: ["5000:5000"]
     depends_on: [mongodb]
-    env_file: ./server/.env
+    env_file: ./backend/.env
 
   client:
     build: ./client
@@ -677,14 +677,14 @@ cd Kinmel
 npm install
 
 # Step 3: Create server env file
-cp server/.env.example server/.env
-# Edit server/.env — add JWT secrets:
+cp backend/.env.example backend/.env
+# Edit backend/.env — add JWT secrets:
 node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
 # Paste output into JWT_ACCESS_SECRET
 # Run again, paste into JWT_REFRESH_SECRET
 
 # Step 4: Create client env file
-echo "NEXT_PUBLIC_API_URL=http://localhost:5000/api/v1" > client/.env.local
+echo "NEXT_PUBLIC_API_URL=http://localhost:5000/api/v1" > frontend/.env.local
 
 # Step 5: Ensure MongoDB is running
 sudo systemctl start mongod
@@ -897,31 +897,31 @@ NEW files to create:
   .prettierrc
   .prettierignore
   .eslintrc.json
-  server/.eslintrc.json
-  server/src/index.ts
-  server/src/app.ts
-  server/src/config/env.ts
-  server/src/config/database.ts
-  server/src/config/constants.ts
-  server/src/middleware/error-handler.ts
-  server/src/middleware/not-found.ts
-  server/src/middleware/auth.ts
-  server/src/middleware/validate.ts
-  server/src/utils/api-error.ts
-  server/src/utils/async-handler.ts
-  server/src/utils/logger.ts
-  server/src/utils/helpers.ts
-  server/src/types/express.d.ts
-  server/src/routes/index.ts
-  server/.env
-  blockchain/tsconfig.json
-  client/.env.local
-  client/  (entire directory via create-next-app)
+  backend/.eslintrc.json
+  backend/src/index.ts
+  backend/src/app.ts
+  backend/src/config/env.ts
+  backend/src/config/database.ts
+  backend/src/config/constants.ts
+  backend/src/middleware/error-handler.ts
+  backend/src/middleware/not-found.ts
+  backend/src/middleware/auth.ts
+  backend/src/middleware/validate.ts
+  backend/src/utils/api-error.ts
+  backend/src/utils/async-handler.ts
+  backend/src/utils/logger.ts
+  backend/src/utils/helpers.ts
+  backend/src/types/express.d.ts
+  backend/src/routes/index.ts
+  backend/.env
+  smart-contracts/tsconfig.json
+  frontend/.env.local
+  frontend/  (entire directory via create-next-app)
 
 UPDATED files:
   package.json              (add prettier, format scripts)
-  server/package.json       (add ethers, axios, jest, test scripts)
-  server/tsconfig.json      (add jest types, test excludes)
+  backend/package.json       (add ethers, axios, jest, test scripts)
+  backend/tsconfig.json      (add jest types, test excludes)
   .gitignore                (add .env.local)
 
 TOTAL: ~25 new files + 4 updated files

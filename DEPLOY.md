@@ -32,7 +32,7 @@ Need: MetaMask wallet, some test MATIC.
 2. Export wallet private key from MetaMask (Account → Account details → Show private key) — **never share, never commit**
 3. Deploy:
    ```bash
-   cd blockchain
+   cd smart-contracts
    echo 'POLYGON_AMOY_RPC_URL=https://rpc-amoy.polygon.technology' > .env
    echo 'DEPLOYER_PRIVATE_KEY=0xYOUR_PRIVATE_KEY' >> .env
    npx hardhat run scripts/deploy.ts --network amoy
@@ -45,7 +45,7 @@ Need: MetaMask wallet, some test MATIC.
 2. https://render.com → New + → **Web Service** → connect GitHub repo
 3. Settings:
    - **Name**: `kinmel-api`
-   - **Root Directory**: `server`
+   - **Root Directory**: `backend`
    - **Build Command**: `npm install && npm run build`
    - **Start Command**: `npm start`
    - **Instance Type**: Free
@@ -78,7 +78,7 @@ Note: Free tier sleeps after 15min idle. First hit takes ~30s cold start. Accept
 
 1. https://vercel.com → Add New → Project → import same GitHub repo
 2. Settings:
-   - **Root Directory**: `client`
+   - **Root Directory**: `frontend`
    - **Framework Preset**: Next.js (auto)
    - **Build Command**: `npm run build`
    - **Output Directory**: leave default
@@ -125,6 +125,6 @@ curl https://kinmel-api.onrender.com/api/v1/health
 curl https://kinmel-api.onrender.com/api/v1/products?limit=1
 
 # Local: redeploy contract to Amoy
-cd blockchain
+cd smart-contracts
 npx hardhat run scripts/deploy.ts --network amoy
 ```

@@ -125,7 +125,7 @@ MESH-GRADIENT:      Radial gradients of indigo-100 + violet-100 + amber-50
 ### Usage Rules
 - Primary indigo is ONLY for interactive elements: buttons, links, focus rings, active states
 - Amber is ONLY for trust/verification: verified badges, star ratings, blockchain indicators
-- Violet is ONLY for blockchain/web3 elements: verification page, chain badges, proof displays
+- Violet is ONLY for smart-contracts/web3 elements: verification page, chain badges, proof displays
 - Neutral slate is for everything else: text, backgrounds, borders, dividers
 - Never use more than 2 accent colors in a single component
 - Page backgrounds are always slate-50 (#F8FAFC), never pure white
