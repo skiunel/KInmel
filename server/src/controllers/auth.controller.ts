@@ -46,6 +46,7 @@ export const register = asyncHandler(async (req: Request, res: Response) => {
     data: {
       user: result.user,
       accessToken: result.accessToken,
+      refreshToken: result.refreshToken,
       emailVerification: result.emailVerification,
     },
   });
@@ -64,6 +65,7 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
     data: {
       user: result.user,
       accessToken: result.accessToken,
+      refreshToken: result.refreshToken,
     },
   });
 });
@@ -88,6 +90,7 @@ export const googleLogin = asyncHandler(async (req: Request, res: Response) => {
     data: {
       user: result.user,
       accessToken: result.accessToken,
+      refreshToken: result.refreshToken,
     },
   });
 });
@@ -138,7 +141,12 @@ export const resetPassword = asyncHandler(
 // ─── POST /auth/refresh ───
 
 export const refresh = asyncHandler(async (req: Request, res: Response) => {
-  const oldToken = req.cookies[REFRESH_COOKIE_NAME];
+  // Prefer cookie (HttpOnly, more secure). Fall back to Authorization header
+  // for browsers that block third-party cookies (cross-site setups).
+  const headerToken = req.headers.authorization?.startsWith('Bearer ')
+    ? req.headers.authorization.slice(7)
+    : null;
+  const oldToken = req.cookies[REFRESH_COOKIE_NAME] || headerToken;
 
   if (!oldToken) {
     res.status(401).json({ success: false, message: 'No refresh token provided' });
@@ -147,7 +155,6 @@ export const refresh = asyncHandler(async (req: Request, res: Response) => {
 
   const result = await authService.refreshAccessToken(oldToken);
 
-  // Rotate the cookie with the new refresh token
   setRefreshCookie(res, result.refreshToken);
 
   res.status(200).json({
@@ -155,6 +162,7 @@ export const refresh = asyncHandler(async (req: Request, res: Response) => {
     data: {
       user: result.user,
       accessToken: result.accessToken,
+      refreshToken: result.refreshToken,
     },
   });
 });

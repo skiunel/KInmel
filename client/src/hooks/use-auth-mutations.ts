@@ -4,6 +4,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/providers/auth-provider';
 import { authService, type LoginPayload, type RegisterPayload } from '@/services/auth.service';
+import { setStoredRefreshToken } from '@/lib/api';
 import { showToast } from '@/lib/toast';
 import { ROUTES } from '@/lib/constants';
 
@@ -15,6 +16,7 @@ export function useLogin() {
     mutationFn: (payload: LoginPayload) => authService.login(payload),
     onSuccess: (data) => {
       setAccessToken(data.accessToken);
+      if (data.refreshToken) setStoredRefreshToken(data.refreshToken);
       setUser(data.user);
       showToast.success(`Welcome back, ${data.user.name}!`);
 
@@ -38,6 +40,7 @@ export function useGoogleLogin() {
     mutationFn: (idToken: string) => authService.googleLogin(idToken),
     onSuccess: (data) => {
       setAccessToken(data.accessToken);
+      if (data.refreshToken) setStoredRefreshToken(data.refreshToken);
       setUser(data.user);
       showToast.success(`Welcome, ${data.user.name}!`);
 
@@ -61,6 +64,7 @@ export function useRegister() {
     mutationFn: (payload: RegisterPayload) => authService.register(payload),
     onSuccess: (data) => {
       setAccessToken(data.accessToken);
+      if (data.refreshToken) setStoredRefreshToken(data.refreshToken);
       setUser(data.user);
       if (data.emailVerification?.previewUrl) {
         showToast.success('Account created. Opening verification preview.');
@@ -84,12 +88,13 @@ export function useLogout() {
   return useMutation({
     mutationFn: () => authService.logout(),
     onSuccess: () => {
+      setStoredRefreshToken(null);
       logout();
       showToast.success('Logged out successfully');
       router.push(ROUTES.login);
     },
     onError: () => {
-      // Force logout even if API call fails
+      setStoredRefreshToken(null);
       logout();
       router.push(ROUTES.login);
     },

@@ -4,18 +4,30 @@ import axios from 'axios';
 // Override with NEXT_PUBLIC_API_URL for direct backend access (dev local).
 export const API_URL = process.env.NEXT_PUBLIC_API_URL || '/api/v1';
 
+// localStorage refresh token fallback for browsers that block third-party cookies.
+const REFRESH_KEY = 'kinmel_refresh';
+
+export function setStoredRefreshToken(token: string | null) {
+  if (typeof window === 'undefined') return;
+  if (token) {
+    try { window.localStorage.setItem(REFRESH_KEY, token); } catch { /* quota / disabled */ }
+  } else {
+    try { window.localStorage.removeItem(REFRESH_KEY); } catch { /* noop */ }
+  }
+}
+
+export function getStoredRefreshToken(): string | null {
+  if (typeof window === 'undefined') return null;
+  try { return window.localStorage.getItem(REFRESH_KEY); } catch { return null; }
+}
+
 export const api = axios.create({
   baseURL: API_URL,
-  withCredentials: true, // Send cookies (refresh token)
+  withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
   },
 });
-
-// ─── Token Refresh Interceptor ───
-// Handles 401 responses by attempting to refresh the access token
-// and retrying the original request. Queues concurrent requests
-// to prevent multiple refresh calls.
 
 let isRefreshing = false;
 let failedQueue: Array<{
@@ -39,7 +51,6 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    // Only intercept 401s, and don't intercept refresh/login/register requests
     if (
       error.response?.status !== 401 ||
       originalRequest._retry ||
@@ -51,7 +62,6 @@ api.interceptors.response.use(
     }
 
     if (isRefreshing) {
-      // Queue this request until refresh completes
       return new Promise((resolve, reject) => {
         failedQueue.push({
           resolve: (token: string) => {
@@ -67,18 +77,26 @@ api.interceptors.response.use(
     isRefreshing = true;
 
     try {
-      const { data } = await api.post('/auth/refresh');
-      const newToken = data.data.accessToken;
+      const stored = getStoredRefreshToken();
+      const { data } = await api.post(
+        '/auth/refresh',
+        {},
+        stored ? { headers: { Authorization: `Bearer ${stored}` } } : undefined,
+      );
+      const newAccess = data.data.accessToken;
+      const newRefresh = data.data.refreshToken as string | undefined;
 
-      api.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
-      originalRequest.headers['Authorization'] = `Bearer ${newToken}`;
+      if (newRefresh) setStoredRefreshToken(newRefresh);
 
-      processQueue(null, newToken);
+      api.defaults.headers.common['Authorization'] = `Bearer ${newAccess}`;
+      originalRequest.headers['Authorization'] = `Bearer ${newAccess}`;
+
+      processQueue(null, newAccess);
       return api(originalRequest);
     } catch (refreshError) {
       processQueue(refreshError, null);
-      // Clear auth state — redirect to login happens in auth provider
       delete api.defaults.headers.common['Authorization'];
+      setStoredRefreshToken(null);
       return Promise.reject(refreshError);
     } finally {
       isRefreshing = false;
