@@ -287,6 +287,38 @@ export const getPublicVerification = async (reviewId: string) => {
     timestamp: review.createdAt.toISOString(),
   };
 
+  // Lazy retry: if review has IPFS + content hash but no chain anchor yet,
+  // attempt anchor inline on verify-page hit. Keeps reviews self-healing
+  // without a separate cron, even when initial anchor fired before chain
+  // env was configured on the server.
+  if (
+    review.ipfsHash &&
+    review.contentHash &&
+    !review.blockchainTxHash &&
+    isBlockchainConfigured()
+  ) {
+    try {
+      const result = await anchorReviewOnChain({
+        reviewId: review._id.toString(),
+        contentHash: review.contentHash,
+        ipfsCid: review.ipfsHash,
+        productId,
+        orderId: review.order.toString(),
+        userId,
+      });
+      review.blockchainTxHash = result.txHash;
+      review.blockNumber = result.blockNumber;
+      review.contractAddress = result.contractAddress;
+      review.isVerified = true;
+      review.verificationStatus = VERIFICATION_STATUSES.VERIFIED;
+      review.verificationMessage = null;
+      await review.save();
+      logger.info(`[Blockchain] Lazy-anchored review ${review._id} (verify hit) — TX: ${result.txHash}`);
+    } catch (e) {
+      logger.warn(`[Blockchain] Lazy-anchor failed for ${review._id}: ${(e as Error).message}`);
+    }
+  }
+
   if (
     env.NODE_ENV === 'development' &&
     !review.ipfsHash &&
