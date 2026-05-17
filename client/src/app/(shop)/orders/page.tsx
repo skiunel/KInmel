@@ -29,12 +29,21 @@ export default function OrdersPage() {
   const [statusFilter, setStatusFilter] = useState('');
   const [page, setPage] = useState(1);
 
+  // All orders for badge counts (separate query, no status filter)
+  const { data: allData } = useOrders({ page: 1, limit: 200, sort: 'newest' });
+
   const { data, isLoading } = useOrders({
     page,
     limit: 10,
     status: statusFilter || undefined,
     sort: 'newest',
   });
+
+  const counts = (allData?.data ?? []).reduce<Record<string, number>>((acc, o) => {
+    acc[o.status] = (acc[o.status] ?? 0) + 1;
+    acc[''] = (acc[''] ?? 0) + 1;
+    return acc;
+  }, {});
 
   useEffect(() => {
     if (!authLoading && !isAuthenticated) router.push(ROUTES.login);
@@ -62,20 +71,34 @@ export default function OrdersPage() {
       <section className="bg-white pb-24">
         <div className="max-w-[1600px] mx-auto px-6 lg:px-10 pt-10">
           <div className="mb-8 flex gap-2 overflow-x-auto pb-2 scrollbar-none">
-            {STATUS_FILTERS.map((filter) => (
-              <button
-                key={filter.value}
-                onClick={() => { setStatusFilter(filter.value); setPage(1); }}
-                className={cn(
-                  'whitespace-nowrap px-4 h-9 font-mono text-[11px] font-semibold uppercase tracking-[0.18em] transition-colors',
-                  statusFilter === filter.value
-                    ? 'bg-[#0A0A0A] text-white'
-                    : 'bg-white text-[#0A0A0A] border border-[#0A0A0A]/15 hover:bg-[#0A0A0A] hover:text-white'
-                )}
-              >
-                {filter.label}
-              </button>
-            ))}
+            {STATUS_FILTERS.map((filter) => {
+              const count = counts[filter.value] ?? 0;
+              const isActive = statusFilter === filter.value;
+              return (
+                <button
+                  key={filter.value}
+                  onClick={() => { setStatusFilter(filter.value); setPage(1); }}
+                  className={cn(
+                    'whitespace-nowrap inline-flex items-center gap-2 px-4 h-9 font-mono text-[11px] font-semibold uppercase tracking-[0.18em] transition-colors',
+                    isActive
+                      ? 'bg-[#0A0A0A] text-white'
+                      : 'bg-white text-[#0A0A0A] border border-[#0A0A0A]/15 hover:bg-[#0A0A0A] hover:text-white'
+                  )}
+                >
+                  {filter.label}
+                  {count > 0 && (
+                    <span
+                      className={cn(
+                        'inline-flex items-center justify-center min-w-[18px] px-1 h-[18px] text-[9px] font-bold',
+                        isActive ? 'bg-white text-[#0A0A0A]' : 'bg-[#0A0A0A]/10 text-[#0A0A0A]'
+                      )}
+                    >
+                      {count}
+                    </span>
+                  )}
+                </button>
+              );
+            })}
           </div>
 
           {isLoading ? (
