@@ -7,14 +7,15 @@ import { env } from '../config/env';
 
 const REFRESH_COOKIE_NAME = 'kinmel_refresh';
 
-// Cross-origin in prod (Vercel → Render): need sameSite='none' + secure=true.
-// In dev (same-origin localhost): use 'lax' to keep CSRF protection.
+// Vercel proxies /api/* to Render → browser sees same-origin → 'lax' is enough + safer.
+// 'none' still works as fallback if someone hits Render directly.
 const isProd = env.NODE_ENV === 'production';
+const COOKIE_SAMESITE = (process.env.COOKIE_SAMESITE as 'lax' | 'none' | 'strict') || 'lax';
 
 const refreshCookieOptions = {
   httpOnly: true,
   secure: isProd,
-  sameSite: (isProd ? 'none' : 'lax') as 'none' | 'lax',
+  sameSite: COOKIE_SAMESITE,
   path: '/api/v1/auth',
   maxAge: 7 * 24 * 60 * 60 * 1000,
 };
@@ -27,7 +28,7 @@ const clearRefreshCookie = (res: Response) => {
   res.clearCookie(REFRESH_COOKIE_NAME, {
     httpOnly: true,
     secure: isProd,
-    sameSite: isProd ? 'none' : 'lax',
+    sameSite: COOKIE_SAMESITE,
     path: '/api/v1/auth',
   });
 };

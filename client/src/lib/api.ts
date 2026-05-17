@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-export const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api/v1';
+// Default same-origin (Vercel rewrites /api/* → Render). Refresh cookie stays first-party.
+// Override with NEXT_PUBLIC_API_URL for direct backend access (dev local).
+export const API_URL = process.env.NEXT_PUBLIC_API_URL || '/api/v1';
 
 export const api = axios.create({
   baseURL: API_URL,
