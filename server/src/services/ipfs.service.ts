@@ -139,7 +139,11 @@ export async function pinReviewToIPFS(
   const pinataApiKey = env.PINATA_API_KEY;
   const pinataSecretKey = env.PINATA_SECRET_KEY;
   const pinataJwt = env.PINATA_JWT;
-  const gateway = env.PINATA_GATEWAY || 'https://gateway.pinata.cloud/ipfs';
+  const gateway = env.PINATA_GATEWAY
+    ? (env.PINATA_GATEWAY.replace(/\/+$/, '').endsWith('/ipfs')
+        ? env.PINATA_GATEWAY.replace(/\/+$/, '')
+        : `${env.PINATA_GATEWAY.replace(/\/+$/, '')}/ipfs`)
+    : 'https://gateway.pinata.cloud/ipfs';
 
   if (!pinataJwt && (!pinataApiKey || !pinataSecretKey)) {
     if (env.NODE_ENV === 'test') {
@@ -231,13 +235,33 @@ export async function pinReviewToIPFS(
   };
 }
 
+// Normalize gateway: ensure /ipfs path segment; strip trailing slash.
+function normalizeGateway(raw: string): string {
+  const trimmed = raw.replace(/\/+$/, '');
+  return trimmed.endsWith('/ipfs') ? trimmed : `${trimmed}/ipfs`;
+}
+
 export function buildGatewayUrl(ipfsHash: string): string {
   if (isLocalMockHash(ipfsHash)) {
     return `http://localhost:${env.PORT}/api/v1/reviews/ipfs/${encodeURIComponent(ipfsHash)}`;
   }
 
-  const gateway = env.PINATA_GATEWAY || 'https://gateway.pinata.cloud/ipfs';
+  const gateway = env.PINATA_GATEWAY
+    ? normalizeGateway(env.PINATA_GATEWAY)
+    : 'https://gateway.pinata.cloud/ipfs';
   return `${gateway}/${ipfsHash}`;
+}
+
+// Fallback gateways tried in order if primary fails.
+function gatewayCandidates(ipfsHash: string): string[] {
+  const urls: string[] = [];
+  if (env.PINATA_GATEWAY) {
+    urls.push(`${normalizeGateway(env.PINATA_GATEWAY)}/${ipfsHash}`);
+  }
+  urls.push(`https://gateway.pinata.cloud/ipfs/${ipfsHash}`);
+  urls.push(`https://ipfs.io/ipfs/${ipfsHash}`);
+  urls.push(`https://cloudflare-ipfs.com/ipfs/${ipfsHash}`);
+  return Array.from(new Set(urls));
 }
 
 // ─── Fetch from IPFS (for verification) ───
@@ -253,20 +277,22 @@ export async function fetchFromIPFS(
     return readLocalMockReviewDocument(ipfsHash);
   }
 
-  try {
-    const response = await fetch(buildGatewayUrl(ipfsHash), {
-      signal: AbortSignal.timeout(10000),
-    });
+  for (const url of gatewayCandidates(ipfsHash)) {
+    try {
+      const response = await fetch(url, {
+        signal: AbortSignal.timeout(8000),
+      });
 
-    if (!response.ok) {
-      return null;
+      if (!response.ok) continue;
+
+      const data = (await response.json()) as Record<string, unknown>;
+      if (isStoredReviewDocument(data)) return data;
+    } catch {
+      // try next gateway
     }
-
-    const data = (await response.json()) as Record<string, unknown>;
-    return isStoredReviewDocument(data) ? data : null;
-  } catch {
-    return null;
   }
+
+  return null;
 }
 
 // ─── Verify Content Integrity ───
