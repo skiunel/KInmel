@@ -11,7 +11,7 @@ interface PaymentMethodProps {
 }
 
 const METHODS: { id: PaymentMethodId; icon: string; label: string; available: boolean }[] = [
-  { id: 'esewa', icon: '🟢', label: 'eSewa', available: true },
+  { id: 'stripe', icon: '💳', label: 'Card (Stripe)', available: true },
   { id: 'khalti', icon: '🟣', label: 'Khalti', available: true },
   { id: 'cod', icon: '💵', label: 'Cash on Delivery', available: true },
 ];

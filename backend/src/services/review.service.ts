@@ -16,6 +16,7 @@ import {
 } from './ipfs.service';
 import {
   anchorReviewOnChain,
+  findAnchorTxForReview,
   isBlockchainConfigured,
   verifyReviewOnChain,
 } from './blockchain.service';
@@ -316,9 +317,28 @@ export const getPublicVerification = async (reviewId: string) => {
         logger.info(`[Blockchain] Lazy-anchored review ${review._id} (verify hit) — TX: ${result.txHash}`);
       } catch (e) {
         const msg = (e as Error).message || 'unknown error';
-        logger.warn(`[Blockchain] Lazy-anchor failed for ${review._id}: ${msg}`);
-        review.verificationMessage = `Blockchain anchor attempt failed: ${msg.slice(0, 240)}`;
-        await review.save();
+        // DuplicateProof: contract already has this anchor — backfill txHash
+        // from the past ReviewAnchored event instead of re-throwing.
+        if (msg.startsWith('DuplicateProof')) {
+          const existing = await findAnchorTxForReview(review._id.toString());
+          if (existing) {
+            review.blockchainTxHash = existing.txHash;
+            review.blockNumber = existing.blockNumber;
+            review.contractAddress = env.REVIEW_CONTRACT_ADDRESS!;
+            review.isVerified = true;
+            review.verificationStatus = VERIFICATION_STATUSES.VERIFIED;
+            review.verificationMessage = null;
+            await review.save();
+            logger.info(`[Blockchain] Backfilled tx for already-anchored review ${review._id}: ${existing.txHash}`);
+          } else {
+            review.verificationMessage = 'Review already anchored on-chain (event not found in lookback window).';
+            await review.save();
+          }
+        } else {
+          logger.warn(`[Blockchain] Lazy-anchor failed for ${review._id}: ${msg}`);
+          review.verificationMessage = `Blockchain anchor attempt failed: ${msg.slice(0, 240)}`;
+          await review.save();
+        }
       }
     }
   }

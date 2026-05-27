@@ -49,7 +49,7 @@ export default function CheckoutPage() {
 
   const [step, setStep] = useState<Step>('shipping');
   const [shippingData, setShippingData] = useState<ShippingFormData | null>(null);
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethodId>('esewa');
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethodId>('stripe');
   const [notes, setNotes] = useState('');
   const [isPlacing, setIsPlacing] = useState(false);
   const [error, setError] = useState<string | null>(null);

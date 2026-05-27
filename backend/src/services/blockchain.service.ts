@@ -171,6 +171,29 @@ function isContractRevert(err: unknown): boolean {
   return e.code === 'CALL_EXCEPTION';
 }
 
+// Decode custom-error reverts from ReviewProof contract so logs/UI show
+// the real cause (Unauthorized / ContractPaused / DuplicateProof / ...)
+// instead of the opaque "missing revert data" message ethers emits when
+// the revert payload is a 4-byte custom-error selector.
+function decodeContractError(err: unknown): string | null {
+  if (!err || typeof err !== 'object') return null;
+  const e = err as { data?: string; info?: { error?: { data?: string } }; error?: { data?: string } };
+  const data: string | undefined =
+    e.data ?? e.info?.error?.data ?? e.error?.data;
+  if (!data || typeof data !== 'string' || data.length < 10) return null;
+  try {
+    const iface = new ethers.Interface(REVIEW_PROOF_ABI as unknown as string[]);
+    const parsed = iface.parseError(data);
+    if (!parsed) return null;
+    if (parsed.name === 'DuplicateProof') return 'DuplicateProof (review already anchored)';
+    if (parsed.name === 'Unauthorized') return 'Unauthorized (signer is not contract owner/anchorer)';
+    if (parsed.name === 'ContractPaused') return 'ContractPaused (anchoring disabled by owner)';
+    return parsed.name;
+  } catch {
+    return null;
+  }
+}
+
 // Returns true for errors that indicate a broken RPC connection and warrant
 // resetting the provider singleton before retrying.
 function isFatalNetworkError(err: unknown): boolean {
@@ -249,17 +272,36 @@ export async function anchorReviewOnChain(input: AnchorInput): Promise<AnchorRes
   const orderIdHash = idHash(input.orderId);
   const reviewerHash = idHash(input.userId);
 
+  // Dedupe: if proof already on-chain, surface that as DuplicateProof
+  // rather than burning gas on a revert. Lets caller recover the existing
+  // anchor via getRecentAnchoredEvents or skip cleanly.
+  try {
+    const already = (await getReadContract().hasProof(reviewIdHash)) as boolean;
+    if (already) throw new Error('DuplicateProof (review already anchored)');
+  } catch (e) {
+    if ((e as Error).message?.startsWith('DuplicateProof')) throw e;
+    // read-side failure: fall through to attempt and let the write surface it
+  }
+
+  const overrides = buildLowGasOverrides();
+
   const receipt = await withRetry(async () => {
-    const tx = await contract.anchorReview(
-      reviewIdHash,
-      contentHash,
-      ipfsCidHash,
-      productIdHash,
-      orderIdHash,
-      reviewerHash,
-      buildLowGasOverrides()
-    );
-    return tx.wait();
+    try {
+      const tx = await contract.anchorReview(
+        reviewIdHash,
+        contentHash,
+        ipfsCidHash,
+        productIdHash,
+        orderIdHash,
+        reviewerHash,
+        overrides
+      );
+      return await tx.wait();
+    } catch (err) {
+      const decoded = decodeContractError(err);
+      if (decoded) throw new Error(decoded);
+      throw err;
+    }
   });
 
   if (!receipt) throw new Error('Transaction receipt unavailable');
@@ -313,17 +355,24 @@ export async function batchAnchorReviewsOnChain(
     reviewerHashes.push(idHash(i.userId));
   }
 
+  const overrides = buildLowGasOverrides();
   const receipt = await withRetry(async () => {
-    const tx = await contract.batchAnchorReviews(
-      reviewIdHashes,
-      contentHashes,
-      ipfsCidHashes,
-      productIdHashes,
-      orderIdHashes,
-      reviewerHashes,
-      buildLowGasOverrides()
-    );
-    return tx.wait();
+    try {
+      const tx = await contract.batchAnchorReviews(
+        reviewIdHashes,
+        contentHashes,
+        ipfsCidHashes,
+        productIdHashes,
+        orderIdHashes,
+        reviewerHashes,
+        overrides
+      );
+      return await tx.wait();
+    } catch (err) {
+      const decoded = decodeContractError(err);
+      if (decoded) throw new Error(decoded);
+      throw err;
+    }
   });
 
   if (!receipt) throw new Error('Batch transaction receipt unavailable');
@@ -378,6 +427,33 @@ export async function verifyReviewOnChain(
     // RPC unreachable, contract not deployed at configured address, or call reverted.
     // Treat as "not anchored" so /verify page renders cleanly instead of 500.
     return { exists: false, verified: false, proof: null };
+  }
+}
+
+// ─── Read: locate an existing anchor tx by reviewId ───
+//
+// Used to backfill blockchainTxHash when the contract reports the proof
+// already exists (DuplicateProof) but our DB never recorded the tx — e.g.
+// the tx mined but the response handler crashed.
+
+export async function findAnchorTxForReview(
+  reviewId: string
+): Promise<{ txHash: string; blockNumber: number; network: NetworkInfo } | null> {
+  if (!isConfigured()) return null;
+  try {
+    const contract = getReadContract();
+    const provider = getProvider();
+    const network = await getNetworkInfo();
+    const reviewIdHash = idHash(reviewId);
+    const filter = contract.filters.ReviewAnchored(reviewIdHash);
+    const currentBlock = await provider.getBlockNumber();
+    const fromBlock = Math.max(0, currentBlock - 100000);
+    const events = await contract.queryFilter(filter, fromBlock, currentBlock);
+    if (events.length === 0) return null;
+    const log = events[events.length - 1] as ethers.EventLog;
+    return { txHash: log.transactionHash, blockNumber: log.blockNumber, network };
+  } catch {
+    return null;
   }
 }
 
