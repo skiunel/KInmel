@@ -283,7 +283,7 @@ export async function anchorReviewOnChain(input: AnchorInput): Promise<AnchorRes
     // read-side failure: fall through to attempt and let the write surface it
   }
 
-  const overrides = buildLowGasOverrides();
+  const overrides = await buildGasOverrides();
 
   const receipt = await withRetry(async () => {
     try {
@@ -316,15 +316,23 @@ export async function anchorReviewOnChain(input: AnchorInput): Promise<AnchorRes
   };
 }
 
-// Cap fee at ~30 gwei so testnet wallet with tiny POL balance can still
-// afford the anchor. Amoy basefee is normally well under this; ethers
-// otherwise auto-pads maxFeePerGas to 2x basefee + tip, which spikes during
-// congestion and drains the faucet allowance.
-function buildLowGasOverrides() {
-  return {
-    maxFeePerGas: ethers.parseUnits('30', 'gwei'),
-    maxPriorityFeePerGas: ethers.parseUnits('25', 'gwei'),
-  };
+// Price the tx from live network fee data with a 25% buffer.
+//
+// A previous version hard-capped maxFeePerGas at 30 gwei to conserve faucet
+// POL. Amoy basefee now spikes well above that (100+ gwei), and a maxFeePerGas
+// below basefee makes the node reject the tx — surfacing as the cryptic
+// "missing revert data (action=estimateGas)" error. Always quote at/above
+// basefee. MAX_FEE_GWEI is a safety ceiling, not a target.
+const MAX_FEE_GWEI = 250n;
+
+async function buildGasOverrides() {
+  const fee = await getProvider().getFeeData();
+  const tip = fee.maxPriorityFeePerGas ?? ethers.parseUnits('25', 'gwei');
+  const base = fee.maxFeePerGas ?? ethers.parseUnits('50', 'gwei');
+  let maxFee = (base * 125n) / 100n; // +25% headroom for basefee drift
+  const ceiling = ethers.parseUnits(MAX_FEE_GWEI.toString(), 'gwei');
+  if (maxFee > ceiling) maxFee = ceiling;
+  return { maxFeePerGas: maxFee, maxPriorityFeePerGas: tip };
 }
 
 // ─── Write: Batch anchor ───
@@ -355,7 +363,7 @@ export async function batchAnchorReviewsOnChain(
     reviewerHashes.push(idHash(i.userId));
   }
 
-  const overrides = buildLowGasOverrides();
+  const overrides = await buildGasOverrides();
   const receipt = await withRetry(async () => {
     try {
       const tx = await contract.batchAnchorReviews(

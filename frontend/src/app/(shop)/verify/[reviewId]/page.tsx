@@ -42,6 +42,17 @@ interface CheckItem {
   passed: boolean | null; // null = pending/unknown
 }
 
+// Collapse long hex blobs (tx data, raw payloads) in status/error text to a
+// short masked form so the message fits the card instead of overflowing.
+function cleanMessage(msg: string | null | undefined, maxLen = 140): string | null {
+  if (!msg) return null;
+  let out = msg.replace(/0x[0-9a-fA-F]{12,}/g, (m) => `${m.slice(0, 8)}*****`);
+  // Drop the noisy ethers transaction={...} dump entirely.
+  out = out.replace(/,?\s*transaction=\{[^]*$/, '').trim();
+  if (out.length > maxLen) out = `${out.slice(0, maxLen).trim()}…`;
+  return out;
+}
+
 // ─── Clipboard hook ───
 
 function useCopy() {
@@ -395,7 +406,7 @@ export default function VerifyReviewPage({
           >
             {isFullyVerified
               ? 'The buyer relationship, IPFS document, and blockchain proof all line up.'
-              : v.reason || 'This review is still missing one or more public proof layers.'}
+              : cleanMessage(v.reason) || 'This review is still missing one or more public proof layers.'}
           </motion.p>
 
           <motion.div
@@ -421,8 +432,8 @@ export default function VerifyReviewPage({
               {v.review.content}
             </p>
             {v.verificationMessage ? (
-              <p className="mt-3 text-xs text-amber-700">
-                {v.verificationMessage}
+              <p className="mt-3 text-xs text-amber-700 break-words" title={v.verificationMessage}>
+                {cleanMessage(v.verificationMessage)}
               </p>
             ) : null}
           </motion.div>
