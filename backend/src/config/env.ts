@@ -36,6 +36,11 @@ const envSchema = z.object({
   BLOCKCHAIN_RPC_URL: z.string().optional(),
   REVIEW_CONTRACT_ADDRESS: z.string().optional(),
   DEPLOYER_PRIVATE_KEY: z.string().optional(),
+  // Demo mode: simulate on-chain anchoring (no RPC, no POL spent).
+  BLOCKCHAIN_DEMO_MODE: z
+    .enum(['true', 'false'])
+    .optional()
+    .transform((v) => v === 'true'),
 
   // Stripe (optional in dev)
   STRIPE_SECRET_KEY: z.string().optional(),

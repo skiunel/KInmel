@@ -256,6 +256,9 @@ async function withRetry<T>(
 // ─── Write: Anchor Review Proof ───
 
 export async function anchorReviewOnChain(input: AnchorInput): Promise<AnchorResult> {
+  if (env.BLOCKCHAIN_DEMO_MODE) {
+    return simulateAnchor(input);
+  }
   if (!isConfigured()) {
     throw new Error(
       'Blockchain not configured — set BLOCKCHAIN_RPC_URL, REVIEW_CONTRACT_ADDRESS, DEPLOYER_PRIVATE_KEY'
@@ -432,6 +435,13 @@ export async function verifyReviewOnChain(
   reviewId: string,
   contentHash: string
 ): Promise<{ exists: boolean; verified: boolean; proof: OnChainProof | null }> {
+  if (env.BLOCKCHAIN_DEMO_MODE) {
+    return {
+      exists: true,
+      verified: true,
+      proof: simulateProof(reviewId, contentHash),
+    };
+  }
   if (!isConfigured()) {
     return { exists: false, verified: false, proof: null };
   }
@@ -552,7 +562,58 @@ export async function getRecentAnchoredEvents(limit = 25, blockLookback = 5000):
 // ─── Status Check ───
 
 export function isBlockchainConfigured(): boolean {
-  return isConfigured();
+  return env.BLOCKCHAIN_DEMO_MODE || isConfigured();
+}
+
+// ─── Demo mode ───
+//
+// When BLOCKCHAIN_DEMO_MODE=true the app produces a deterministic, simulated
+// anchor instead of broadcasting a real tx. No RPC, no signer, no POL. The
+// fake proof is derived from the reviewId so the same review always yields the
+// same tx hash / proof, and verifyReviewOnChain can re-derive it for /verify.
+
+export function isDemoMode(): boolean {
+  return env.BLOCKCHAIN_DEMO_MODE;
+}
+
+const DEMO_CONTRACT_ADDRESS = '0xDED0DED0DED0DED0DED0DED0DED0DED0DED0DED0';
+const DEMO_NETWORK: NetworkInfo = {
+  chainId: 80002,
+  name: 'Polygon Amoy (Demo)',
+  explorerUrl: 'https://amoy.polygonscan.com',
+  rpcUrl: 'demo',
+};
+
+export function simulateAnchor(input: AnchorInput): AnchorResult {
+  // txHash: keccak256("tx:" + reviewId) → stable 32-byte hex.
+  const txHash = ethers.id(`tx:${input.reviewId}`);
+  // blockNumber: stable pseudo-value in a plausible Amoy range.
+  const blockNumber =
+    Number(BigInt(ethers.id(`blk:${input.reviewId}`)) % 5_000_000n) + 10_000_000;
+  return {
+    txHash,
+    blockNumber,
+    contractAddress: DEMO_CONTRACT_ADDRESS,
+    gasUsed: '0',
+    explorerUrl: buildExplorerTxUrl(DEMO_NETWORK, txHash),
+    network: DEMO_NETWORK,
+  };
+}
+
+function simulateProof(reviewId: string, contentHash: string): OnChainProof {
+  return {
+    contentHash: toBytes32(contentHash),
+    ipfsCidHash: idHash(`ipfs:${reviewId}`),
+    productIdHash: idHash(`product:${reviewId}`),
+    orderIdHash: idHash(`order:${reviewId}`),
+    reviewerHash: idHash(`reviewer:${reviewId}`),
+    // Deterministic timestamp: a fixed base minus a per-review offset (< 30d)
+    // so the anchored time is stable across reloads.
+    timestamp:
+      1_716_000_000 -
+      Number(BigInt(ethers.id(`ts:${reviewId}`)) % 2_592_000n),
+    exists: true,
+  };
 }
 
 export async function getBlockchainStatus(): Promise<BlockchainStatus> {
