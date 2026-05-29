@@ -44,7 +44,7 @@ interface CheckItem {
 
 // Collapse long hex blobs (tx data, raw payloads) in status/error text to a
 // short masked form so the message fits the card instead of overflowing.
-function cleanMessage(msg: string | null | undefined, maxLen = 140): string | null {
+function cleanMessage(msg: string | null | undefined, maxLen = 110): string | null {
   if (!msg) return null;
   let out = msg.replace(/0x[0-9a-fA-F]{12,}/g, (m) => `${m.slice(0, 8)}*****`);
   // Drop the noisy ethers transaction={...} dump entirely.
@@ -406,7 +406,9 @@ export default function VerifyReviewPage({
           >
             {isFullyVerified
               ? 'The buyer relationship, IPFS document, and blockchain proof all line up.'
-              : cleanMessage(v.reason) || 'This review is still missing one or more public proof layers.'}
+              : isPartial
+                ? 'Record published. Some public proof layers are still pending.'
+                : 'This review is still missing one or more public proof layers.'}
           </motion.p>
 
           <motion.div
@@ -432,9 +434,11 @@ export default function VerifyReviewPage({
               {v.review.content}
             </p>
             {v.verificationMessage ? (
-              <p className="mt-3 text-xs text-amber-700 break-words" title={v.verificationMessage}>
-                {cleanMessage(v.verificationMessage)}
-              </p>
+              <div className="mt-3 min-w-0">
+                <p className="truncate text-xs text-amber-700" title={v.verificationMessage}>
+                  {cleanMessage(v.verificationMessage)}
+                </p>
+              </div>
             ) : null}
           </motion.div>
 

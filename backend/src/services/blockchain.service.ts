@@ -283,7 +283,12 @@ export async function anchorReviewOnChain(input: AnchorInput): Promise<AnchorRes
     // read-side failure: fall through to attempt and let the write surface it
   }
 
-  const overrides = await buildGasOverrides();
+  // anchorReview writes 7 bytes32 slots — gas is fixed and small. Pass an
+  // explicit gasLimit so ethers skips eth_estimateGas, whose simulation on
+  // Amoy intermittently fails with "missing revert data (action=estimateGas)"
+  // even for valid txs. A real revert still surfaces on tx.wait().
+  const overrides = await buildGasOverrides(250_000n);
+  await assertSignerFunded(overrides);
 
   const receipt = await withRetry(async () => {
     try {
@@ -325,14 +330,40 @@ export async function anchorReviewOnChain(input: AnchorInput): Promise<AnchorRes
 // basefee. MAX_FEE_GWEI is a safety ceiling, not a target.
 const MAX_FEE_GWEI = 250n;
 
-async function buildGasOverrides() {
+interface GasOverrides {
+  maxFeePerGas: bigint;
+  maxPriorityFeePerGas: bigint;
+  gasLimit?: bigint;
+}
+
+async function buildGasOverrides(gasLimit?: bigint): Promise<GasOverrides> {
   const fee = await getProvider().getFeeData();
   const tip = fee.maxPriorityFeePerGas ?? ethers.parseUnits('25', 'gwei');
   const base = fee.maxFeePerGas ?? ethers.parseUnits('50', 'gwei');
   let maxFee = (base * 125n) / 100n; // +25% headroom for basefee drift
   const ceiling = ethers.parseUnits(MAX_FEE_GWEI.toString(), 'gwei');
   if (maxFee > ceiling) maxFee = ceiling;
-  return { maxFeePerGas: maxFee, maxPriorityFeePerGas: tip };
+  return gasLimit
+    ? { maxFeePerGas: maxFee, maxPriorityFeePerGas: tip, gasLimit }
+    : { maxFeePerGas: maxFee, maxPriorityFeePerGas: tip };
+}
+
+// Surface "wallet is empty" as a clear message instead of the cryptic
+// estimateGas/insufficient-funds error ethers throws deep in the send path.
+async function assertSignerFunded(overrides: GasOverrides): Promise<void> {
+  if (!overrides.gasLimit) return;
+  const signer = getSigner();
+  const balance = await getProvider().getBalance(signer.address);
+  const worstCost = overrides.gasLimit * overrides.maxFeePerGas;
+  if (balance < worstCost) {
+    throw new Error(
+      `Insufficient POL: signer ${signer.address} holds ${ethers.formatEther(
+        balance
+      )} but anchoring needs ~${ethers.formatEther(
+        worstCost
+      )}. Fund the wallet from an Amoy faucet.`
+    );
+  }
 }
 
 // ─── Write: Batch anchor ───
